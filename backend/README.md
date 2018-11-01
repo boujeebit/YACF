@@ -1,7 +1,7 @@
 # Backend
 
 ## Queries
----
+
 ### All Categories
 ```
 query{
@@ -27,7 +27,7 @@ query {
 ```
 
 ## Mutations
----
+
 ### Add Categories
 ```
 mutation{
