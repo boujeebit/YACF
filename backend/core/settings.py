@@ -25,7 +25,7 @@ SECRET_KEY = 'flgx-!(gg^r-be@2yqq*y#azdnp71qt*4l6g5dk3&f$$c)3b=8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,9 +42,15 @@ INSTALLED_APPS = [
     'teams',
     'categories',
     'challenges',
+    'corsheaders', #DEV!
 ]
 
+CORS_ALLOW_CREDENTIALS=True #DEV!
+CORS_ORIGIN_ALLOW_ALL=True #DEV!
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', #DEV!
+    'django.middleware.common.CommonMiddleware', #DEV!
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

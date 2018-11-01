@@ -19,3 +19,30 @@ yarn run build
 ```
 yarn run lint
 ```
+
+
+## Template
+
+```
+<template>
+
+</template>
+
+<script>
+
+export default {
+  name: '',
+  data () {
+    return {
+
+    }
+  },
+  methods: {
+      
+  }
+}
+</script>
+
+<style scoped>
+</style>
+```
