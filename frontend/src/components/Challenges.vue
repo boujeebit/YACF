@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h3>Categories are shown below</h3>
+    <h2 class="header">Challenge Board</h2>
     <div v-for="cat in this.$store.state.board" :key="cat.id">
       <h3>{{cat.name}}</h3>
       <div class="flex-container">
@@ -9,7 +9,9 @@
           <p>{{chal.points}}</p>
         </div>
       </div>
+      <hr>
     </div>
+
   </div>
 </template>
 
@@ -21,24 +23,36 @@ export default {
     // this.$store.dispatch('loadChallenges');
     this.$store.dispatch('loadChallengeBoard');
   },
+  methods: {
+
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.header {
+  text-align: left;
+  margin: 10px 0 20px 10px;
+  font-family: "Marker Felt";
+}
+
 .flex-container {
   display: flex;
   flex-wrap: wrap;
-  background-color: DodgerBlue;
+  background-color: white;
   margin-bottom: 20px;
 }
 
 .flex-container-div {
-  background-color: #f1f1f1;
+  background-color: #f5f5f5;
+  box-shadow: 4px 3px #eaeaea;
   width: 300px;
   margin: 10px;
   text-align: center;
+  padding: 15px 0 15px 0;
   /* line-height: 75px; */
   /* font-size: 30px; */
 }
+
 </style>

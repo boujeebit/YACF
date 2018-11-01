@@ -69,7 +69,7 @@ def makeUser(user_name, user_email, user_password, hidden):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Redctf database reset script')
     parser.add_argument('--name', action="store", dest="admin_name", help='Username of admin user', default="admin")
-    parser.add_argument('--email', action="store", dest="admin_email", help='Email of admin user', default="admin@redctf.com")
+    parser.add_argument('--email', action="store", dest="admin_email", help='Email of admin user', default="admin@yacf.com")
     parser.add_argument('--password', action="store", dest="admin_password", help='Password of admin user', default="Password123!")
 
     args = parser.parse_args()

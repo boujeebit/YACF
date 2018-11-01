@@ -18,7 +18,6 @@ export default new Vuex.Store({
         .post('http://127.0.0.1:8000/graphql/', {'query': 'query{ allCategories {id, challenges{ id, name, points }, name, description} }'})
         .then(r => r.data.data.allCategories)
         .then(board => {
-          // console.log(board)
           commit('SET_BOARD', board)
         })
     },
