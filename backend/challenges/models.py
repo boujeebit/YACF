@@ -1,6 +1,7 @@
 from django.db import models
 from categories.models import Category
 
+
 class Challenge(models.Model):
     category = models.ForeignKey(Category, default=None, null=True, on_delete=models.CASCADE, related_name='challenges')
 

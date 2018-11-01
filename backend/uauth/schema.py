@@ -1,5 +1,128 @@
 import graphene
 from graphene_django import DjangoObjectType
+from uauth.models import User
+from teams.models import Team
+from uauth.validators import validate_username, validate_password, validate_email, validate_username_unique, validate_email_unique, validate_user_is_authenticated
+from django.contrib.auth import authenticate, login, logout
+
+
+class Me(DjangoObjectType):
+    class Meta:
+        model = User
+        only_fields = ('id', 'username', 'is_superuser')
+        filter_fields = ('id', 'username', 'is_superuser')
+
+
+class CreateUser(graphene.Mutation):
+    status = graphene.String()
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+        email = graphene.String(required=True)
+        hidden = graphene.String(required=True)
+
+    def mutate(self, info, username, password, email, hidden):
+        # Validate username, password, and email
+        validate_username(username) 
+        validate_username_unique(username) 
+        validate_email(email)
+        validate_email_unique(email)
+        validate_password(password)
+
+        #### TEMP ####
+        # Assign to a team with same name for now
+        team = Team(name=username, hidden=hidden)
+        team.save()
+        #### TEMP ####
+
+        user = User(
+            username=username,
+            email=email,
+            team=team,
+            hidden=hidden
+        )
+        user.set_password(password)
+        user.save()
+
+        return CreateUser(status='User account created')
+
+class ChangePassword(graphene.Mutation):
+    status = graphene.String()
+
+    class Arguments:
+        password = graphene.String(required=True)
+
+    def mutate(self, info, password):
+        user = info.context.user
+        # Validate user is authenticated
+        validate_user_is_authenticated(user)
+        validate_password(password)
+
+        user.set_password(password)
+        user.save()
+
+        return ChangePassword(status='User password changed')
+
+
+class LogIn(graphene.Mutation):
+    id = graphene.Int()
+    isSuperuser = graphene.Int()
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+
+    def mutate(self, info, username, password):
+        # Validate username and password
+        validate_username(username)
+        validate_password(password)
+
+        user = authenticate(username=username, password=password)
+
+        if not user:
+            raise Exception('Invalid username or password')
+
+        login(info.context, user)
+
+        return LogIn(id=user.id, isSuperuser=user.is_superuser)
+    
+class LogOut(graphene.Mutation):
+    status = graphene.String()
+
+    def mutate(self, info):
+        logout(info.context) 
+        return LogOut(status='Logged Out')
+
+class Query(object):
+    me = graphene.Field(Me) 
+
+    def resolve_me(self, info):
+        user = info.context.user
+        validate_user_is_authenticated(user)
+
+        return user
+
+
+class Mutation(object):
+    create_user = CreateUser.Field()
+    change_password = ChangePassword.Field()
+    login = LogIn.Field()
+    logout = LogOut.Field()
+
+
+
+
+
+
+
+
+
+
+
+
+import graphene
+from graphene_django import DjangoObjectType
 # from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User

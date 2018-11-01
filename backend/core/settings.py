@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
+    'django_filters',
     'uauth',
     'teams',
     'categories',
@@ -45,8 +46,11 @@ INSTALLED_APPS = [
     'corsheaders', #DEV!
 ]
 
+AUTH_USER_MODEL = 'uauth.User'
+
 CORS_ALLOW_CREDENTIALS=True #DEV!
 CORS_ORIGIN_ALLOW_ALL=True #DEV!
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', #DEV!
@@ -127,6 +131,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
 
 
 # Static files (CSS, JavaScript, Images)

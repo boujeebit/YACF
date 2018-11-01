@@ -1,11 +1,10 @@
 from django.db import models
+from teams.models import Team
+from django.contrib.auth.models import AbstractUser
 
-from django.contrib.auth.models import User
 
-# Create your models here.
-class Competitor(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    firstname = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    title = models.CharField(max_length=100)
-    company = models.CharField(max_length=100)
+class User(AbstractUser):
+    verified = models.BooleanField(default=False)
+    team = models.ForeignKey(Team, default=None, null=True, related_name='users', on_delete=models.SET_NULL)
+    hidden = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
