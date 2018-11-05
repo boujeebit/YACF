@@ -64,15 +64,51 @@ def makeUser(user_name, user_email, user_password, hidden):
     user.set_password(user_password)
     user.save()
 
+def makeCategories():
+    ctf_categories = ['Web', 'Pwn', 'Crypto', 'Reverse', 'Triva', 'Script']
 
+    for category in ctf_categories:
+        cat = Category(name=category, description="%s challenges" % (category))
+        cat.save()
+
+def makeChallenges():
+    ctf_categories = ['Web', 'Pwn', 'Crypto', 'Reverse', 'Triva', 'Script']
+    ctf_challenge_points = [100, 200, 300, 400, 500]
+
+    for category in ctf_categories:
+        cat = Category.objects.get(name=category)
+        for challenge_points in ctf_challenge_points:
+            chal_str = "%s %s" % (category, str(challenge_points))
+            chal = Challenge(category=cat, name=chal_str, description="{0} challenge".format(chal_str), points=challenge_points, flag=chal_str.strip(' '), show=True)
+            chal.save()
     
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Redctf database reset script')
+    parser = argparse.ArgumentParser(description='YACF database reset script')
     parser.add_argument('--name', action="store", dest="admin_name", help='Username of admin user', default="admin")
     parser.add_argument('--email', action="store", dest="admin_email", help='Email of admin user', default="admin@yacf.com")
     parser.add_argument('--password', action="store", dest="admin_password", help='Password of admin user', default="Password123!")
+    parser.add_argument('--categories', action="store", dest="create_categories", help='Flag to create categories')
+    parser.add_argument('--challenges', action="store", dest="create_challenges", help='Flag to create challenges')
 
     args = parser.parse_args()
 
+    # Rest the django database
     resetDjangoDB()
+
+    # Make the admin user
     makeAdminUser(args.admin_name, args.admin_email, args.admin_password, True)
+
+    # Create some non-admin users
+    makeUser("user1", "user1@yactf.com", "Password123!", True)
+    makeUser("user2", "user2@yactf.com", "Password123!", True)
+    makeUser("user3", "user3@yactf.com", "Password123!", True)
+    makeUser("user4", "user4@yactf.com", "Password123!", True)
+    makeUser("user5", "user5@yactf.com", "Password123!", True)
+
+    # Create challenge categories if requested
+    if args.create_categories:
+        makeCategories()
+
+    # Create challenges if requested
+    if args.create_challenges:
+        makeChallenges()

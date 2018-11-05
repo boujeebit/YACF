@@ -1,10 +1,8 @@
 import graphene
 from graphene_django import DjangoObjectType
-# from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from categories.models import Category
+from categories.validators import validate_description, validate_name
 
-from .models import Category
 
 class CategoryType(DjangoObjectType):
     class Meta:
@@ -26,6 +24,9 @@ class AddCategory(graphene.Mutation):
         description = graphene.String(required=True)
 
     def mutate(self, info, name, description):
+        # Validate user input
+        validate_name(name)
+        validate_description(description)
         try:
             newCategory = Category(name=name, description=description)
             newCategory.save()
