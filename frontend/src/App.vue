@@ -37,7 +37,7 @@
             <b-dropdown-item href="#">Profile</b-dropdown-item>
             <b-dropdown-item href="#">Signout</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item href="#" disabled>Admin Dashboard</b-nav-item>
+          <b-nav-item @click="$router.push('/admin');">Admin Dashboard</b-nav-item>
         </b-navbar-nav>
 
       </b-collapse>
@@ -51,7 +51,7 @@
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
 }
 #nav {

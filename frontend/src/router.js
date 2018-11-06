@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Scoreboard from './views/Scoreboard.vue'
+import Team from './views/Team.vue'
+import Admin from './views/Admin.vue'
 
 Vue.use(Router)
 
@@ -18,6 +20,16 @@ export default new Router({
       path: '/scoreboard',
       name: 'scoreboard',
       component: Scoreboard
+    },
+    {
+      path: '/team/:name',
+      name: 'team',
+      component: Team
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin
     },
     {
       path: '/about',

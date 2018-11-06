@@ -4,18 +4,18 @@
 
         <hr>
         <h3>Teams</h3>
-        <table id="socreboard" class="table">
+        <table id="socreboard" class="table table-hover">
           <thead>
             <tr>
               <th>Rank</th>
-              <th>Username</th>
+              <th>Team name</th>
               <th>Correct Flags</th>
               <th>Wrong Flags</th>
               <th>Score</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(team, index) in this.$store.getters.teamRanks" :key="team.id">
+            <tr v-for="(team, index) in this.$store.getters.teamRanks" :key="team.id" style="cursor: pointer;" @click="$router.push(`/team/${team.name}`);">
                 <td>{{index+1}}</td>
                 <td>{{team.name}}</td>
                 <td>{{team.correctFlags}}</td>
