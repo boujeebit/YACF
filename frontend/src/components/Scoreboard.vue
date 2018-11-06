@@ -1,6 +1,11 @@
 <template>
     <div>
         <h2 class="header">Score Board</h2>
+        <hr>
+        <h3>Teams</h3>
+        <div>
+            <hr>
+        </div>
     </div>
 </template>
 

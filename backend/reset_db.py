@@ -33,7 +33,7 @@ def makeAdminUser(admin_name, admin_email, admin_password, hidden):
     # Validate admin user command line arguments
     validate_username(admin_name)
     validate_email(admin_email)
-    validate_password(admin_password)
+    # validate_password(admin_password)
 
     # Create team for admin user
     admin_team = Team(name=admin_name, hidden=hidden)
