@@ -19,7 +19,7 @@ class Query(graphene.ObjectType):
     all_solved_challenges = graphene.List(TeamType)
 
     def resolve_all_teams(self, info, **kwargs):
-        return TeamType.objects.all()
+        return Team.objects.all()
     
     def all_solved_challenges(self, info, **kwargs):
         return SolvedChallenge.objects.all()
