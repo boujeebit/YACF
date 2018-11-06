@@ -14,6 +14,8 @@ from categories.models import Category
 from challenges.models import Challenge
 from uauth.validators import validate_username, validate_password, validate_email
 
+from random import randint
+
 def resetDjangoDB():
     # Remove database file if exists
     with contextlib.suppress(FileNotFoundError):
@@ -47,6 +49,7 @@ def makeAdminUser(admin_name, admin_email, admin_password, hidden):
 
 def makeTeam(team_name, hidden, accesscode):
     user_team = Team(name=team_name, hidden=hidden, accesscode=accesscode)
+    user_team.points = randint(0, 99)
     user_team.save()
 
 def makeUser(user_name, user_email, user_password, user_team, hidden):
@@ -117,9 +120,9 @@ if __name__ == "__main__":
     makeUser("user5", "user5@yactf.com", "Password123!", team5, True)
 
     # Create challenge categories if requested
-    if args.create_categories:
-        makeCategories()
+    # if args.create_categories:
+    makeCategories()
 
     # Create challenges if requested
-    if args.create_challenges:
-        makeChallenges()
+    # if args.create_challenges:
+    makeChallenges()

@@ -10,7 +10,15 @@ export default new Vuex.Store({
   state: {
     board:      [],
     categories: [],
-    challenges: []
+    challenges: [],
+    teams: []
+  },
+  getters: {
+    teamRanks: state => {
+      return state.teams.sort(function(a, b){
+        return b.points-a.points
+      })
+    }
   },
   actions: {
     loadChallengeBoard ({ commit }) {
@@ -37,6 +45,15 @@ export default new Vuex.Store({
           console.log(challenges)
           commit('SET_CHALLENGES', challenges)
         })
+    },
+    loadTeams ({ commit }) {
+      axios
+        .post('http://127.0.0.1:8000/graphql/', {'query': 'query{ allTeams {id, name, points, correctFlags, wrongFlags} }'})
+        .then(r => r.data.data.allTeams)
+        .then(teams => {
+          console.log(teams)
+          commit('SET_TEAMS', teams)
+        })
     }
   },
   mutations: {
@@ -48,6 +65,10 @@ export default new Vuex.Store({
     },
     SET_CHALLENGES (state, challenges) {
       state.challenges = challenges
+    },
+    SET_TEAMS (state, teams) {
+      state.teams = teams
     }
+    
   }
 })
