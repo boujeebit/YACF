@@ -11,13 +11,17 @@ export default new Vuex.Store({
     board:      [],
     categories: [],
     challenges: [],
-    teams: []
+    teams: [],
+    team: []
   },
   getters: {
     teamRanks: state => {
       return state.teams.sort(function(a, b){
         return b.points-a.points
       })
+    },
+    solved: state => {
+      return state.team.solved
     }
   },
   actions: {
@@ -54,6 +58,15 @@ export default new Vuex.Store({
           console.log(teams)
           commit('SET_TEAMS', teams)
         })
+    },
+    loadStats ({ commit }, payload) {
+      axios
+        .post('http://127.0.0.1:8000/graphql/', {'query': `query{ team(name:"${payload}"){ id, points, solved{ id, timestamp, challenge { id, name, points } } } }` })
+        .then(r => r.data.data.team)
+        .then(team => {
+          console.log(team)
+          commit('SET_TEAM', team)
+      })
     }
   },
   mutations: {
@@ -68,6 +81,9 @@ export default new Vuex.Store({
     },
     SET_TEAMS (state, teams) {
       state.teams = teams
+    },
+    SET_TEAM (state, team) {
+      state.team = team
     }
     
   }

@@ -18,13 +18,20 @@ class Query(graphene.ObjectType):
     all_teams = graphene.List(TeamType)
     all_solved_challenges = graphene.List(TeamType)
 
+    team = graphene.Field(TeamType, name=graphene.String())
+
     def resolve_all_teams(self, info, **kwargs):
         return Team.objects.all()
+
+    def resolve_team(self, info, **kwargs):
+        return Team.objects.filter(name=kwargs.get('name')).first()
     
     def all_solved_challenges(self, info, **kwargs):
         return SolvedChallenge.objects.all()
+    
 
 # ------------------- MUTATIONS -------------------
+
 
 # class AddCategory(graphene.Mutation):
 #     message = graphene.String()
@@ -44,4 +51,4 @@ class Query(graphene.ObjectType):
 #         return AddCategory(message)
 
 # class Mutation(object):
-#     addcategory = AddCategory.Field()
+#     getteam = GetTeam.Field()
