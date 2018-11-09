@@ -15,6 +15,7 @@ from challenges.models import Challenge
 from uauth.validators import validate_username, validate_password, validate_email
 
 from random import randint
+import hashlib
 
 def resetDjangoDB():
     # Remove database file if exists
@@ -86,7 +87,7 @@ def makeChallenges():
         cat = Category.objects.get(name=category)
         for challenge_points in ctf_challenge_points:
             chal_str = "%s %s" % (category, str(challenge_points))
-            chal = Challenge(category=cat, name=chal_str, description="{0} challenge".format(chal_str), points=challenge_points, flag=chal_str.strip(' '), show=True)
+            chal = Challenge(category=cat, name=chal_str, description="{0} challenge".format(chal_str), points=challenge_points, flag=hashlib.md5(chal_str.encode('utf-8')).hexdigest(), show=True)
             chal.save()
     
 if __name__ == "__main__":

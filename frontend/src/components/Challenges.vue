@@ -4,9 +4,13 @@
     <div v-for="cat in this.$store.state.board" :key="cat.id">
       <h3>{{cat.name}}</h3>
       <div class="flex-container">
-        <div class="flex-container-div" v-for="chal in cat.challenges" :key="chal.id">
-          <h3>{{chal.name}}</h3>
-          <p>{{chal.points}}</p>
+        <div v-for="chal in cat.challenges" :key="chal.id">
+
+          <div class="flex-container-div" v-b-modal="chal.id" style="cursor: pointer;">
+            <h3>{{chal.name}}</h3>
+            <p>{{chal.points}}</p>
+          </div>
+          <Challenge :chal="chal"></Challenge>
         </div>
       </div>
       <hr>
@@ -16,8 +20,13 @@
 </template>
 
 <script>
+import Challenge from '@/components/Challenge.vue'
+
 export default {
   name: 'Challenges',
+  components: {
+    Challenge
+  },
   mounted () {
     // this.$store.dispatch('loadCategories');
     // this.$store.dispatch('loadChallenges');

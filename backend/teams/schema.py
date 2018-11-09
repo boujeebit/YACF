@@ -16,7 +16,7 @@ class SolvedChallengeType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     all_teams = graphene.List(TeamType)
-    all_solved_challenges = graphene.List(TeamType)
+    all_solves = graphene.List(SolvedChallengeType)
 
     team = graphene.Field(TeamType, name=graphene.String())
 
@@ -26,7 +26,7 @@ class Query(graphene.ObjectType):
     def resolve_team(self, info, **kwargs):
         return Team.objects.filter(name=kwargs.get('name')).first()
     
-    def all_solved_challenges(self, info, **kwargs):
+    def resolve_all_solves(self, info, **kwargs):
         return SolvedChallenge.objects.all()
     
 

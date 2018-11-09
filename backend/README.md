@@ -44,3 +44,12 @@ mutation{
   }
 }
 ```
+
+### Submit Flag
+```
+mutation {
+  submitflag(challenge:4, flag:"a9a7ea821ceae25be636986af888ab0e"){
+    message
+  }
+}
+```

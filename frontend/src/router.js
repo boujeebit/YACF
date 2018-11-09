@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Statistics from './views/Statistics.vue'
 import Scoreboard from './views/Scoreboard.vue'
 import Team from './views/Team.vue'
 import Admin from './views/Admin.vue'
@@ -15,6 +16,11 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/challenge/:category/:points',
+      name: 'Statistics',
+      component: Statistics
     },
     {
       path: '/scoreboard',
