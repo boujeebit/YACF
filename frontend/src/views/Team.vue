@@ -13,7 +13,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(solve, index) in this.$store.getters.solved" :key="solve.id" style="cursor: pointer;">
+            <tr v-for="(solve, index) in this.$store.getters.solved" :key="solve.id" style="cursor: pointer;" @click="$router.push(`/challenge/${solve.challenge.category.name}/${solve.challenge.points}`);">
                 <td>{{index+1}}</td>
                 <td>{{solve.challenge.name}}</td>
                 <td>{{solve.challenge.points}}</td>

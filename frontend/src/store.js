@@ -61,7 +61,7 @@ export default new Vuex.Store({
     },
     loadStats ({ commit }, payload) {
       axios
-        .post('http://127.0.0.1:8000/graphql/', {'query': `query{ team(name:"${payload}"){ id, points, solved{ id, timestamp, challenge { id, name, points } } } }` })
+        .post('http://127.0.0.1:8000/graphql/', {'query': `query{ team(name:"${payload}"){ id, points, solved{ id, timestamp, challenge { id, name, points, category{ name } } } } }` })
         .then(r => r.data.data.team)
         .then(team => {
           console.log(team)

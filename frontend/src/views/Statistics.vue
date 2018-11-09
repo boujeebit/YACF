@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(team, index) in teams" :key="team.id" style="cursor: pointer;" @click="$router.push(`/team/${team.name}`);">
+                    <tr v-for="(team, index) in teams" :key="team.id" style="cursor: pointer;" @click="$router.push(`/team/${team.teamSet[0].name}`);">
                         <td>{{index+1}}</td>
                         <td>{{team.teamSet[0].name}}</td>
                         <td>{{team.timestamp | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}</td>
