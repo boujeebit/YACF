@@ -5,6 +5,10 @@ import Statistics from './views/Statistics.vue'
 import Scoreboard from './views/Scoreboard.vue'
 import Team from './views/Team.vue'
 import Admin from './views/Admin.vue'
+import AdminCreate from './views/admin/Create.vue'
+import AdminCategory from './views/admin/Categories.vue'
+import AdminChallenge from './views/admin/Challenges.vue'
+import AdminTeams from './views/admin/Teams.vue'
 
 Vue.use(Router)
 
@@ -35,7 +39,17 @@ export default new Router({
     {
       path: '/admin',
       name: 'admin',
-      component: Admin
+      component: Admin,
+      children: [
+        // UserHome will be rendered inside User's <router-view>
+        // when /user/:id is matched
+        { path: '/admin/create', component: AdminCreate },
+        { path: '/admin/categories', component: AdminCategory },
+        { path: '/admin/challenges', component: AdminChallenge },
+        { path: '/admin/teams', component: AdminTeams },
+
+        // ...other sub routes
+      ]
     },
     {
       path: '/about',

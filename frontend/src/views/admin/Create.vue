@@ -1,20 +1,15 @@
 <template>
   <div>
-    <AdminNav/>
-
-    <router-view></router-view>
-    <!-- <AddCategory/>
+    <AddCategory/>
     <hr>
     <AddChallenge/>
     <hr>
     <AddTeam/>
-    <hr> -->
+    <hr>
   </div>
 </template>
 
 <script>
-import AdminNav from '@/components/admin/adminnav.vue'
-
 import AddCategory from '@/components/admin/add/category.vue'
 import AddChallenge from '@/components/admin/add/challenge.vue'
 import AddTeam from '@/components/admin/add/team.vue'
@@ -23,7 +18,6 @@ import axios from 'axios'
 export default {
   name: 'home',
   components: {
-    AdminNav,
     AddCategory,
     AddChallenge,
     AddTeam

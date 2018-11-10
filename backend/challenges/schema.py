@@ -43,10 +43,22 @@ class AddChallenge(graphene.Mutation):
         flag        = graphene.String(required=False)
         show        = graphene.Boolean(required=False)
 
-    def mutate(self, info, name, description, points=0, flag="", show=False):
+        category    = graphene.String(required=False)
+
+    #TODO: Need to check and ensure no challenge is made with the same points as another challenge. If not, frontend stats break
+    def mutate(self, info, name, description, points=0, flag="", show=False, category=None):
         try:
-            newChallenge = Challenge(name=name, description=description, points=points, flag=flag, show=show)
-            newChallenge.save()
+            if category:
+                try:
+                    category = Category.objects.get(name=category)
+                    newChallenge = Challenge(name=name, description=description, points=points, flag=flag, show=show, category=category)
+                    newChallenge.save()
+                except:
+                    # Category not found
+                    message = "failure"
+            else:
+                newChallenge = Challenge(name=name, description=description, points=points, flag=flag, show=show)
+                newChallenge.save()
             message = "success"
         except:
             message = "failure"

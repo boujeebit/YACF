@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 style="text-align:center; padding-top: 10px;">{{this.$route.params.name}}</h3>
+    <h3 style="text-align:center; padding-top: 10px;">{{this.$store.state.team.name}}</h3>
 
 
         <table id="team" class="table table-hover">

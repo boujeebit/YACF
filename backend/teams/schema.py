@@ -24,7 +24,7 @@ class Query(graphene.ObjectType):
         return Team.objects.all()
 
     def resolve_team(self, info, **kwargs):
-        return Team.objects.filter(name=kwargs.get('name')).first()
+        return Team.objects.get(name__iexact=kwargs.get('name'))
     
     def resolve_all_solves(self, info, **kwargs):
         return SolvedChallenge.objects.all()
@@ -33,22 +33,25 @@ class Query(graphene.ObjectType):
 # ------------------- MUTATIONS -------------------
 
 
-# class AddCategory(graphene.Mutation):
-#     message = graphene.String()
+class AddTeam(graphene.Mutation):
+    message = graphene.String()
 
-#     class Arguments:
-#         name        = graphene.String(required=True)
-#         description = graphene.String(required=True)
+    class Arguments:
+        name        = graphene.String(required=True)
+        accesscode  = graphene.String(required=False)
 
-#     def mutate(self, info, name, description):
-#         try:
-#             newCategory = Category(name=name, description=description)
-#             newCategory.save()
-#             message = "success"
-#         except:
-#             message = "failure"
+    def mutate(self, info, name, accesscode=None):
+        try:
+            if not accesscode:
+                accesscode = "This Needs to be generated (teams/schema.py)"
 
-#         return AddCategory(message)
+            newTeam = Team(name=name, accesscode=accesscode)
+            newTeam.save()
+            message = "success"
+        except:
+            message = "failure"
 
-# class Mutation(object):
-#     getteam = GetTeam.Field()
+        return AddTeam(message)
+
+class Mutation(object):
+    addteam = AddTeam.Field()

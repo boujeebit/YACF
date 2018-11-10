@@ -45,6 +45,15 @@ mutation{
 }
 ```
 
+### Add Team
+```
+mutation {
+  addteam(name:"WEEEEEEE!", accesscode:"code1234"){
+		message
+  }
+}
+```
+
 ### Submit Flag
 ```
 mutation {

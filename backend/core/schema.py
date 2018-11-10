@@ -8,7 +8,7 @@ import teams.schema
 class Query(uauth.schema.Query, categories.schema.Query, challenges.schema.Query, teams.schema.Query, graphene.ObjectType):
     pass
 
-class Mutation(uauth.schema.Mutation, categories.schema.Mutation, challenges.schema.Mutation, graphene.ObjectType):
+class Mutation(uauth.schema.Mutation, categories.schema.Mutation, challenges.schema.Mutation, teams.schema.Mutation, graphene.ObjectType):
     pass
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
