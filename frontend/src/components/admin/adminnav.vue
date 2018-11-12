@@ -5,7 +5,7 @@
       <b-collapse is-nav id="nav_collapse">
 
         <b-navbar-nav>
-          <b-nav-item @click="$router.push('/admin/missioncontrol');">Mission Control</b-nav-item>
+          <b-nav-item @click="$router.push('/admin/mission');">Mission Control</b-nav-item>
           <b-nav-item @click="$router.push('/admin/create');">Add</b-nav-item>
           <b-nav-item @click="$router.push('/admin/categories');">Categories</b-nav-item>
           <b-nav-item @click="$router.push('/admin/challenges');">Challenges</b-nav-item>

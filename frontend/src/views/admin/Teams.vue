@@ -4,11 +4,22 @@
             Yo, we loadin'. Hang tight
         </div>
         <div v-else>
-            <div v-for="team in teams" v-bind:key="team.id">
-                {{team.name}} 
-                <p>Team: {{team}}</p>
-                <hr>
-            </div>
+            <table id="adminteams" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>Access Code</th>
+                        <th>Edit/Remove (Not working)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="team in teams" v-bind:key="team.id">
+                        <td>{{team.name}}</td>
+                        <td>{{team.accesscode}}</td>
+                        <td>Edit | Remove</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     
     </div>

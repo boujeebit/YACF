@@ -4,13 +4,27 @@
             Yo, we loadin'. Hang tight
         </div>
         <div v-else>
-            <div v-for="challenge in challenges" v-bind:key="challenge.id">
-                {{challenge.name}} 
-                <p>Category: {{challenge.category}}</p>
-                <hr>
-            </div>
+            <table id="adminchallenge" class="table">
+                <thead>
+                    <tr>
+                        <th>Challenge</th>
+                        <th>Description</th>
+                        <th>Points</th>
+                        <th>Flag (Hover to show)</th>
+                        <th>Edit/Remove (Not working)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="challenge in challenges" v-bind:key="challenge.id">
+                        <td>{{challenge.name}}</td>
+                        <td>{{challenge.description}}</td>
+                        <td>{{challenge.points}}</td>
+                        <td class="secret-flag">{{challenge.flag}}</td>
+                        <td>Edit | Remove</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    
     </div>
 </template>
 
@@ -38,7 +52,9 @@ export default {
             allChallenges{
                 id
                 name
+                description
                 points
+                flag
                 category {
                     id
                     name
@@ -57,4 +73,10 @@ export default {
 </script>
 
 <style scoped>
+.secret-flag {
+    color: white;
+}
+.secret-flag:hover {
+    color: black;
+}
 </style>

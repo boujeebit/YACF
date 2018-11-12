@@ -37,7 +37,7 @@
             <b-dropdown-item href="#">Profile</b-dropdown-item>
             <b-dropdown-item href="#">Signout</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item @click="$router.push('/admin');">Admin Dashboard</b-nav-item>
+          <b-nav-item @click="$router.push('/admin/mission');">Admin Dashboard</b-nav-item>
         </b-navbar-nav>
 
       </b-collapse>

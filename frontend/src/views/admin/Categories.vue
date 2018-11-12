@@ -4,13 +4,25 @@
             Yo, we loadin'. Hang tight
         </div>
         <div v-else>
-            <div v-for="category in categories" v-bind:key="category.id">
-                {{category.name}} 
-                <p>Challenges: {{category.challenges}}</p>
-                <hr>
-            </div>
+            <table id="admincategories" class="table table-hover">
+                <thead>
+                    <tr>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Number of Challenges</th>
+                    <th>Edit/Remove (Not working)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="category in categories" v-bind:key="category.id">
+                        <td>{{category.name}}</td>
+                        <td>{{category.description}}</td>
+                        <td>Blah</td>
+                        <td>Edit | Remove</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    
     </div>
 </template>
 
