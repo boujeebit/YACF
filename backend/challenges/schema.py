@@ -25,12 +25,10 @@ class Query(graphene.ObjectType):
         return Challenge.objects.get(pk=kwargs.get('id'))
 
     def resolve_statistic(self, info, **kwargs):
-        # get_category = Category.objects.get( name__iexact=kwargs.get('category')
-        # print(Category.objects.get( name__iexact=kwargs.get('category'))
         get_category = Category.objects.get( name__iexact=kwargs.get('category'))
         return Challenge.objects.filter(category=get_category, points=kwargs.get('points')).first()
-        # return Challenge.objects.filter( points=kwargs.get('points') ).first()
-        # return Challenge.objects.get(pk=1)
+
+
 
 # ------------------- MUTATIONS -------------------
 
@@ -77,7 +75,7 @@ class SubmitFlag(graphene.Mutation):
 
     def mutate(self, info, challenge, flag):
         print("User:", info.context.user)
-        print("Team:", info.context.user.team.points)
+        print("Team:", info.context.user.team.name)
         team = info.context.user.team
 
         try:
@@ -86,7 +84,7 @@ class SubmitFlag(graphene.Mutation):
                 if team:
                     solve = SolvedChallenge(user=info.context.user, challenge=get_challenge)
                     solve.save()
-                    team.points = team.points + get_challenge.points
+                    team.solved.add(solve)
                     team.save()
                 code = 1
             else:
