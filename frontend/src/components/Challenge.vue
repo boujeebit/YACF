@@ -50,23 +50,27 @@ export default {
         console.log("Here is the flag enter: ", this.flag);
         evt.preventDefault()
         let that = this
-        axios
-          .post('http://127.0.0.1:8000/graphql/', {'query': `mutation{ submitflag(challenge:${that.chal.id}, flag:"${that.flag}"){ code } }` })
-          .then(r => r.data.data.submitflag)
-          .then(code => {
+        axios({
+          method: 'post',
+          url: 'http://localhost:8000/graphql/',
+          withCredentials: true,
+          data: {'query': `mutation{ submitflag(challenge:${that.chal.id}, flag:"${that.flag}"){ code } }` }
+        })
+        .then(r => r.data.data.submitflag)
+        .then(code => {
             console.log(code);
             if (code.code == 1){
               that.solved = true
             } else {
               that.message = "That didn't do it, try again!"
             }
-        })
+        });          
       },
       loaddata () {
           console.log("Getting details on chanllenge", this.chal.id)
           let that = this
           axios
-            .post('http://127.0.0.1:8000/graphql/', {'query': `query{ challenge(id:${that.chal.id}){ id, description, points, flag, category { name } } }` })
+            .post('http://localhost:8000/graphql/', {'query': `query{ challenge(id:${that.chal.id}){ id, description, points, flag, category { name } } }` })
             .then(r => r.data.data.challenge)
             .then(challenge => {
               console.log(challenge);

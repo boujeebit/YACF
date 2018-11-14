@@ -8,6 +8,7 @@ Vue.use(VueAxios, axios)
 
 export default new Vuex.Store({
   state: {
+    user : "",
     board:      [],
     categories: [],
     challenges: [],
@@ -25,9 +26,19 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    loginUser ({ commit }, credentials) {
+      console.log(credentials)
+      axios
+        .post('http://localhost:8000/graphql/', {'query': `mutation { login(username:"${credentials.username}", password:"${credentials.password}") { id } }`})
+        .then(r => r.data.data)
+        .then(login => {
+          // commit('SET_BOARD', board)
+          console.log(login);
+      })
+    },
     loadChallengeBoard ({ commit }) {
       axios
-        .post('http://127.0.0.1:8000/graphql/', {'query': 'query{ allCategories {id, challenges{ id, name, points }, name, description} }'})
+        .post('http://localhost:8000/graphql/', {'query': 'query{ allCategories {id, challenges{ id, name, points }, name, description} }'})
         .then(r => r.data.data.allCategories)
         .then(board => {
           commit('SET_BOARD', board)
@@ -35,7 +46,7 @@ export default new Vuex.Store({
     },
     loadCategories ({ commit }) {
       axios
-        .post('http://127.0.0.1:8000/graphql/', {'query': 'query{ allCategories {id, name, description} }'})
+        .post('http://localhost:8000/graphql/', {'query': 'query{ allCategories {id, name, description} }'})
         .then(r => r.data.data.allCategories)
         .then(categories => {
           commit('SET_CATEGORIES', categories)
@@ -43,7 +54,7 @@ export default new Vuex.Store({
     },
     loadChallenges ({ commit }) {
       axios
-        .post('http://127.0.0.1:8000/graphql/', {'query': 'query{ allChallenges {id, category{ id }, name, description, points} }'})
+        .post('http://localhost:8000/graphql/', {'query': 'query{ allChallenges {id, category{ id }, name, description, points} }'})
         .then(r => r.data.data.allChallenges)
         .then(challenges => {
           console.log(challenges)
@@ -52,7 +63,7 @@ export default new Vuex.Store({
     },
     loadTeams ({ commit }) {
       axios
-        .post('http://127.0.0.1:8000/graphql/', {'query': 'query{ allTeams {id, name, points, correctFlags, wrongFlags} }'})
+        .post('http://localhost:8000/graphql/', {'query': 'query{ allTeams {id, name, points, correctFlags, wrongFlags} }'})
         .then(r => r.data.data.allTeams)
         .then(teams => {
           console.log(teams)
@@ -61,7 +72,7 @@ export default new Vuex.Store({
     },
     loadStats ({ commit }, payload) {
       axios
-        .post('http://127.0.0.1:8000/graphql/', {'query': `query{ team(name:"${payload}"){ id, name, points, solved{ id, timestamp, challenge { id, name, points, category{ name } } } } }` })
+        .post('http://localhost:8000/graphql/', {'query': `query{ team(name:"${payload}"){ id, name, points, solved{ id, timestamp, challenge { id, name, points, category{ name } } } } }` })
         .then(r => r.data.data.team)
         .then(team => {
           console.log(team)
@@ -84,6 +95,9 @@ export default new Vuex.Store({
     },
     SET_TEAM (state, team) {
       state.team = team
+    },
+    SET_USER (state, user){
+      state.user = user
     }
     
   }

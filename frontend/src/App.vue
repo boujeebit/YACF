@@ -4,12 +4,12 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="#">YACF</b-navbar-brand>
+      <b-navbar-brand @click="$router.push('/');">YACF</b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse">
 
         <b-navbar-nav>
-          <b-nav-item @click="$router.push('/');">Challenges</b-nav-item>
+          <b-nav-item @click="$router.push('/challenges');">Challenges</b-nav-item>
           <b-nav-item @click="$router.push('/scoreboard');">Scoreboard</b-nav-item>
           <!-- <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
         </b-navbar-nav>

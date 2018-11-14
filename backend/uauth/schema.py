@@ -2,7 +2,7 @@ import graphene
 from graphene_django import DjangoObjectType
 # from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from .models import User
 
 def validate_user_is_authenticated(user):
     if user.is_anonymous:
@@ -19,7 +19,7 @@ class Query(object):
         user = info.context.user
         validate_user_is_authenticated(user)
 
-        return user
+        return user #User.objects.get(pk=1)
 
 # ------------------- MUTATIONS -------------------
 

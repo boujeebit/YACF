@@ -1,6 +1,6 @@
 <template>
-  <div>
-    This is home.. A place for rules, regs, and general information for current or upcoming CTF. 
+  <div class="home">
+    <Challenges/>
   </div>
 </template>
 
@@ -10,5 +10,8 @@ import Challenges from '@/components/Challenges.vue'
 
 export default {
   name: 'home',
+  components: {
+    Challenges
+  }
 }
 </script>

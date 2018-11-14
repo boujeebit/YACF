@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Login from './views/Login.vue'
 import Home from './views/Home.vue'
+import Challenges from './views/Challenges.vue'
 import Statistics from './views/Statistics.vue'
 import Scoreboard from './views/Scoreboard.vue'
 import Team from './views/Team.vue'
@@ -18,9 +20,19 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: Home
+    },
+    {
+      path: '/challenges',
+      name: 'Challenges',
+      component: Challenges
     },
     {
       path: '/challenge/:category/:points',

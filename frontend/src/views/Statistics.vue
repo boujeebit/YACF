@@ -50,7 +50,7 @@ export default {
     console.log("Making call to get Stats for: ", this.$route.params.category, this.$route.params.points);
     let that = this;
     axios
-        .post('http://127.0.0.1:8000/graphql/', {
+        .post('http://localhost:8000/graphql/', {
             'query': 
             `query{
                 statistic(category:"${this.$route.params.category}", points:${this.$route.params.points}){ 

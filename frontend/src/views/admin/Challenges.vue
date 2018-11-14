@@ -46,7 +46,7 @@ export default {
   beforeMount () {
     let that = this;
     axios
-    .post('http://127.0.0.1:8000/graphql/', {
+    .post('http://localhost:8000/graphql/', {
         'query': 
         `query {
             allChallenges{

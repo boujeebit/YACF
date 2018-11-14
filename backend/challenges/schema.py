@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 from categories.models import Category
 from challenges.models import Challenge
+from teams.models import SolvedChallenge
 
 class ChallengeType(DjangoObjectType):
     class Meta:
@@ -75,10 +76,18 @@ class SubmitFlag(graphene.Mutation):
 
 
     def mutate(self, info, challenge, flag):
+        print("User:", info.context.user)
+        print("Team:", info.context.user.team.points)
+        team = info.context.user.team
 
         try:
             get_challenge = Challenge.objects.get(pk=challenge)
             if get_challenge.flag == flag:
+                if team:
+                    solve = SolvedChallenge(user=info.context.user, challenge=get_challenge)
+                    solve.save()
+                    team.points = team.points + get_challenge.points
+                    team.save()
                 code = 1
             else:
                 code = 0
