@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 from .models import Team, SolvedChallenge
 
 class TeamType(DjangoObjectType):
+    points = graphene.Int()
+    correct_flags = graphene.Int()
+
     class Meta:
         model = Team
 
