@@ -3,6 +3,71 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+import { WebSocketBridge } from 'django-channels'
+
+const socket = new WebSocketBridge();
+
+socket.connect('ws://localhost:8000/team/stream/');
+
+
+// const webSocketBridge = new WebSocketBridge();
+// webSocketBridge.connect('ws://localhost:8000/team/stream/');
+// webSocketBridge.listen(function(action, stream) {
+//   console.log(action, stream);
+// });
+
+const createWebSocketPlugin = function(socket) {
+	return store => {
+		socket.listen(function(action, stream) {
+		console.log(action);
+		switch(action.type) {
+			// case 0:
+			// 	console.log("Adding subscription");
+			// 	store.commit('addSubscription', action)
+			// 	break;
+			case 1:
+				store.commit('addPoints', action)
+				break;
+			// case 2:
+			// 	console.log("Recieved Port");
+			// 	console.log(action);
+			// 	store.commit('addPort', action)
+			// 	break;
+			// case 3:
+			// 	break;
+			default:
+				break;
+		}
+
+		// store.commit('addMessage', action)
+		})
+	//   store.subscribe(mutation => {
+	// 	if (mutation.type === 'UPDATE_DATA') {
+	// 	  socket.emit('update', mutation.payload)
+	// 	}
+	//   })
+	}
+}
+
+
+const plugin = createWebSocketPlugin(socket)
+
+// export default function createWebSocketPlugin (socket) {
+//   return store => {
+//     socket.connect('data', data => {
+//       console.log(data);
+//       // store.commit('receiveData', data)
+//     })
+//     // store.subscribe(mutation => {
+//     //   if (mutation.type === 'UPDATE_DATA') {
+//     //     socket.emit('update', mutation.payload)
+//     //   }
+//     // })
+//   }
+// }
+
+// const plugin = createWebSocketPlugin(webSocketBridge)
+
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 
@@ -78,6 +143,9 @@ export default new Vuex.Store({
           console.log(team)
           commit('SET_TEAM', team)
       })
+    },
+    connectScoreboard ({ commit }) {
+      socket.send({"command": "join", "room": 1});
     }
   },
   mutations: {
@@ -98,7 +166,20 @@ export default new Vuex.Store({
     },
     SET_USER (state, user){
       state.user = user
-    }
+    },
+    addPoints (state, payload) {
+      console.log("Adding points to team: ", payload.team);
+      if (state.teams) {
+        console.log(state.teams);
+        // console.log(state.teams.find(team => team.name === payload.team))
+        let team, newteam = state.teams.find(team => team.name === payload.team);
+        console.log(team)
+        newteam.points = payload.points;
+        state.teams.splice(team, 1, newteam);
+      }
+      
+    },
     
-  }
+  },
+  plugins: [plugin]
 })

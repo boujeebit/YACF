@@ -1,3 +1,6 @@
+import channels.layers
+from asgiref.sync import async_to_sync
+
 import graphene
 from graphene_django import DjangoObjectType
 # from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
@@ -24,6 +27,18 @@ class Query(graphene.ObjectType):
     team = graphene.Field(TeamType, name=graphene.String())
 
     def resolve_all_teams(self, info, **kwargs):
+        
+        channel_layer = channels.layers.get_channel_layer()
+        # Send message to WebSocket
+        async_to_sync(channel_layer.group_send)("socreboard", {"type": "scoreboard.update", "team": "blue", "points": "1000", "added": "100"} )
+
+        # await channel_layer.send(
+        #     chat_message,
+        #     {"type": "chat.system_message", "text": "boom"},
+        # )
+
+
+
         return Team.objects.all()
 
     def resolve_team(self, info, **kwargs):

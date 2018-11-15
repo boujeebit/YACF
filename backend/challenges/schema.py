@@ -1,3 +1,6 @@
+import channels.layers
+from asgiref.sync import async_to_sync
+
 import graphene
 from graphene_django import DjangoObjectType
 # from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
@@ -46,6 +49,7 @@ class AddChallenge(graphene.Mutation):
 
     #TODO: Need to check and ensure no challenge is made with the same points as another challenge. If not, frontend stats break
     def mutate(self, info, name, description, points=0, flag="", show=False, category=None):
+
         try:
             if category:
                 try:
@@ -85,12 +89,19 @@ class SubmitFlag(graphene.Mutation):
                     solve = SolvedChallenge(user=info.context.user, challenge=get_challenge)
                     solve.save()
                     team.solved.add(solve)
-                    team.save()
+                    team.save()                    
                 code = 1
             else:
                 code = 0
         except:
             code = 9
+
+
+        if code == 1:
+            print("Sending signal to update scorebaord")
+            channel_layer = channels.layers.get_channel_layer()
+            async_to_sync(channel_layer.group_send)("scoreboard", {"type": "scoreboard.update", "team": team.name, "points": team.points, "added": get_challenge.points} )
+
 
         return SubmitFlag(code)
 
