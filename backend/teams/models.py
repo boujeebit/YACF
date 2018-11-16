@@ -35,7 +35,7 @@ class Team(models.Model):
     correct_flags = property(_correct)
     wrong_flags = models.IntegerField(default=0)
     
-    solved = models.ManyToManyField(SolvedChallenge)
+    solved = models.ManyToManyField(SolvedChallenge, related_name="team")
     created = models.DateTimeField(auto_now_add=True)
 
     accesscode = models.CharField(max_length=150)

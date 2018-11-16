@@ -26,19 +26,9 @@ class Query(graphene.ObjectType):
 
     team = graphene.Field(TeamType, name=graphene.String())
 
+    # graph = graphene.List(TeamType)
+
     def resolve_all_teams(self, info, **kwargs):
-        
-        channel_layer = channels.layers.get_channel_layer()
-        # Send message to WebSocket
-        async_to_sync(channel_layer.group_send)("socreboard", {"type": "scoreboard.update", "team": "blue", "points": "1000", "added": "100"} )
-
-        # await channel_layer.send(
-        #     chat_message,
-        #     {"type": "chat.system_message", "text": "boom"},
-        # )
-
-
-
         return Team.objects.all()
 
     def resolve_team(self, info, **kwargs):
@@ -46,7 +36,9 @@ class Query(graphene.ObjectType):
     
     def resolve_all_solves(self, info, **kwargs):
         return SolvedChallenge.objects.all()
-    
+
+    # def resolve_graph(self, info, **kwargs):
+    #     return Team.objects.filter(points=8700)   
 
 # ------------------- MUTATIONS -------------------
 
@@ -71,5 +63,30 @@ class AddTeam(graphene.Mutation):
 
         return AddTeam(message)
 
+class Graph(graphene.Mutation):
+    message = graphene.String()
+
+    class Arguments:
+        number = graphene.Int(required=False)
+
+    def mutate(self, info, number=10):
+
+        # Sort to get the top 5 by point value
+        teams = sorted(list(Team.objects.all()), key=lambda x: x.points, reverse=True)[:5]
+
+        # Get all solved challenges from the top 5 teams.
+        challenges = SolvedChallenge.objects.filter(team__name__in=[team.name for team in teams]).order_by('-timestamp')
+
+        # timechal = sorted(list(challenges), key=lambda x: x.timestamp, reverse=True)
+
+        print(challenges)
+
+        for challenge in challenges:
+            # print(dir(challenge.team.all))
+            print(challenge.team.all())
+
+        return Graph("message")
+
 class Mutation(object):
     addteam = AddTeam.Field()
+    graph   = Graph.Field()
