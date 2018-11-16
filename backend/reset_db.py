@@ -31,26 +31,28 @@ def resetDjangoDB():
     os.system('python3 manage.py migrate')   
 
     
-def makeAdminUser(admin_name, admin_email, admin_password, hidden):
-    # Validate admin user command line arguments
-    validate_username(admin_name)
-    validate_email(admin_email)
-    # validate_password(admin_password)
+# def makeAdminUser(admin_name, admin_email, admin_password, hidden):
+#     # Validate admin user command line arguments
+#     validate_username(admin_name)
+#     validate_email(admin_email)
+#     # validate_password(admin_password)
 
-    # Create team for admin user
+#     # Create team for admin user
 
-    # admin_team = Team(name=admin_name, hidden=hidden)
-    # admin_team.save()
+#     # admin_team = Team(name=admin_name, hidden=hidden)
+#     # admin_team.save()
 
-    # Create admin user assign admin team
-    admin = User.objects.create_superuser(admin_name, admin_email, admin_password)
-    # admin.team = admin_team
+#     # Create admin user assign admin team
+#     admin = User.objects.create_superuser(admin_name, admin_email, admin_password)
+#     # admin.team = admin_team
+#     admin.save()
+
+def makeAdminUser():
+    admin = User.objects.create_superuser("admin", "email@email.com", "password1")
     admin.save()
-
 
 def makeTeam(team_name, hidden, accesscode):
     user_team = Team(name=team_name, hidden=hidden, accesscode=accesscode)
-    user_team.points = randint(0, 99)
     user_team.save()
 
 def makeUser(user_name, user_email, user_password, user_team, hidden):
@@ -104,7 +106,8 @@ if __name__ == "__main__":
     resetDjangoDB()
 
     # Make the admin user
-    makeAdminUser(args.admin_name, args.admin_email, args.admin_password, True)
+    # makeAdminUser(args.admin_name, args.admin_email, args.admin_password, True)
+    makeAdminUser()
 
     #Create some teams
     team1 = makeTeam("Team1", False, "abc")

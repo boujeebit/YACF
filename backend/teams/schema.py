@@ -79,11 +79,13 @@ class Graph(graphene.Mutation):
 
         # timechal = sorted(list(challenges), key=lambda x: x.timestamp, reverse=True)
 
-        print(challenges)
+        # print(challenges)
+
+        print(teams)
 
         for challenge in challenges:
             # print(dir(challenge.team.all))
-            print(challenge.team.all())
+            print(challenge)
 
         return Graph("message")
 

@@ -86,10 +86,8 @@ class SubmitFlag(graphene.Mutation):
             get_challenge = Challenge.objects.get(pk=challenge)
             if get_challenge.flag == flag:
                 if team:
-                    solve = SolvedChallenge(user=info.context.user, challenge=get_challenge)
-                    solve.save()
-                    team.solved.add(solve)
-                    team.save()                    
+                    solve = SolvedChallenge(team=team, user=info.context.user, challenge=get_challenge)
+                    solve.save()                  
                 code = 1
             else:
                 code = 0
