@@ -78,7 +78,9 @@ export default new Vuex.Store({
     categories: [],
     challenges: [],
     teams: [],
-    team: []
+    team: [],
+    graphdata: [],
+    graphlabels: []
   },
   getters: {
     teamRanks: state => {
@@ -88,6 +90,12 @@ export default new Vuex.Store({
     },
     solved: state => {
       return state.team.solved
+    },
+    graphdata: state => {
+      return state.graphdata
+    },
+    graphlabels: state => {
+      return state.graphlabels
     }
   },
   actions: {
@@ -167,6 +175,10 @@ export default new Vuex.Store({
     SET_USER (state, user){
       state.user = user
     },
+    SET_GRAPH (state, graph) {
+      state.graphdata = graph.data;
+      state.graphlabels = graph.labels;
+    },
     addPoints (state, payload) {
       console.log("Adding points to team: ", payload.team);
       if (state.teams) {
@@ -175,7 +187,21 @@ export default new Vuex.Store({
         let team, newteam = state.teams.find(team => team.name === payload.team);
         console.log(team)
         newteam.points = payload.points;
+        // TODO: There might be a bug here.
         state.teams.splice(team, 1, newteam);
+        
+        // Update graph
+        for (let i = 0; i < state.graphdata.length; i++) { 
+          console.log(state.graphdata[i].label , payload.team)
+          if (state.graphdata[i].label === payload.team) {
+            console.log("TRUE!!!!")
+            state.graphdata[i].data.push(payload.points)
+          } else {
+            state.graphdata[i].data.push(state.graphdata[i].data.slice(-1)[0])
+          }
+        }
+        // Do last. When this gets updated the graph on page does too.
+        state.graphlabels.push(payload.time);
       }
       
     },

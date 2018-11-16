@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from categories.models import Category
 from challenges.models import Challenge
 from teams.models import SolvedChallenge
+from uauth.models import Profile
 
 class ChallengeType(DjangoObjectType):
     class Meta:
@@ -79,9 +80,9 @@ class SubmitFlag(graphene.Mutation):
 
     def mutate(self, info, challenge, flag):
         print("User:", info.context.user)
-        print("Team:", info.context.user.team.name)
-        team = info.context.user.team
-
+        # print("Team:", info.context.user.profile.verified)
+        team = Profile.objects.get(user=info.context.user).team
+        print("Team:", team.name)
         try:
             get_challenge = Challenge.objects.get(pk=challenge)
             if get_challenge.flag == flag:
@@ -98,7 +99,7 @@ class SubmitFlag(graphene.Mutation):
         if code == 1:
             print("Sending signal to update scorebaord")
             channel_layer = channels.layers.get_channel_layer()
-            async_to_sync(channel_layer.group_send)("scoreboard", {"type": "scoreboard.update", "team": team.name, "points": team.points, "added": get_challenge.points} )
+            async_to_sync(channel_layer.group_send)("scoreboard", {"type": "scoreboard.update", "team": team.name, "points": team.points, "added": get_challenge.points, "time": solve.timestamp.strftime("%I:%M:%S")} )
 
 
         return SubmitFlag(code)

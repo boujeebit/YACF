@@ -28,6 +28,16 @@ query {
 
 ## Mutations
 
+### Login
+```
+mutation{
+  login(username:"mickey", password:"password1"){
+    id
+  }
+}
+```
+
+
 ### Add Categories
 ```
 mutation{

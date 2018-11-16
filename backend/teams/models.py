@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from challenges.models import Challenge
 
+from django.contrib.auth.models import User
+
 class Team(models.Model):
     """
     Team model class.
@@ -37,6 +39,6 @@ class SolvedChallenge(models.Model):
     """
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='solved')
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=None, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, default=None, null=True, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)

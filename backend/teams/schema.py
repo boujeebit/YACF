@@ -7,6 +7,8 @@ from graphene_django import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
+import json
+
 from .models import Team, SolvedChallenge
 
 class TeamType(DjangoObjectType):
@@ -64,6 +66,7 @@ class AddTeam(graphene.Mutation):
         return AddTeam(message)
 
 class Graph(graphene.Mutation):
+    timeline = graphene.String()
     message = graphene.String()
 
     class Arguments:
@@ -75,19 +78,43 @@ class Graph(graphene.Mutation):
         teams = sorted(list(Team.objects.all()), key=lambda x: x.points, reverse=True)[:5]
 
         # Get all solved challenges from the top 5 teams.
-        challenges = SolvedChallenge.objects.filter(team__name__in=[team.name for team in teams]).order_by('-timestamp')
+        solved = SolvedChallenge.objects.filter(team__name__in=[team.name for team in teams]).order_by('timestamp')
 
-        # timechal = sorted(list(challenges), key=lambda x: x.timestamp, reverse=True)
+        graph = []
+        for team in teams:
+            graph.append({'label': team.name, 'data': [], 'backgroundColor': '', 'borderColor': '', 'fill': 'false'})
 
-        # print(challenges)
+        colors = ['#FFD700', '#909497', '#A46628', '#3232CD', '#93C54B']
 
-        print(teams)
+        # Build colors
+        for i, team in enumerate(graph):
+            team['backgroundColor'] = colors[i]
+            team['borderColor'] = colors[i]
 
-        for challenge in challenges:
-            # print(dir(challenge.team.all))
-            print(challenge)
 
-        return Graph("message")
+        # Construct the data for solved timelinw
+        for solve in solved:
+
+            for team in graph:
+                if team["label"] == solve.team.name:
+                    if team['data']:
+                        team['data'].append(team['data'][-1]+solve.challenge.points)
+                    else:
+                        team['data'].append(solve.challenge.points)
+                else:
+                    if team['data']:
+                        team['data'].append(team['data'][-1])
+                    else:
+                        team['data'].append(0)
+
+
+        # Construct time for all solved challenges.
+        timeline = []
+        for solve in solved:
+            timeline.append(solve.timestamp.strftime("%I:%M:%S"))
+
+
+        return Graph(json.dumps(timeline), json.dumps(graph))
 
 class Mutation(object):
     addteam = AddTeam.Field()

@@ -3,12 +3,23 @@
         <h2 class="header">Score Board</h2>
 
 
-        <GChart
+        <!-- <GChart
           type="LineChart"
           :data="chartData"
           :options="chartOptions"
-        />
+        /> -->
 
+        <!-- <div v-if="this.$store.state.graphdata">
+          <schart :chartData="this.$store.getters.graphdata" :labels="this.$store.getters.graphlabels" :height="200"/>
+        </div>
+        <div v-else>
+          <p>Data loading. Please hold</p>
+        </div> -->
+
+
+        <hr>
+        Yo
+        <sgraph />
 
         <hr>
         <h3>Teams</h3>
@@ -37,30 +48,50 @@
 </template>
 
 <script>
+import { Bar } from 'vue-chartjs'
+import schart from './schart'
+import sgraph from './sgraph.vue'
+import axios from 'axios'
 
 export default {
   name: 'scoreboard',
   data () {
     return {
-      // Array will be automatically processed with visualization.arrayToDataTable function
-      chartData: [
-        ['Year', 'Sales', 'Expenses', 'Profit'],
-        ['2014', 1000, 400, 200],
-        ['2015', 1170, 0, 250],
-        ['2016', 660, 1120, 300],
-        ['2017', 1030, 540, 350]
-      ],
-      chartOptions: {
-        chart: {
-          title: 'Company Performance',
-          subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-        }
-      }
+      graphloading: true,
+      graphlabels: [],
+      graphdata: [],
     }
   },
   beforeMount () {
     this.$store.dispatch('loadTeams');
     this.$store.dispatch('connectScoreboard');
+
+
+    let that = this;
+    axios({
+      method: 'post',
+      url: 'http://localhost:8000/graphql/',
+      withCredentials: true,
+      data: {
+          'query': 'mutation{ graph{ timeline, message } }'
+      }
+    })
+    .then(r => r.data.data.graph)
+    .then(graph => {
+        console.log(graph.timeline);
+        that.$store.commit('SET_GRAPH', {'data': JSON.parse(graph.message), 'labels': JSON.parse(graph.timeline)})
+        console.log(JSON.parse(graph.message));
+        // that.graphdata   = JSON.parse(graph.message);
+        // that.graphlabels = JSON.parse(graph.timeline);
+        that.graphloading = false;
+
+        // console.log(JSON.parse(graph.message));
+    });
+
+  },
+  components: {
+    schart,
+    sgraph
   }
 }
 </script>

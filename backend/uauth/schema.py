@@ -1,8 +1,9 @@
 import graphene
 from graphene_django import DjangoObjectType
-# from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
+# from gqlauth.validators import authenticate, validate_username, validate_password, validate_user_is_authenticated
 from django.contrib.auth import authenticate, login, logout
-from .models import User
+# from uauth.validators import authenticate
+from django.contrib.auth.models import User
 
 def validate_user_is_authenticated(user):
     if user.is_anonymous:
@@ -38,6 +39,9 @@ class LogIn(graphene.Mutation):
         #validate_password(password)
 
         user = authenticate(username=username, password=password)
+
+
+
 
         if not user:
             raise Exception('Invalid username or password')

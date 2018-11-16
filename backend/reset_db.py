@@ -8,7 +8,8 @@ import json
 from django.utils import timezone
 from datetime import timedelta
 from core.settings import DATABASES
-from uauth.models import User
+from django.contrib.auth.models import User
+from uauth.models import Profile
 from teams.models import Team
 from categories.models import Category
 from challenges.models import Challenge
@@ -65,14 +66,12 @@ def makeUser(user_name, user_email, user_password, user_team, hidden):
     # user_team = Team(name=user_name, hidden=hidden)
     # user_team.save()
 
-    user = User(
-            username=user_name,
-            email=user_email,
-            team=user_team,
-            hidden=hidden
-        )
+    user = User(username=user_name, email=user_email)
     user.set_password(user_password)
     user.save()
+
+    profile = Profile(user=user, verified=True, team=user_team, hidden=hidden)
+    profile.save()
 
 def makeCategories():
     ctf_categories = ['Web', 'Pwn', 'Crypto', 'Reverse', 'Triva', 'Script']

@@ -47,8 +47,6 @@ INSTALLED_APPS = [
     'corsheaders', #DEV!
 ]
 
-AUTH_USER_MODEL = 'uauth.User'
-
 CORS_ALLOW_CREDENTIALS=True #DEV!
 CORS_ORIGIN_ALLOW_ALL=True #DEV!
 

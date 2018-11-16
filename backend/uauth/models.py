@@ -1,10 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 from teams.models import Team
-from django.contrib.auth.models import AbstractUser
 
-
-class User(AbstractUser):
+class Profile(models.Model):
+    user = models.ForeignKey(User, related_name='profile', on_delete=models.CASCADE)
     verified = models.BooleanField(default=False)
-    team = models.ForeignKey(Team, default=None, null=True, related_name='users', on_delete=models.SET_NULL)
+    team = models.ForeignKey(Team, default=None, null=True, related_name='team', on_delete=models.SET_NULL)
     hidden = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)

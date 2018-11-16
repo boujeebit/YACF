@@ -88,5 +88,6 @@ class TeamConsumer(AsyncJsonWebsocketConsumer):
                 "team"   : event["team"],
                 "points" : event["points"],
                 "added"  : event["added"],
+                "time"   : event["time"]
             },
         )
