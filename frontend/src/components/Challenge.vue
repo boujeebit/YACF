@@ -6,7 +6,8 @@
             Challenge details are loading, please hold!
           </div>
           <div v-else>
-            <p class="my-4">Description: {{details.description}}</p>
+            <p class="my-4">Description:</p>
+            <span v-html="details.description"></span>
             <p class="my-4">Flag: {{details.flag}}</p>
             <button class="btn btn-secondary" @click="$router.push(`/challenge/${categoryInLowerCase}/${details.points}`);">View Stats</button>
             <div v-if="solved">

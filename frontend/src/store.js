@@ -82,6 +82,10 @@ export default new Vuex.Store({
     userteam: state => {
       return state.user.profile ? state.user.profile[0].team.name : "None"
     },
+    userplace: state => {
+      console.log("Get place", state.teams.find(team => team.name === state.user.profile[0].team.name))
+      return state.teams.find(team => team.name === state.user.profile[0].team.name);
+    },
     username: state => {
       return state.user.username
     },
