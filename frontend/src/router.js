@@ -31,7 +31,23 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
+      beforeEnter: (to, from, next) => {
+        let that = this;
+        isAuthenicated().then((result) => {
+            // console.log(result.data.data.me);
+            if(result.data.data.me !== null) {
+                console.log(result.data.data.me);
+                store.state.user = result.data.data.me
+                store.state.auth = true
+                console.log('User: ', store.state.user);
+                next();
+            } else {
+                console.log("[ROUTE]: Authenication failed, going to login")
+                next('/login');
+            }
+        });
+      }
     },
     {
       path: '/challenges',
@@ -79,7 +95,23 @@ export default new Router({
         { path: '/admin/categories', component: AdminCategory },
         { path: '/admin/challenges', component: AdminChallenge },
         { path: '/admin/teams', component: AdminTeams },
-      ]
+      ],
+      beforeEnter: (to, from, next) => {
+        let that = this;
+        isAuthenicated().then((result) => {
+            // console.log(result.data.data.me);
+            if(result.data.data.me !== null) {
+                console.log(result.data.data.me);
+                store.state.user = result.data.data.me
+                store.state.auth = true
+                console.log('User: ', store.state.user);
+                result.data.data.me.isSuperuser ? next() : next('/')
+            } else {
+                console.log("[ROUTE]: Authenication failed, going to login")
+                next('/login');
+            }
+        });
+      }
     },
     {
       path: '/about',

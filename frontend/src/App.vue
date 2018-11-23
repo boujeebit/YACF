@@ -21,12 +21,12 @@
             <template slot="button-content">
               <em>{{this.$store.getters.displayname}}</em>
             </template>
-            <b-dropdown-item href="#">Profile (NW)</b-dropdown-item>
+            <b-dropdown-item @click="$router.push(`/user/${$store.getters.displayname}`);">Profile (NW)</b-dropdown-item>
             <b-dropdown-item @click="logout">Signout</b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item v-if="this.$store.getters.isAdmin" @click="$router.push('/admin/mission');">Admin Dashboard</b-nav-item>
-          <b-nav-item>Team (NW)</b-nav-item>
+          <b-nav-item v-else @click="$router.push(`/team/${$store.getters.userteam}`);">{{this.$store.getters.userteam}}</b-nav-item>
         </b-navbar-nav>
 
       </b-collapse>

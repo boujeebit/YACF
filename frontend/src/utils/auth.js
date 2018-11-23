@@ -15,7 +15,12 @@ export function isAuthenicated() {
                   isSuperuser,
                   username,
                   firstName,
-                  lastName
+                  lastName,
+                  profile{
+                    team{
+                        name
+                    }
+                  }
                 }
             }
             `

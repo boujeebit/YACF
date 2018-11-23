@@ -11,13 +11,6 @@ const socket = new WebSocketBridge();
 
 socket.connect('ws://localhost:8000/team/stream/');
 
-
-// const webSocketBridge = new WebSocketBridge();
-// webSocketBridge.connect('ws://localhost:8000/team/stream/');
-// webSocketBridge.listen(function(action, stream) {
-//   console.log(action, stream);
-// });
-
 const createWebSocketPlugin = function(socket) {
 	return store => {
 		socket.listen(function(action, stream) {
@@ -54,37 +47,6 @@ const createWebSocketPlugin = function(socket) {
 
 const plugin = createWebSocketPlugin(socket)
 
-// export default function createWebSocketPlugin (socket) {
-//   return store => {
-//     socket.connect('data', data => {
-//       console.log(data);
-//       // store.commit('receiveData', data)
-//     })
-//     // store.subscribe(mutation => {
-//     //   if (mutation.type === 'UPDATE_DATA') {
-//     //     socket.emit('update', mutation.payload)
-//     //   }
-//     // })
-//   }
-// }
-
-// const plugin = createWebSocketPlugin(webSocketBridge)
-
-
-
-// function api(query){
-//   axios({
-//     method: 'post',
-//     url: 'http://localhost:8000/graphql/',
-//     withCredentials: true,
-//     data: {
-//         'query': query
-//     }
-//   })
-//   .then((result) => {
-//     return result;
-//   });
-// }
 
 
 Vue.use(Vuex)
@@ -117,8 +79,11 @@ export default new Vuex.Store({
         return b.points-a.points
       })
     },
-    teamname: state => {
-      return state.team.name
+    userteam: state => {
+      return state.user.profile ? state.user.profile[0].team.name : "None"
+    },
+    username: state => {
+      return state.user.username
     },
     displayname: state => {
       return state.user.firstName + " " + state.user.lastName
