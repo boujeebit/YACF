@@ -94,7 +94,7 @@ export default new Vuex.Store({
   state: {
     user : "none",
     auth : false,
-    board :     [],
+    board :     "",
     categories: [],
     challenges: [],
     teams: [],
@@ -109,10 +109,16 @@ export default new Vuex.Store({
     user: state => {
       return state.user
     },
+    isAdmin: state => {
+      return state.user.isSuperuser ? true : false
+    },
     teamRanks: state => {
       return state.teams.sort(function(a, b){
         return b.points-a.points
       })
+    },
+    teamname: state => {
+      return state.team.name
     },
     displayname: state => {
       return state.user.firstName + " " + state.user.lastName
@@ -172,6 +178,7 @@ export default new Vuex.Store({
     DESTROY_USER (state) {
       state.user = ""
       state.auth = false
+      state.board = ""
     },
     SET_BOARD (state, board) {
       state.board = board
