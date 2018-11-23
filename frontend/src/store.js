@@ -5,6 +5,8 @@ import VueAxios from 'vue-axios'
 
 import { WebSocketBridge } from 'django-channels'
 
+import { api } from './utils/api.js'
+
 const socket = new WebSocketBridge();
 
 socket.connect('ws://localhost:8000/team/stream/');
@@ -68,25 +70,52 @@ const plugin = createWebSocketPlugin(socket)
 
 // const plugin = createWebSocketPlugin(webSocketBridge)
 
+
+
+// function api(query){
+//   axios({
+//     method: 'post',
+//     url: 'http://localhost:8000/graphql/',
+//     withCredentials: true,
+//     data: {
+//         'query': query
+//     }
+//   })
+//   .then((result) => {
+//     return result;
+//   });
+// }
+
+
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 
 export default new Vuex.Store({
   state: {
-    user : "",
-    board:      [],
+    user : "none",
+    auth : false,
+    board :     [],
     categories: [],
     challenges: [],
     teams: [],
-    team: [],
-    graphdata: [],
+    team : [],
+    graphdata :  [],
     graphlabels: []
   },
   getters: {
+    auth: state => {
+      return state.auth
+    },
+    user: state => {
+      return state.user
+    },
     teamRanks: state => {
       return state.teams.sort(function(a, b){
         return b.points-a.points
       })
+    },
+    displayname: state => {
+      return state.user.firstName + " " + state.user.lastName
     },
     solved: state => {
       return state.team.solved
@@ -99,57 +128,40 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    loginUser ({ commit }, credentials) {
-      console.log(credentials)
+    logout ({ commit }) {
+      api('mutation { logout{ status } }').then(data => {
+        console.log(data.logout)
+        commit('DESTROY_USER')
+      })
+    },
+    loadUser ({ commit }) {
       axios
-        .post('http://localhost:8000/graphql/', {'query': `mutation { login(username:"${credentials.username}", password:"${credentials.password}") { id } }`})
+        .post('http://localhost:8000/graphql/', {'query': 'query { me{ id, username, firstName, lastName, profile{ team { id name } } } }'})
         .then(r => r.data.data)
-        .then(login => {
+        .then(me => {
           // commit('SET_BOARD', board)
-          console.log(login);
+
+          console.log("In load user:", me);
       })
     },
     loadChallengeBoard ({ commit }) {
-      axios
-        .post('http://localhost:8000/graphql/', {'query': 'query{ allCategories {id, challenges{ id, name, points }, name, description} }'})
-        .then(r => r.data.data.allCategories)
-        .then(board => {
-          commit('SET_BOARD', board)
-        })
-    },
-    loadCategories ({ commit }) {
-      axios
-        .post('http://localhost:8000/graphql/', {'query': 'query{ allCategories {id, name, description} }'})
-        .then(r => r.data.data.allCategories)
-        .then(categories => {
-          commit('SET_CATEGORIES', categories)
-        })
+      api('query{ allCategories {id, challenges{ id, name, points }, name, description} }').then(data => {
+        commit('SET_BOARD', data.allCategories)
+      })
     },
     loadChallenges ({ commit }) {
-      axios
-        .post('http://localhost:8000/graphql/', {'query': 'query{ allChallenges {id, category{ id }, name, description, points} }'})
-        .then(r => r.data.data.allChallenges)
-        .then(challenges => {
-          console.log(challenges)
-          commit('SET_CHALLENGES', challenges)
-        })
+      api('query{ allChallenges {id, category{ id }, name, description, points} }').then(data => {
+        commit('SET_CHALLENGES', data.allChallenges)
+      })
     },
     loadTeams ({ commit }) {
-      axios
-        .post('http://localhost:8000/graphql/', {'query': 'query{ allTeams {id, name, points, correctFlags, wrongFlags} }'})
-        .then(r => r.data.data.allTeams)
-        .then(teams => {
-          console.log(teams)
-          commit('SET_TEAMS', teams)
-        })
+      api('query{ allTeams {id, name, points, correctFlags, wrongFlags} }').then(data => {
+        commit('SET_TEAMS', data.allTeams)
+      })
     },
     loadStats ({ commit }, payload) {
-      axios
-        .post('http://localhost:8000/graphql/', {'query': `query{ team(name:"${payload}"){ id, name, points, solved{ id, timestamp, challenge { id, name, points, category{ name } } } } }` })
-        .then(r => r.data.data.team)
-        .then(team => {
-          console.log(team)
-          commit('SET_TEAM', team)
+      api(`query{ team(name:"${payload}"){ id, name, points, solved{ id, timestamp, challenge { id, name, points, category{ name } } } } }`).then(data => {
+        commit('SET_TEAM', data.team)
       })
     },
     connectScoreboard ({ commit }) {
@@ -157,6 +169,10 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    DESTROY_USER (state) {
+      state.user = ""
+      state.auth = false
+    },
     SET_BOARD (state, board) {
       state.board = board
     },
@@ -174,6 +190,7 @@ export default new Vuex.Store({
     },
     SET_USER (state, user){
       state.user = user
+      state.auth = true
     },
     SET_GRAPH (state, graph) {
       state.graphdata = graph.data;

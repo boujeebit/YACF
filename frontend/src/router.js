@@ -13,6 +13,10 @@ import AdminCategory from './views/admin/Categories.vue'
 import AdminChallenge from './views/admin/Challenges.vue'
 import AdminTeams from './views/admin/Teams.vue'
 
+import store from './store.js'
+
+import { isAuthenicated } from './utils/auth'
+
 Vue.use(Router)
 
 export default new Router({
@@ -32,7 +36,23 @@ export default new Router({
     {
       path: '/challenges',
       name: 'Challenges',
-      component: Challenges
+      component: Challenges,
+      beforeEnter: (to, from, next) => {
+        let that = this;
+        isAuthenicated().then((result) => {
+            // console.log(result.data.data.me);
+            if(result.data.data.me !== null) {
+                console.log(result.data.data.me);
+                store.state.user = result.data.data.me
+                store.state.auth = true
+                console.log('User: ', store.state.user);
+                next();
+            } else {
+                console.log("[ROUTE]: Authenication failed, going to login")
+                next('/login');
+            }
+        });
+      }
     },
     {
       path: '/challenge/:category/:points',

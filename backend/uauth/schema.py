@@ -4,6 +4,7 @@ from graphene_django import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
 # from uauth.validators import authenticate
 from django.contrib.auth.models import User
+from uauth.models import Profile
 
 def validate_user_is_authenticated(user):
     if user.is_anonymous:
@@ -13,6 +14,10 @@ class Me(DjangoObjectType):
     class Meta:
         model = User
 
+class Profile(DjangoObjectType):
+    class Meta:
+        model = Profile
+
 class Query(object):
     me = graphene.Field(Me)
 
@@ -20,7 +25,7 @@ class Query(object):
         user = info.context.user
         validate_user_is_authenticated(user)
 
-        return user #User.objects.get(pk=1)
+        return user
 
 # ------------------- MUTATIONS -------------------
 
@@ -39,9 +44,6 @@ class LogIn(graphene.Mutation):
         #validate_password(password)
 
         user = authenticate(username=username, password=password)
-
-
-
 
         if not user:
             raise Exception('Invalid username or password')

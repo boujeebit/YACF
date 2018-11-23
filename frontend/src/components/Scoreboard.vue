@@ -1,24 +1,5 @@
 <template>
     <div>
-        <h2 class="header">Score Board</h2>
-
-
-        <!-- <GChart
-          type="LineChart"
-          :data="chartData"
-          :options="chartOptions"
-        /> -->
-
-        <!-- <div v-if="this.$store.state.graphdata">
-          <schart :chartData="this.$store.getters.graphdata" :labels="this.$store.getters.graphlabels" :height="200"/>
-        </div>
-        <div v-else>
-          <p>Data loading. Please hold</p>
-        </div> -->
-
-
-        <hr>
-        Yo
         <sgraph />
 
         <hr>
@@ -49,7 +30,6 @@
 
 <script>
 import { Bar } from 'vue-chartjs'
-import schart from './schart'
 import sgraph from './sgraph.vue'
 import axios from 'axios'
 
@@ -90,7 +70,6 @@ export default {
 
   },
   components: {
-    schart,
     sgraph
   }
 }
