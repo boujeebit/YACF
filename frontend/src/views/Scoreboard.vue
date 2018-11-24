@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 15px;">
     <Scoreboard/>
   </div>
 </template>

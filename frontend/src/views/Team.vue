@@ -2,7 +2,7 @@
   <div>
     <h3 style="text-align:center; padding-top: 10px;">{{this.$store.state.team.name}}</h3>
 
-
+      <div style="margin: 20px;">
         <table id="team" class="table table-hover">
           <thead>
             <tr>
@@ -17,11 +17,11 @@
                 <td>{{index+1}}</td>
                 <td>{{solve.challenge.name}}</td>
                 <td>{{solve.challenge.points}}</td>
-                <td>{{solve.timestamp}}</td>
+                <td>{{solve.timestamp | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}</td>
             </tr>
           </tbody>
         </table>
-
+      </div>
   </div>
 </template>
 

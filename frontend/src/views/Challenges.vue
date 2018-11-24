@@ -1,11 +1,10 @@
 <template>
-  <div class="home">
+  <div style="padding: 15px;">
     <Challenges/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import Challenges from '@/components/Challenges.vue'
 
 export default {

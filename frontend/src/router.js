@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './views/Login.vue'
+import Profile from './views/Profile.vue'
 import Home from './views/Home.vue'
 import Challenges from './views/Challenges.vue'
 import Statistics from './views/Statistics.vue'
@@ -30,18 +31,22 @@ export default new Router({
       component: Login
     },
     {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile
+    },
+    {
       path: '/',
       name: 'Home',
       component: Home,
       beforeEnter: (to, from, next) => {
         let that = this;
         isAuthenicated().then((result) => {
-            // console.log(result.data.data.me);
             if(result.data.data.me !== null) {
-                console.log(result.data.data.me);
+                // console.log(result.data.data.me);
                 store.state.user = result.data.data.me
                 store.state.auth = true
-                console.log('User: ', store.state.user);
+                // console.log('User: ', store.state.user);
                 next();
             } else {
                 console.log("[ROUTE]: Authenication failed, going to login")
@@ -57,12 +62,11 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         let that = this;
         isAuthenicated().then((result) => {
-            // console.log(result.data.data.me);
             if(result.data.data.me !== null) {
-                console.log(result.data.data.me);
+                // console.log(result.data.data.me);
                 store.state.user = result.data.data.me
                 store.state.auth = true
-                console.log('User: ', store.state.user);
+                // console.log('User: ', store.state.user);
                 next();
             } else {
                 console.log("[ROUTE]: Authenication failed, going to login")

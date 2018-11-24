@@ -21,7 +21,7 @@
             <template slot="button-content">
               <em>{{this.$store.getters.displayname}}</em>
             </template>
-            <b-dropdown-item @click="$router.push(`/user/${$store.getters.displayname}`);">Profile (NW)</b-dropdown-item>
+            <b-dropdown-item @click="$router.push(`/profile`);">Profile</b-dropdown-item>
             <b-dropdown-item @click="logout">Signout</b-dropdown-item>
           </b-nav-item-dropdown>
 
@@ -31,7 +31,9 @@
 
       </b-collapse>
     </b-navbar>
+
     <router-view/>
+    
   </div>
 </template>
 
