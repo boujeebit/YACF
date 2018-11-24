@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'channels',
     'django_filters',
+    'index',
     'uauth',
     'teams',
     'categories',

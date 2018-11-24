@@ -1,14 +1,26 @@
 <template>
-  <div>
-    This is home.. A place for rules, regs, and general information for current or upcoming CTF. 
+  <div style="padding: 15px;">
+    <span v-html="content"></span>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import Challenges from '@/components/Challenges.vue'
-
+import { api } from '@/utils/api.js'
 export default {
   name: 'home',
+  data () {
+    return {
+      loading: true,
+      content: ""
+    }
+  },
+  beforeMount () {
+    let that = this;
+    api('query{ welcomePage{ content } }').then(data => {
+      that.content = data.welcomePage.content;
+      that.loading = false;
+    })
+  }
 }
 </script>

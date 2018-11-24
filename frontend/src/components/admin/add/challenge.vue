@@ -3,7 +3,7 @@
         <h3>Add Challenge</h3>
         <label>Challenge name:</label>
         <input class="form-control" v-model="name">
-        <label>Challenge Description:</label>
+        <label>Challenge Description (html enabled):</label>
         <textarea class="form-control" v-model="description"></textarea>
         <label>Challenge Points:</label>
         <input class="form-control" v-model="points">

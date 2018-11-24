@@ -8,6 +8,7 @@ import Scoreboard from './views/Scoreboard.vue'
 import Team from './views/Team.vue'
 import Admin from './views/Admin.vue'
 import MissionControl from './views/admin/Mission.vue'
+import AdminWelcome from './views/admin/Welcome.vue'
 import AdminCreate from './views/admin/Create.vue'
 import AdminCategory from './views/admin/Categories.vue'
 import AdminChallenge from './views/admin/Challenges.vue'
@@ -91,6 +92,7 @@ export default new Router({
       component: Admin,
       children: [
         { path: '/admin/mission', component: MissionControl },
+        { path: '/admin/welcome', component: AdminWelcome },
         { path: '/admin/create', component: AdminCreate },
         { path: '/admin/categories', component: AdminCategory },
         { path: '/admin/challenges', component: AdminChallenge },
