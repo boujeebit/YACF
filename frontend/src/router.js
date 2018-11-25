@@ -15,11 +15,7 @@ import AdminCategory from './views/admin/Categories.vue'
 import AdminChallenge from './views/admin/Challenges.vue'
 import AdminTeams from './views/admin/Teams.vue'
 
-import store from '@/store/index'
-
-import { isAuthenicated } from './utils/auth'
-import { graud } from '@/utils/guards'
-
+import { graud, superusergraud } from '@/utils/guards'
 
 Vue.use(Router)
 
@@ -35,7 +31,8 @@ export default new Router({
     {
       path: '/profile',
       name: 'Profile',
-      component: Profile
+      component: Profile,
+      beforeEnter: graud
     },
     {
       path: '/',
@@ -47,36 +44,25 @@ export default new Router({
       path: '/challenges',
       name: 'Challenges',
       component: Challenges,
-      beforeEnter: (to, from, next) => {
-        let that = this;
-        isAuthenicated().then((result) => {
-            if(result.data.data.me !== null) {
-                // console.log(result.data.data.me);
-                store.state.user.user = result.data.data.me
-                store.state.user.auth = true
-                // console.log('User: ', store.state.user);
-                next();
-            } else {
-                console.log("[ROUTE]: Authenication failed, going to login")
-                next('/login');
-            }
-        });
-      }
+      beforeEnter: graud
     },
     {
       path: '/challenge/:category/:points',
       name: 'Statistics',
-      component: Statistics
+      component: Statistics,
+      beforeEnter: graud
     },
     {
       path: '/scoreboard',
       name: 'scoreboard',
-      component: Scoreboard
+      component: Scoreboard,
+      beforeEnter: graud
     },
     {
       path: '/team/:name',
       name: 'team',
-      component: Team
+      component: Team,
+      beforeEnter: graud
     },
     {
       path: '/admin',
@@ -90,30 +76,7 @@ export default new Router({
         { path: '/admin/challenges', component: AdminChallenge },
         { path: '/admin/teams', component: AdminTeams },
       ],
-      beforeEnter: (to, from, next) => {
-        let that = this;
-        isAuthenicated().then((result) => {
-            // console.log(result.data.data.me);
-            if(result.data.data.me !== null) {
-                console.log(result.data.data.me);
-                store.state.user = result.data.data.me
-                store.state.auth = true
-                console.log('User: ', store.state.user);
-                result.data.data.me.isSuperuser ? next() : next('/')
-            } else {
-                console.log("[ROUTE]: Authenication failed, going to login")
-                next('/login');
-            }
-        });
-      }
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      beforeEnter: superusergraud
     },
     { path: '*', redirect: '/' }
   ]
