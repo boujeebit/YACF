@@ -11,10 +11,10 @@
         <div class="col-sm-9">
 
             <label for="first_name"><strong>First name</strong></label>
-            <input type="text" class="form-control" v-model="this.$store.state.user.firstName">
+            <input type="text" class="form-control" v-model="this.$store.state.user.user.firstName">
 
             <label for="last_name"><strong>Last name</strong></label>
-            <input type="text" class="form-control" v-model="this.$store.state.user.lastName">
+            <input type="text" class="form-control" v-model="this.$store.state.user.user.lastName">
 
             <label for="email"><strong>Email</strong></label>
             <input type="email" class="form-control">

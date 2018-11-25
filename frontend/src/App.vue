@@ -26,7 +26,7 @@
           </b-nav-item-dropdown>
 
           <b-nav-item v-if="this.$store.getters['user/isAdmin']" @click="$router.push('/admin/mission');">Admin Dashboard</b-nav-item>
-          <b-nav-item v-else @click="$router.push(`/team/${$store.getters.userteam}`);">{{this.$store.getters['user/userteam']}}</b-nav-item>
+          <b-nav-item v-else @click="$router.push(`/team/${$store.getters['user/userteam']}`);">{{this.$store.getters['user/userteam']}}</b-nav-item>
         </b-navbar-nav>
 
       </b-collapse>
