@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="md" type="dark" variant="dark" v-if="this.$store.getters.auth">
+    <b-navbar toggleable="md" type="dark" variant="dark">
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand @click="$router.push('/');">YACF</b-navbar-brand>
+      <b-navbar-brand @click="$router.push('/');">YACF {{this.$store.getters['user/brand']}}</b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse">
 
@@ -19,13 +19,13 @@
           <b-nav-item-dropdown right>
             <!-- Using button-content slot -->
             <template slot="button-content">
-              <em>{{this.$store.getters.displayname}}</em>
+              <em>{{this.$store.getters['user/displayname']}}</em>
             </template>
             <b-dropdown-item @click="$router.push(`/profile`);">Profile</b-dropdown-item>
             <b-dropdown-item @click="logout">Signout</b-dropdown-item>
           </b-nav-item-dropdown>
 
-          <b-nav-item v-if="this.$store.getters.isAdmin" @click="$router.push('/admin/mission');">Admin Dashboard</b-nav-item>
+          <b-nav-item v-if="this.$store.getters['user/isAdmin']" @click="$router.push('/admin/mission');">Admin Dashboard</b-nav-item>
           <b-nav-item v-else @click="$router.push(`/team/${$store.getters.userteam}`);">{{this.$store.getters.userteam}}</b-nav-item>
         </b-navbar-nav>
 

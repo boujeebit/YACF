@@ -15,9 +15,11 @@ import AdminCategory from './views/admin/Categories.vue'
 import AdminChallenge from './views/admin/Challenges.vue'
 import AdminTeams from './views/admin/Teams.vue'
 
-import store from './store.js'
+import store from '@/store/index'
 
 import { isAuthenicated } from './utils/auth'
+import { graud } from '@/utils/guards'
+
 
 Vue.use(Router)
 
@@ -39,21 +41,7 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      beforeEnter: (to, from, next) => {
-        let that = this;
-        isAuthenicated().then((result) => {
-            if(result.data.data.me !== null) {
-                // console.log(result.data.data.me);
-                store.state.user = result.data.data.me
-                store.state.auth = true
-                // console.log('User: ', store.state.user);
-                next();
-            } else {
-                console.log("[ROUTE]: Authenication failed, going to login")
-                next('/login');
-            }
-        });
-      }
+      beforeEnter: graud
     },
     {
       path: '/challenges',
@@ -64,8 +52,8 @@ export default new Router({
         isAuthenicated().then((result) => {
             if(result.data.data.me !== null) {
                 // console.log(result.data.data.me);
-                store.state.user = result.data.data.me
-                store.state.auth = true
+                store.state.user.user = result.data.data.me
+                store.state.user.auth = true
                 // console.log('User: ', store.state.user);
                 next();
             } else {

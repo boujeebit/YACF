@@ -26,11 +26,6 @@ export function isAuthenicated() {
             `
         },
     }).then((result) => {
-        // For refreash. Add to store if auth is false.
-        // if(!store.auth && result.data.data.me !== null){
-        //     store.commit('addUser', result.data.data.me);
-        // }
-
         return result;
     });
 }
