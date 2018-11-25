@@ -25,7 +25,7 @@ export default {
   },
   watch: {
     getlabels: function() {
-      this.$data._chart.destroy()
+      this.$data._chart.update()
       this.renderLineChart();
     }
   }

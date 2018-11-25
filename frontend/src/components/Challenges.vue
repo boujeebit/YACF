@@ -7,12 +7,12 @@
       <h3>{{cat.name}}</h3>
       <div class="flex-container">
         <div v-for="chal in cat.challenges" :key="chal.id">
-
-          <div class="flex-container-div" v-b-modal="chal.id" style="cursor: pointer;">
+          <div class="flex-container-div" v-b-modal="chal.id" style="cursor: pointer;" v-bind:style="[isSoved(chal.id) ? {'backgroundColor': 'green', 'color': 'white'} : {}]">
             <h3>{{chal.name}}</h3>
             <p>{{chal.points}}</p>
+            <!-- <p v-if="isSoved(chal.id)">Solved</p> -->
           </div>
-          <Challenge :chal="chal"></Challenge>
+          <Challenge :chal="chal" :enter="isSoved(chal.id) ? true : false"></Challenge>
         </div>
       </div>
       <hr>
@@ -42,7 +42,9 @@ export default {
     this.$store.dispatch('loadChallengeBoard');
   },
   methods: {
-
+      isSoved(id){
+        return this.$store.state.solves.find(solve => solve.challenge.id === id) ? true : false
+      }
   }
 }
 </script>

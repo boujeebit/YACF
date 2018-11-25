@@ -6,11 +6,9 @@
             Challenge details are loading, please hold!
           </div>
           <div v-else>
-            <p class="my-4">Description:</p>
             <span v-html="details.description"></span>
             <p class="my-4">Flag: {{details.flag}}</p>
-            <button class="btn btn-secondary" @click="$router.push(`/challenge/${categoryInLowerCase}/${details.points}`);">View Stats</button>
-            <div v-if="solved">
+            <div v-if="enter">
               <p>Congrats, you solved the challenge! On to the next one!</p>
             </div>
             <div v-else>
@@ -18,10 +16,13 @@
               <b-form-input id="chad.id" type="text" required placeholder="Enter Flag" v-model="flag"> </b-form-input>
             </b-form-group>
             <p>{{message}}</p>
-            </div>
+            
+          </div>
             
             
           </div>
+            <p class="stats" @click="$router.push(`/challenge/${categoryInLowerCase}/${details.points}`);">View Stats</p style="stats">
+
         </b-modal>
     </div>
 </template>
@@ -31,7 +32,7 @@ import axios from 'axios'
 
 export default {
   name: 'Challenges',
-  props: ['chal'],
+  props: ['chal', 'enter'],
   data () {
     return {
       loading: true,
@@ -84,5 +85,13 @@ export default {
 </script>
 
 <style scoped>
-
+.stats {
+  color: black;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+.stats:hover {
+  text-decoration: underline;
+}
 </style>

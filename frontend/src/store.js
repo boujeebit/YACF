@@ -57,6 +57,7 @@ export default new Vuex.Store({
     user : "none",
     auth : false,
     board :     "",
+    solves:   "",
     categories: [],
     challenges: [],
     teams: [],
@@ -120,8 +121,9 @@ export default new Vuex.Store({
       })
     },
     loadChallengeBoard ({ commit }) {
-      api('query{ allCategories {id, challenges{ id, name, points }, name, description} }').then(data => {
+      api('query{ allCategories {id, challenges{ id, name, points }, name, description}, teamSovle{ challenge{ id } } }').then(data => {
         commit('SET_BOARD', data.allCategories)
+        commit('SET_SOLVES', data.teamSovle)
       })
     },
     loadChallenges ({ commit }) {
@@ -151,6 +153,9 @@ export default new Vuex.Store({
     },
     SET_BOARD (state, board) {
       state.board = board
+    },
+    SET_SOLVES (state, solves) {
+      state.solves = solves
     },
     SET_CATEGORIES (state, categories) {
       state.categories = categories

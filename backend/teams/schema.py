@@ -6,6 +6,7 @@ from graphene_django import DjangoObjectType
 # from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from uauth.models import Profile
 
 import json
 
@@ -28,6 +29,8 @@ class Query(graphene.ObjectType):
 
     team = graphene.Field(TeamType, name=graphene.String())
 
+    team_sovle = graphene.List(SolvedChallengeType)
+
     # graph = graphene.List(TeamType)
 
     def resolve_all_teams(self, info, **kwargs):
@@ -39,8 +42,10 @@ class Query(graphene.ObjectType):
     def resolve_all_solves(self, info, **kwargs):
         return SolvedChallenge.objects.all()
 
-    # def resolve_graph(self, info, **kwargs):
-    #     return Team.objects.filter(points=8700)   
+    def resolve_team_sovle(self, info, **kwargs):
+        profile = Profile.objects.get(user=info.context.user)
+        return SolvedChallenge.objects.filter(team=profile.team)
+
 
 # ------------------- MUTATIONS -------------------
 
