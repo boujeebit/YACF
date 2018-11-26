@@ -6,8 +6,9 @@
             Challenge details are loading, please hold!
           </div>
           <div v-else>
-            <span v-html="details.description"></span>
-            <p class="my-4">Flag: {{details.flag}}</p>
+            <span v-html="challenge.description"></span>
+            <p class="my-4">Flag: {{challenge.flag}}</p>
+            
             <div v-if="enter">
               <p>Congrats, you solved the challenge! On to the next one!</p>
             </div>
@@ -21,14 +22,14 @@
             
             
           </div>
-            <p class="stats" @click="$router.push(`/challenge/${categoryInLowerCase}/${details.points}`);">View Stats</p style="stats">
+            <p class="stats" @click="$router.push(`/challenge/${categoryInLowerCase}/${details.points}`);">View Stats</p>
 
         </b-modal>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
+import { api } from '@/utils/api.js'
 
 export default {
   name: 'Challenges',
@@ -36,7 +37,8 @@ export default {
   data () {
     return {
       loading: true,
-      detials: "",
+      challenge: "",
+
       flag: "",
       solved: false,
       message: ""
@@ -51,34 +53,24 @@ export default {
       handleOk ( evt ) {
         console.log("Here is the flag enter: ", this.flag);
         evt.preventDefault()
-        let that = this
-        axios({
-          method: 'post',
-          url: 'http://localhost:8000/graphql/',
-          withCredentials: true,
-          data: {'query': `mutation{ submitflag(challenge:${that.chal.id}, flag:"${that.flag}"){ code } }` }
-        })
-        .then(r => r.data.data.submitflag)
-        .then(code => {
-            console.log(code);
-            if (code.code == 1){
-              that.solved = true
+
+        let that = this;
+        api(`mutation{ submitflag(challenge:${this.chal.id}, flag:"${this.flag}"){ code } }`).then(data => {
+            console.log("FLAG:", data.submitflag)
+            if (data.submitflag.code === 1){
+              that.message = "You solved it!" //Should get this from the backend
+              that.$store.commit('SET_USER_SOLVE', that.chal.id)
             } else {
-              that.message = "That didn't do it, try again!"
+              that.message = "That's not it! Try again."
             }
-        });          
+        })
       },
       loaddata () {
-          console.log("Getting details on chanllenge", this.chal.id)
-          let that = this
-          axios
-            .post('http://localhost:8000/graphql/', {'query': `query{ challenge(id:${that.chal.id}){ id, description, points, flag, category { name } } }` })
-            .then(r => r.data.data.challenge)
-            .then(challenge => {
-              console.log(challenge);
-              that.details = challenge;
-              that.loading = false;
-          })
+        let that = this;
+        api(`query{ challenge(id:${this.chal.id}){ id, description, points, flag, category { name } } }`).then(data => {
+            that.challenge = data.challenge;
+            that.loading   = false;
+        })
       }
   }
 }

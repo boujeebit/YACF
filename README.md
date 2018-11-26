@@ -21,3 +21,8 @@ docker run --name yacf-redis -p 6379:6379 -d redis
  - After event has ended, have the option for users to submit writeups
  - Limit number of users that can be on a team
  - Upload for team profile picture
+ - Backend code system
+
+ ## Security
+
+ - [backend] Stop teams from submitting the same flag twice

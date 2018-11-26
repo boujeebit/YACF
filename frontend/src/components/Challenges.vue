@@ -43,7 +43,7 @@ export default {
   },
   methods: {
       isSoved(id){
-        return this.$store.state.solves.find(solve => solve.challenge.id === id) ? true : false
+        return this.$store.state.solves.includes(id)
       }
   }
 }

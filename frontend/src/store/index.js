@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import user from './modules/user'
 import teams from './modules/teams'
+import challenge from './modules/challenge'
 
 import { WebSocketBridge } from 'django-channels'
 
@@ -36,19 +37,22 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     user,
-    teams
+    teams,
+    challenge
   },
   state: {
     board :   "",
     solves:   "",
+    // solved: "",
     
     graphdata :  [],
     graphlabels: []
   },
   getters: {
-    solved: state => {
-      return state.team.solved
-    },
+    // solved: state => {
+    //   return ""
+    //   // return state.team.solved
+    // },
     graphdata: state => {
       return state.graphdata
     },
@@ -74,7 +78,14 @@ export default new Vuex.Store({
       state.board = board
     },
     SET_SOLVES (state, solves) {
-      state.solves = solves
+      var ids = []
+      for(var i = 0 ; i < solves.length ; i++){
+        ids.push(solves[i].challenge.id)
+      }
+      state.solves = ids
+    },
+    SET_USER_SOLVE (state, id){
+      state.solves.push(id)
     },
     SET_GRAPH (state, graph) {
       state.graphdata = graph.data;
