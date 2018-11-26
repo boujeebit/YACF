@@ -12,6 +12,8 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "chart.js": "^2.7.3",
     "django-channels": "^1.1.6",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "mini-css-extract-plugin": "^0.4.5",
     "vue": "^2.5.17",
     "vue-chartjs": "^3.4.0",
     "vue-moment": "^4.0.0",

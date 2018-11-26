@@ -1,0 +1,19 @@
+version: '0.0.1'
+
+services:
+  redis:
+    restart: always
+    image: redis:5.0.1
+    hostname: redis-broker
+    ports:
+      - "6379:6379"
+  
+  apache:
+    restart: always
+    build: .
+    dockerfile: backend/Dockerfile
+    hostname: yacf.0x.codes
+    ports:
+      - "80:80"
+    links:
+      - redis

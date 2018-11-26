@@ -7,7 +7,7 @@
       <h3>{{cat.name}}</h3>
       <div class="flex-container">
         <div v-for="chal in cat.challenges" :key="chal.id">
-          <div class="flex-container-div" v-b-modal="chal.id" style="cursor: pointer;" v-bind:style="[isSoved(chal.id) ? {'backgroundColor': 'green', 'color': 'white'} : {}]">
+          <div class="flex-container-div" v-b-modal="chal.id" style="cursor: pointer;" v-bind:style="[isSoved(chal.id) ? {'backgroundColor': '#3939af', 'color': 'white'} : {}]">
             <h3>{{chal.name}}</h3>
             <p>{{chal.points}}</p>
             <!-- <p v-if="isSoved(chal.id)">Solved</p> -->

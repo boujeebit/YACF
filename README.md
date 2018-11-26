@@ -4,10 +4,20 @@ Yet Another CTF Framework
 
 # Start up
 ```
-docker run --name yacf-redis -p 6379:6379 -d redis
+<!-- docker run --name yacf-redis -p 6379:6379 -d redis -->
+docker-compose build
 
 ```
 
+## Build Vue
+```
+yarn build
+
+rm -rf ../backend/static/*
+cp -r dist/* ../backend/static/
+
+```
+- [Bug] Get webpack to append static to css. Current workaround, change it in dist/index manually.
 
 ## Things to Fix
 - Challenges in the save category cannot have the same point values.

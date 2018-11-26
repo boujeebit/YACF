@@ -8,7 +8,7 @@
       <label for="inputEmail" class="sr-only">Email address</label>
       <input class="form-control" placeholder="Username" v-model="username">
       <label for="inputPassword" class="sr-only">Password</label>
-      <input class="form-control" placeholder="Password" v-model="password">
+      <input type="password" class="form-control" placeholder="Password" v-model="password">
 
       <button class="btn btn-lg btn-block btn-secondary" @click="login()">Sign in</button>
 
@@ -25,8 +25,8 @@ export default {
   name: '',
   data () {
     return {
-        username: "user5",
-        password: "Password123!",
+        username: "",
+        password: "",
         message : ""
     }
   },
@@ -88,13 +88,9 @@ html,
 }
 .form-signin input[type="email"] {
   margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
 }
 .form-signin input[type="password"] {
   margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
 
 input {
