@@ -7,7 +7,7 @@
         </div>
         <div v-else>
             <h5>Solves</h5>
-            <div v-if="teams[0]">
+            <div v-if="teams">
             <table id="statistics" class="table table-hover">
                 <thead>
                     <tr>
@@ -19,7 +19,7 @@
                 <tbody>
                     <tr v-for="(team, index) in teams" :key="team.id" style="cursor: pointer;" @click="$router.push(`/team/${team.teamSet[0].name}`);">
                         <td>{{index+1}}</td>
-                        <td>{{team.teamSet[0].name}}</td>
+                        <td>{{team.timestamp}}</td>
                         <td>{{team.timestamp | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}</td>
                     </tr>
                 </tbody>
@@ -33,42 +33,23 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { api } from '@/utils/api'
 
 export default {
   name: 'Statistic',
   data () {
     return {
         loading: true,
-        teams: ""
+        teams: []
     }
   },
   methods: {
       
   },
   beforeMount () {
-    console.log("Making call to get Stats for: ", this.$route.params.category, this.$route.params.points);
     let that = this;
-    axios
-        .post('http://localhost:8000/graphql/', {
-            'query': 
-            `query{
-                statistic(category:"${this.$route.params.category}", points:${this.$route.params.points}){ 
-                    id
-                    solvedchallengeSet{
-                        timestamp
-                        teamSet{
-                            id
-                            name
-                        }
-                    }
-                }
-            }` 
-        })
-        .then(r => r.data.data.statistic)
-        .then(statistic => {
-        console.log(statistic);
-        that.teams = statistic.solvedchallengeSet;
+    api(`query{ statistic(category:"${this.$route.params.category}", points:${this.$route.params.points}){ id solvedchallengeSet{ timestamp, team{ id, name } } } }`).then(data => {
+        that.teams = data.statistic.solvedchallengeSet;
         that.loading = false;
     })
   }

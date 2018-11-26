@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { api } from '@/utils/api'
 
 export default {
   name: '',
@@ -31,30 +31,17 @@ export default {
     }
   },
   methods: {
-      login() {
-        let that = this;
-        axios({
-          method: 'post',
-          url: 'http://localhost:8000/graphql/',
-          withCredentials: true,
-          data: {
-              'query': `mutation { login(username:"${that.username}", password:"${that.password}") { id } }`
-          }
-        })
-        .then(r => r.data.data.login)
-        .then(login => {
-            if (login){
-                that.$store.commit("SET_USER", login)
-                that.$router.push('/challenges')
-            } else {
-                that.message = "Login incorrect"
-            }
-            
-            // commit('SET_BOARD', board)
-            console.log('here',login);
-        });
-
-      }
+    login() {
+      let that = this;
+      api(`mutation { login(username:"${that.username}", password:"${that.password}") { id } }`).then(data => {
+        if (data.login){
+              that.$store.commit("user/SET_USER", data.login)
+              that.$router.push('/challenges')
+          } else {
+              that.message = "Login incorrect"
+        }
+      })
+    }
   }
 }
 </script>

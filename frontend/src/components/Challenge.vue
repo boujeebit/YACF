@@ -22,7 +22,7 @@
             
             
           </div>
-            <p class="stats" @click="$router.push(`/challenge/${categoryInLowerCase}/${details.points}`);">View Stats</p>
+            <p class="stats" @click="$router.push(`/challenge/${categoryInLowerCase}/${challenge.points}`);">View Stats</p>
 
         </b-modal>
     </div>
@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     categoryInLowerCase() {
-      return this.details.category.name.toLowerCase().trim();
+      return this.challenge.category.name.toLowerCase().trim();
     }
   },
   methods: {

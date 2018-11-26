@@ -30,7 +30,7 @@
 
 
 <script>
-import axios from 'axios'
+import { api } from '@/utils/api'
 
 export default {
   name: 'AdminChallenge',
@@ -40,32 +40,10 @@ export default {
         challenges: []
     }
   },
-  methods: {
-      
-  },
   beforeMount () {
     let that = this;
-    axios
-    .post('http://localhost:8000/graphql/', {
-        'query': 
-        `query {
-            allChallenges{
-                id
-                name
-                description
-                points
-                flag
-                category {
-                    id
-                    name
-                }
-            }
-        }` 
-    })
-    .then(r => r.data.data.allChallenges)
-    .then(allChallenges => {
-        console.log(allChallenges);
-        that.challenges = allChallenges;
+    api('query { allChallenges{ id, name, description, points, flag, category { id, name } } }').then(data => {
+        that.challenges = data.allChallenges;
         that.loading = false;
     })
   }

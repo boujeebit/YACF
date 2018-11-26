@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="md" type="dark" variant="dark">
+    <b-navbar toggleable="md" type="dark" variant="dark" v-if="this.$store.getters['user/auth']">
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -48,7 +48,7 @@ export default {
   methods: {
     logout () {
       console.log("At logout");
-      this.$store.dispatch('logout');
+      this.$store.dispatch('user/logout');
       this.$router.push('/login');
     }
   }

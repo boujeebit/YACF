@@ -27,7 +27,7 @@
 
 
 <script>
-import axios from 'axios'
+import { api } from '@/utils/api'
 
 export default {
   name: 'AdminTeam',
@@ -42,24 +42,8 @@ export default {
   },
   beforeMount () {
     let that = this;
-    axios
-    .post('http://localhost:8000/graphql/', {
-        'query': 
-        `query {
-            allTeams{
-                id
-                name
-                points
-                wrongFlags
-                correctFlags
-                accesscode
-            }
-        }` 
-    })
-    .then(r => r.data.data.allTeams)
-    .then(allTeams => {
-        console.log(allTeams);
-        that.teams = allTeams;
+    api('query { allTeams{ id, name, points, wrongFlags, correctFlags, accesscode } }').then(data => {
+        that.teams = data.allTeams;
         that.loading = false;
     })
   }

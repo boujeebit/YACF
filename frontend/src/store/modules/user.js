@@ -2,7 +2,7 @@ import { api } from '@/utils/api'
 
 const state = {
     user : "",
-    auth : true,
+    auth : false,
 }
 
 const getters = {

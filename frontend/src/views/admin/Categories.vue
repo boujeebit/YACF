@@ -28,7 +28,7 @@
 
 
 <script>
-import axios from 'axios'
+import { api } from '@/utils/api'
 
 export default {
   name: 'AdminCategory',
@@ -43,24 +43,8 @@ export default {
   },
   beforeMount () {
     let that = this;
-    axios
-    .post('http://localhost:8000/graphql/', {
-        'query': 
-        `query {
-            allCategories{
-                id
-                name
-                description
-                challenges {
-                    id
-                }
-            }
-        }` 
-    })
-    .then(r => r.data.data.allCategories)
-    .then(allCategories => {
-        console.log(allCategories);
-        that.categories = allCategories;
+    api('query { allCategories{ id, name, description, challenges { id } } }').then(data => {
+        that.categories = data.allCategories;
         that.loading = false;
     })
   }

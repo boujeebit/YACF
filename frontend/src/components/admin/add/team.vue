@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { api } from '@/utils/api'
 
 export default {
   name: 'AddTeam',
@@ -24,29 +24,10 @@ export default {
   },
   methods: {
       addTeam () {
-        console.log(this.name, this.code);
-
         let that = this;
-        axios
-        .post('http://localhost:8000/graphql/', {
-            'query': 
-            `mutation {
-                addteam(name:"${this.name}", accesscode:"${this.code}"){
-                    message
-                }
-            }` 
+        api(`mutation { addteam(name:"${this.name}", accesscode:"${this.code}"){ message } }` ).then(data => {
+            that.message = data.addteam.message;
         })
-        .then(r => r.data.data.addteam)
-        .then(addteam => {
-            console.log(addteam);
-            if (addteam.message == "success") {
-                that.message = "Team added successfully"
-            } else {
-                that.message = "Failed to add team"
-            }
-        })
-
-
       }
   }
 }

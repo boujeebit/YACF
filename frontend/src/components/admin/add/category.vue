@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { api } from '@/utils/api'
 
 export default {
   name: 'AddChallenge',
@@ -23,37 +23,12 @@ export default {
     }
   },
   methods: {
-
-
-addCategory (){
-    console.log("Adding Category", this.name, this.description)
-
-    let that = this;
-    axios
-    .post('http://localhost:8000/graphql/', {
-        'query': 
-        `mutation{
-            addcategory(name:"${this.name}",description:"${this.description}") {
-                message
-            }
-        }` 
-    })
-    .then(r => r.data.data.addcategory)
-    .then(addcategory => {
-        console.log(addcategory);
-        if (addcategory.message == "success") {
-            that.message = "Category added successfully"
-        } else {
-            that.message = "Failed to add category"
-        }
-    })
-
-
-
-
+    addCategory (){
+        let that = this;
+        api(`mutation{ addcategory(name:"${this.name}",description:"${this.description}") { message } }`).then(data => {
+            data.addcategory.message ? that.message = "Category added successfully" : that.message = "Failed to add category"
+        })
     },
-
-
   }
 }
 </script>

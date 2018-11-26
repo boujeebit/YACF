@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { api } from '@/utils/api'
 
 export default {
   name: 'AddCategory',
@@ -36,64 +36,25 @@ export default {
     }
   },
   beforeMount () {
-        let that = this;
-        axios
-        .post('http://localhost:8000/graphql/', {
-            'query': 
-            `query {
-                allCategories{
-                    name
-                }
-            }` 
-        })
-        .then(r => r.data.data.allCategories)
-        .then(allCategories => {
-            console.log(allCategories);
-            that.categories = allCategories;
-        })
+    let that = this;
+    api('query { allCategories{ name } }').then(data => {
+        that.categories = data.allCategories;
+    })
   },
   methods: {
 
-    addChallenge (){
-        let query = "";
-        console.log("Adding Challenge", this.name, this.description, this.points, this.category)
-
+    addChallenge (){ 
         if (this.category == "None" || this.category == ""){
-            console.log("No category selected", this.category);
-            query = 
-            `mutation{
-                addChallenge(name:"${this.name}", description:"${this.description}", points:${this.points}, flag:"${this.flag}", show:true) {
-                    message
-                }
-            }` 
+            var query = `mutation{ addChallenge(name:"${this.name}", description:"${this.description}", points:${this.points}, flag:"${this.flag}", show:true) { message } }` 
         } else {
-            console.log("Category selected")
-            query = 
-            `mutation{
-                addChallenge(name:"${this.name}", description:"${this.description}", points:${this.points}, flag:"${this.flag}", show:true, category:"${this.category}") {
-                    message
-                }
-            }` 
+            var query = `mutation{ addChallenge(name:"${this.name}", description:"${this.description}", points:${this.points}, flag:"${this.flag}", show:true, category:"${this.category}") { message } }` 
         }
 
         let that = this;
-        axios
-        .post('http://localhost:8000/graphql/', {
-            'query': 
-            query
-        })
-        .then(r => r.data.data.addChallenge)
-        .then(addChallenge => {
-            console.log(addChallenge);
-            if (addChallenge.message == "success") {
-                that.message = "Category added successfully"
-            } else {
-                that.message = "Failed to add category"
-            }
+        api(query).then(data => {
+            that.message = data.addChallenge.message;
         })
     },
-
-
   }
 }
 </script>

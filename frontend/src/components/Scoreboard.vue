@@ -31,7 +31,7 @@
 <script>
 import { Bar } from 'vue-chartjs'
 import sgraph from './sgraph.vue'
-import axios from 'axios'
+import { api } from '@/utils/api'
 
 export default {
   name: 'scoreboard',
@@ -46,28 +46,13 @@ export default {
     this.$store.dispatch('teams/loadTeams');
     this.$store.dispatch('connectScoreboard');
 
-
     let that = this;
-    axios({
-      method: 'post',
-      url: 'http://localhost:8000/graphql/',
-      withCredentials: true,
-      data: {
-          'query': 'mutation{ graph{ timeline, message } }'
-      }
+        api('mutation{ graph{ timeline, message } }').then(data => {
+            
+            that.$store.commit('SET_GRAPH', {'data': JSON.parse(data.graph.message), 'labels': JSON.parse(data.graph.timeline)})
+
+            that.graphloading = false;
     })
-    .then(r => r.data.data.graph)
-    .then(graph => {
-        console.log(graph.timeline);
-        that.$store.commit('SET_GRAPH', {'data': JSON.parse(graph.message), 'labels': JSON.parse(graph.timeline)})
-        console.log(JSON.parse(graph.message));
-        // that.graphdata   = JSON.parse(graph.message);
-        // that.graphlabels = JSON.parse(graph.timeline);
-        that.graphloading = false;
-
-        // console.log(JSON.parse(graph.message));
-    });
-
   },
   components: {
     sgraph

@@ -26,3 +26,4 @@ docker run --name yacf-redis -p 6379:6379 -d redis
  ## Security
 
  - [backend] Stop teams from submitting the same flag twice
+ - [backend] Restrict endpoint from leaking flag
