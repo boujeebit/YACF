@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './views/Login.vue'
+import RegisterUser from './views/Register/User.vue'
+import RegisterTeam from './views/Register/Team.vue'
 import Profile from './views/Profile.vue'
 import Home from './views/Home.vue'
 import Challenges from './views/Challenges.vue'
@@ -27,6 +29,16 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/resigster/user',
+      name: 'resigster-user',
+      component: RegisterUser
+    },
+    {
+      path: '/resigster/team',
+      name: 'resigster-team',
+      component: RegisterTeam
     },
     {
       path: '/profile',

@@ -3,14 +3,18 @@
 
     <div class="form-signin">
       <!-- <img class="mb-4" src="" alt="" width="125" height="125"> -->
-      <h1 class="h3 mb-3 font-weight-normal">YACF Login</h1>
+      <h1 class="h3 mb-3 font-weight-normal">Team Register</h1>
       <p>{{message}}</p>
-      <input class="form-control" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="username">
-      <input type="password" class="form-control" placeholder="Password"  v-model="password">
+      <input class="form-control" placeholder="Team Name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="username">
+      <input class="form-control" placeholder="Admin Email" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="email">
 
-      <button class="btn btn-lg btn-block btn-secondary" @click="login()">Sign in</button>
+      <input class="form-control" placeholder="Affiliation" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="email">
 
-      <p class="mt-5 mb-3 text-muted"><a @click="$router.push('/resigster/user');">Register Here</a></p>
+      <p class="text-muted">Access Code will be sent to you via email.</p>
+
+      <button class="btn btn-lg btn-block btn-secondary" @click="Register()">Register Team</button>
+
+      <p class="mt-5 mb-3 text-muted"><a @click="$router.push('/Login');">Sign In</a></p>
       <p class="text-muted">&copy; 2018</p>
     </div>
   </div>
@@ -23,13 +27,18 @@ export default {
   name: '',
   data () {
     return {
-        username: "",
-        password: "",
-        message : ""
+        username  : "",
+        email     : "",
+        password1 : "",
+        password2 : "",
+        firstname : "",
+        lastname  : "",
+        accesscode: "",
+        message   : ""
     }
   },
   methods: {
-    login() {
+    Register() {
       let that = this;
       api(`mutation { login(username:"${that.username}", password:"${that.password}") { id } }`).then(data => {
         if (data.login){
@@ -86,9 +95,6 @@ html,
 }
 .form-signin input[type="email"] {
   margin-bottom: -1px;
-}
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
 }
 
 input {
