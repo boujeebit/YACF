@@ -42,12 +42,11 @@ export default {
   methods: {
     Register() {
       let that = this;
-      api(`mutation { login(username:"${that.username}", password:"${that.password}") { id } }`).then(data => {
-        if (data.login){
-              that.$store.commit("user/SET_USER", data.login)
-              that.$router.push('/challenges')
+      api(`mutation {  adduser(username:"${this.username}", email:"${this.email}", password:"${this.password1}", firstname:"${this.firstname}", lastname:"${this.lastname}", accesscode:"${this.accesscode}") { code } }`).then(data => {
+        if (data.adduser.code === 0){
+              that.message = "User created successfully"
           } else {
-              that.message = "Login incorrect"
+              that.message = "An error occured"
         }
       })
     }

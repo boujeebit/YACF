@@ -5,10 +5,10 @@
       <!-- <img class="mb-4" src="" alt="" width="125" height="125"> -->
       <h1 class="h3 mb-3 font-weight-normal">Team Register</h1>
       <p>{{message}}</p>
-      <input class="form-control" placeholder="Team Name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="username">
+      <input class="form-control" placeholder="Team Name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="teamname">
       <input class="form-control" placeholder="Admin Email" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="email">
 
-      <input class="form-control" placeholder="Affiliation" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="email">
+      <input class="form-control" placeholder="Affiliation" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="affiliation">
 
       <p class="text-muted">Access Code will be sent to you via email.</p>
 
@@ -27,25 +27,20 @@ export default {
   name: '',
   data () {
     return {
-        username  : "",
-        email     : "",
-        password1 : "",
-        password2 : "",
-        firstname : "",
-        lastname  : "",
-        accesscode: "",
-        message   : ""
+        teamname    : "",
+        email       : "",
+        affiliation : "",
+        message     : ""
     }
   },
   methods: {
     Register() {
       let that = this;
-      api(`mutation { login(username:"${that.username}", password:"${that.password}") { id } }`).then(data => {
-        if (data.login){
-              that.$store.commit("user/SET_USER", data.login)
-              that.$router.push('/challenges')
+      api(`mutation { addteam(name:"${this.teamname}", affiliation:"${this.affiliation}", email:"${this.email}"){ code } }`).then(data => {
+        if (data.addteam.code === 0){
+              that.message = "Team created successfully"
           } else {
-              that.message = "Login incorrect"
+              that.message = "An error occured."
         }
       })
     }

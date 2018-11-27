@@ -19,6 +19,8 @@ class Team(models.Model):
         return self.solved.all().count()
 
     name = models.CharField(max_length=150, unique=True)
+    email = models.CharField(max_length=50)
+    affiliation = models.CharField(max_length=50)
 
     points = property(_points)
     hidden = models.BooleanField(default=False)

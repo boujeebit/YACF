@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate, login, logout
 # from uauth.validators import authenticate
 from django.contrib.auth.models import User
 from uauth.models import Profile
+# Needed because Profile is rewritten by DjangoObjectType, need to fix this.
+from uauth.models import Profile as uauthProfile
+from teams.models import Team
 
 def validate_user_is_authenticated(user):
     if user.is_anonymous:
@@ -29,6 +32,32 @@ class Query(object):
 
 # ------------------- MUTATIONS -------------------
 
+
+class AddUser(graphene.Mutation):
+    code = graphene.Int()
+
+    class Arguments:
+        username   = graphene.String(required=True)
+        email      = graphene.String(required=True)
+        password   = graphene.String(required=True)
+        firstname  = graphene.String(required=True)
+        lastname   = graphene.String(required=True)
+        accesscode = graphene.String(required=True)
+
+    # TODO: VALIDATION CHECK!!
+    # TODO: TRY CATCH
+    def mutate(self, info, username, email, password, firstname, lastname, accesscode):
+        team = Team.objects.filter(accesscode=accesscode).first()
+        if team:
+            newUser = User.objects.create_user(username=username, first_name=firstname, last_name=lastname, email=email, password=password)
+            newProfile = uauthProfile(user=newUser, verified=False, team=team, hidden=False)
+            newProfile.save()
+            code = 0
+        else:
+            # Invaild access code
+            code = 1
+
+        return AddUser(code)
 
 class LogIn(graphene.Mutation):
     id = graphene.Int()
@@ -60,5 +89,6 @@ class LogOut(graphene.Mutation):
         return LogOut(status='Logged Out')
 
 class Mutation(object):
-    login = LogIn.Field()
-    logout = LogOut.Field()
+    adduser = AddUser.Field()
+    login   = LogIn.Field()
+    logout  = LogOut.Field()

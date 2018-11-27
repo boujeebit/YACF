@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from uauth.models import Profile
 
+import string, random
+
 import json
 
 from .models import Team, SolvedChallenge
@@ -51,24 +53,24 @@ class Query(graphene.ObjectType):
 
 
 class AddTeam(graphene.Mutation):
-    message = graphene.String()
+    code = graphene.Int()
 
     class Arguments:
         name        = graphene.String(required=True)
-        accesscode  = graphene.String(required=False)
+        email       = graphene.String(required=True)
+        affiliation = graphene.String(required=True)
+        # accesscode  = graphene.String(required=False)
 
-    def mutate(self, info, name, accesscode=None):
+    # TODO: VALIDATION CHECK!!
+    def mutate(self, info, name, email, affiliation): #, accesscode=None):
         try:
-            if not accesscode:
-                accesscode = "This Needs to be generated (teams/schema.py)"
-
-            newTeam = Team(name=name, accesscode=accesscode)
+            newTeam = Team(name=name, email=email, affiliation=affiliation, accesscode=''.join(random.choices(string.ascii_uppercase + string.digits, k=10)))
             newTeam.save()
-            message = "success"
+            code = 0
         except:
-            message = "failure"
+            code = 1
 
-        return AddTeam(message)
+        return AddTeam(code)
 
 class Graph(graphene.Mutation):
     timeline = graphene.String()
