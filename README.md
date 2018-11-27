@@ -1,8 +1,41 @@
 # YACF
 Yet Another CTF Framework
 
+# Deployment
+Currently, the only supported method of deploying YACF is through Docker. Docker Compose is recommended to streamline the process.
 
-# Start up
+To do deploy the enviroment, first ensure that you have docker and docker compose installed on the server/computer. Next, create a file called docker-compose.yml and copy in the following code. 
+
+```
+version: '3'
+
+services:
+  redis:
+    restart: always
+    image: redis:5.0.1
+    hostname: redis-broker
+    ports:
+      - "6379:6379"
+  
+  yacf:
+    restart: always
+    image: 0xcodes/yacf:0.1-beta
+    hostname: yacf.0x.codes
+    ports:
+      - "80:80"
+    links:
+      - redis
+```
+Save this file. Now execute, in the same directory, the following command. 
+
+```
+cmd>$: docker-compose up
+```
+
+Now go to your web browser and navigate to the ip address of where it is deploy. The application will be listening on port 80.
+
+
+# Developers
 ```
 <!-- docker run --name yacf-redis -p 6379:6379 -d redis -->
 docker-compose build

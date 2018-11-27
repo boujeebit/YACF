@@ -1,4 +1,4 @@
-version: '0.0.1'
+version: '3'
 
 services:
   redis:
@@ -8,7 +8,7 @@ services:
     ports:
       - "6379:6379"
   
-  apache:
+  yacf:
     restart: always
     build: .
     dockerfile: backend/Dockerfile
