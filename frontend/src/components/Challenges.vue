@@ -2,12 +2,12 @@
 <div>
   <transition name="fade">
   <div v-if="this.$store.state.board">
-    <h2 class="header">Challenge Board</h2>
     <div v-for="cat in this.$store.state.board" :key="cat.id">
-      <h3>{{cat.name}}</h3>
+      <h3 style="text-align: center; margin-top: 15px;">{{cat.name}}</h3>
+      <hr>
       <div class="flex-container">
         <div v-for="chal in cat.challenges" :key="chal.id">
-          <div class="flex-container-div" v-b-modal="chal.id" style="cursor: pointer;" v-bind:style="[isSoved(chal.id) ? {'backgroundColor': '#3939af', 'color': 'white'} : {}]">
+          <div class="flex-container-div" v-b-modal="chal.id" style="cursor: pointer;" v-bind:style="[isSoved(chal.id) ? {'backgroundColor': '#448aff', 'color': 'white'} : {}]">
             <h3>{{chal.name}}</h3>
             <p>{{chal.points}}</p>
             <!-- <p v-if="isSoved(chal.id)">Solved</p> -->
@@ -15,7 +15,7 @@
           <Challenge :chal="chal" :enter="isSoved(chal.id) ? true : false"></Challenge>
         </div>
       </div>
-      <hr>
+      
     </div>
   </div>
   </transition>
@@ -61,11 +61,13 @@ export default {
   flex-wrap: wrap;
   background-color: white;
   margin-bottom: 20px;
+  justify-content: center;
 }
 
 .flex-container-div {
   background-color: #f5f5f5;
-  box-shadow: 4px 3px #eaeaea;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  border-radius: 2px;
   width: 300px;
   margin: 10px;
   text-align: center;
