@@ -31,9 +31,14 @@ cp -r dist/* ../backend/static/
  - After event has ended, have the option for users to submit writeups
  - Limit number of users that can be on a team
  - Upload for team profile picture
- - Backend code system
+ - Backend code/message system
+ - Change submit flag to return one time solve message (Need to create model for this)
+ - Make challenge hits. 
+ - Make post challenge survey for either user or whole team.
+
 
  ## Security
 
  - [backend] Stop teams from submitting the same flag twice
  - [backend] Restrict endpoint from leaking flag
+ - [backend] Check event end time before submitting flag.

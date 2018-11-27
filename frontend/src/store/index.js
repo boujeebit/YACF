@@ -11,9 +11,9 @@ import { api } from '@/utils/api.js'
 
 const socket = new WebSocketBridge();
 
-// socket.connect('ws://team/stream/');
+socket.connect('ws://team/stream/');
 
-socket.connect('ws://localhost:8000/team/stream/'); //DEV!
+// socket.connect('ws://localhost:8000/team/stream/'); //DEV!
 
 
 const createWebSocketPlugin = function(socket) {

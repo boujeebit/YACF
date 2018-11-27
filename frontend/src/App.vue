@@ -4,7 +4,7 @@
 
       <b-navbar-toggle target="main_nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand @click="$router.push('/');">YACF {{this.$store.getters['user/brand']}}</b-navbar-brand>
+      <b-navbar-brand @click="$router.push('/');" style="cursor: pointer;">YACF {{this.$store.getters['user/brand']}}</b-navbar-brand>
 
       <b-collapse is-nav id="main_nav_collapse">
 
