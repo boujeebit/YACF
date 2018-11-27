@@ -2,7 +2,7 @@
 
 FROM ubuntu:18.04
 
-MAINTAINER Mickey Hefley <@0xCODES>
+LABEL maintainer="Mickey Hefley <@0xCODES>" 
 
 RUN apt-get update     && \
     apt-get upgrade -y && \

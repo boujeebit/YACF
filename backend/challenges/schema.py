@@ -97,10 +97,12 @@ class SubmitFlag(graphene.Mutation):
 
 
         if code == 1:
-            print("Sending signal to update scorebaord")
-            channel_layer = channels.layers.get_channel_layer()
-            async_to_sync(channel_layer.group_send)("scoreboard", {"type": "scoreboard.update", "team": team.name, "points": team.points, "added": get_challenge.points, "time": solve.timestamp.strftime("%I:%M:%S")} )
-
+            try:
+                # Send signal to scoreboard
+                channel_layer = channels.layers.get_channel_layer()
+                async_to_sync(channel_layer.group_send)("scoreboard", {"type": "scoreboard.update", "team": team.name, "points": team.points, "added": get_challenge.points, "time": solve.timestamp.strftime("%I:%M:%S")} )
+            except:
+                pass
 
         return SubmitFlag(code)
 
