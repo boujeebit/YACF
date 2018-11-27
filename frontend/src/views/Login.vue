@@ -8,7 +8,7 @@
       <label for="inputEmail" class="sr-only">Email address</label>
       <input class="form-control" placeholder="Username" v-model="username">
       <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" class="form-control" placeholder="Password" v-model="password">
+      <input type="password" class="form-control" placeholder="Password" v-bind:autocapitalize="none" v-model="password">
 
       <button class="btn btn-lg btn-block btn-secondary" @click="login()">Sign in</button>
 

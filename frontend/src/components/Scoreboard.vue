@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { Bar } from 'vue-chartjs'
 import sgraph from './sgraph.vue'
 import { api } from '@/utils/api'
 

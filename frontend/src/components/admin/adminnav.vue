@@ -1,8 +1,8 @@
 <template>
     <b-navbar toggleable="md" type="light" variant="light">
 
-      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-      <b-collapse is-nav id="nav_collapse">
+      <b-navbar-toggle target="admin_nav_collapse"></b-navbar-toggle>
+      <b-collapse is-nav id="admin_nav_collapse">
 
         <b-navbar-nav>
           <b-nav-item @click="$router.push('/admin/mission');">Mission Control</b-nav-item>

@@ -2,18 +2,18 @@
   <div id="app">
     <b-navbar toggleable="md" type="dark" variant="dark" v-if="this.$store.getters['user/auth']">
 
-      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+      <b-navbar-toggle target="main_nav_collapse"></b-navbar-toggle>
 
       <b-navbar-brand @click="$router.push('/');">YACF {{this.$store.getters['user/brand']}}</b-navbar-brand>
 
-      <b-collapse is-nav id="nav_collapse">
+      <b-collapse is-nav id="main_nav_collapse">
 
         <b-navbar-nav>
           <b-nav-item @click="$router.push('/challenges');">Challenges</b-nav-item>
           <b-nav-item @click="$router.push('/scoreboard');">Scoreboard</b-nav-item>
         </b-navbar-nav>
 
-        <!-- Right aligned nav items -->
+
         <b-navbar-nav class="ml-auto">
 
           <b-nav-item-dropdown right>

@@ -44,10 +44,11 @@ export default {
   methods: {
 
     addChallenge (){ 
+        var query = "";
         if (this.category == "None" || this.category == ""){
-            var query = `mutation{ addChallenge(name:"${this.name}", description:"${this.description}", points:${this.points}, flag:"${this.flag}", show:true) { message } }` 
+            query = `mutation{ addChallenge(name:"${this.name}", description:"${this.description}", points:${this.points}, flag:"${this.flag}", show:true) { message } }` 
         } else {
-            var query = `mutation{ addChallenge(name:"${this.name}", description:"${this.description}", points:${this.points}, flag:"${this.flag}", show:true, category:"${this.category}") { message } }` 
+            query = `mutation{ addChallenge(name:"${this.name}", description:"${this.description}", points:${this.points}, flag:"${this.flag}", show:true, category:"${this.category}") { message } }` 
         }
 
         let that = this;

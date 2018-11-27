@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Challenges from '@/components/Challenges.vue'
+
 import { api } from '@/utils/api.js'
 export default {
   name: 'home',

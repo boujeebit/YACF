@@ -13,7 +13,6 @@
 import AddCategory from '@/components/admin/add/category.vue'
 import AddChallenge from '@/components/admin/add/challenge.vue'
 import AddTeam from '@/components/admin/add/team.vue'
-import axios from 'axios'
 
 export default {
   name: 'home',
