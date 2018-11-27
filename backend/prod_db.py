@@ -27,7 +27,7 @@ def resetDjangoDB():
 def makeAdminUser():
     admin = User.objects.create_superuser("admin", "email@email.com", "yacfadmin")
     admin.first_name = "Admin"
-    profile = Profile(user=admin, verified=True, hidden=hidden)
+    profile = Profile(user=admin, verified=True, hidden=True)
     admin.save()
     profile.save()
 
