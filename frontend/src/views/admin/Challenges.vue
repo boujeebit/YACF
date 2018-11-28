@@ -19,7 +19,7 @@
                         <td>{{challenge.name}}</td>
                         <td>{{challenge.description}}</td>
                         <td>{{challenge.points}}</td>
-                        <td class="secret-flag">{{challenge.flag}}</td>
+                        <td class="secret">{{challenge.flag}}</td>
                         <td>Edit | Remove</td>
                     </tr>
                 </tbody>
@@ -51,10 +51,10 @@ export default {
 </script>
 
 <style scoped>
-.secret-flag {
+.secret {
     color: white;
 }
-.secret-flag:hover {
+.secret:hover {
     color: black;
 }
 </style>

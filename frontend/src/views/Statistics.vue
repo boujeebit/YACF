@@ -1,13 +1,13 @@
 <template>
-    <div>
-        <h3>{{this.$route.params.category}} - {{this.$route.params.points}}</h3>
+    <div style="margin: 15px;">
+        <h3 style="text-align: center;">{{this.$route.params.category}} - {{this.$route.params.points}}</h3>
         <hr>
         <div v-if="loading">
             Loading Stats, hold on.
         </div>
         <div v-else>
             <h5>Solves</h5>
-            <div v-if="teams">
+            <div v-if="solves">
             <table id="statistics" class="table table-hover">
                 <thead>
                     <tr>
@@ -17,10 +17,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(team, index) in teams" :key="team.id" style="cursor: pointer;" @click="$router.push(`/team/${team.teamSet[0].name}`);">
+                    <tr v-for="(solves, index) in solves" :key="solves.id" style="cursor: pointer;" @click="$router.push(`/team/${solves.team.name}`);">
                         <td>{{index+1}}</td>
-                        <td>{{team.timestamp}}</td>
-                        <td>{{team.timestamp | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}</td>
+                        <td>{{solves.team.name}}</td>
+                        <td>{{solves.timestamp | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -39,8 +39,9 @@ export default {
   name: 'Statistic',
   data () {
     return {
-        loading: true,
-        teams: []
+        loading  : true,
+        challenge: "",
+        solves: []
     }
   },
   methods: {
@@ -49,7 +50,7 @@ export default {
   beforeMount () {
     let that = this;
     api(`query{ statistic(category:"${this.$route.params.category}", points:${this.$route.params.points}){ id solvedchallengeSet{ timestamp, team{ id, name } } } }`).then(data => {
-        that.teams = data.statistic.solvedchallengeSet;
+        that.solves = data.statistic.solvedchallengeSet;
         that.loading = false;
     })
   }

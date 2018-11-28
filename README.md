@@ -7,7 +7,7 @@ Currently, the only supported method of deploying YACF is through Docker. Docker
 To do deploy the environment, first ensure that you have docker and docker compose installed on the server/computer. Once verified, run the following commands
 
 ```
-$: curl https://raw.githubusercontent.com/0xCODEs/YACF/master/docker-compose.yml -o docker-compose.yml
+$: curl https://raw.githubusercontent.com/0xCODEs/YACF/master/scripts/docker-compose.yml -o docker-compose.yml
 $: docker-compose up
 ```
 
