@@ -20,7 +20,12 @@
                         <td>{{challenge.description}}</td>
                         <td>{{challenge.points}}</td>
                         <td class="secret">{{challenge.flag}}</td>
-                        <td>Edit | Remove</td>
+                        <td>
+                            <div>
+                                <RemoveChallenge :challenge="challenge"/>
+                                <router-link tag="button" class="btn btn-secondary btn-sm" style="float: right" :to="{ name: 'adminEditChallenge', params: { challenge: challenge } }">Edit</router-link>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -31,9 +36,14 @@
 
 <script>
 import { api } from '@/utils/api'
+import RemoveChallenge from '@/components/admin/remove/challenge.vue'
 
 export default {
   name: 'AdminChallenge',
+  components: {
+
+    RemoveChallenge
+  },
   data () {
     return {
         loading: true,

@@ -69,6 +69,58 @@ class AddChallenge(graphene.Mutation):
 
         return AddChallenge(message)
 
+class RemoveChallenge(graphene.Mutation):
+    code = graphene.Int()
+
+    class Arguments:
+        id = graphene.Int(required=True)
+
+    def mutate(self, info, id):
+        try:
+            challenge = Challenge.objects.get(pk=id)
+            challenge.delete()
+            code = 0
+        except:
+            code = 1
+
+        return RemoveChallenge(code)
+
+class UpdateChallenge(graphene.Mutation):
+    message = graphene.String()
+
+    class Arguments:
+        id          = graphene.Int(required=True)
+        name        = graphene.String(required=True)
+        description = graphene.String(required=True)
+        points      = graphene.Int(required=False)
+        flag        = graphene.String(required=False)
+        show        = graphene.Boolean(required=False)
+
+        category    = graphene.String(required=False)
+
+    #TODO: Need to check and ensure no challenge is made with the same points as another challenge. If not, frontend stats break
+    def mutate(self, info, id, name, description, points=0, flag="", show=False, category=None):
+
+        try:
+            category = Category.objects.get(name=category)
+            challenge = Challenge.objects.get(pk=id)
+            challenge.name = name
+            challenge.description = description
+            challenge.points = points
+            challenge.flag = flag
+            challenge.show = show
+            challenge.category = category
+
+            challenge.save()
+
+
+            message = "success"
+        except:
+            message = "failure"
+
+        return UpdateChallenge(message)
+
+
 class SubmitFlag(graphene.Mutation):
     code = graphene.Int()
 
@@ -109,4 +161,6 @@ class SubmitFlag(graphene.Mutation):
 
 class Mutation(object):
     addChallenge = AddChallenge.Field()
+    removeChallenge = RemoveChallenge.Field()
+    updateChallenge = UpdateChallenge.Field()
     submitflag = SubmitFlag.Field()
