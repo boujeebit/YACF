@@ -16,6 +16,7 @@ from .models import Team, SolvedChallenge
 
 class TeamType(DjangoObjectType):
     points = graphene.Int()
+    members = graphene.Int()
     correct_flags = graphene.Int()
 
     class Meta:
@@ -72,6 +73,23 @@ class AddTeam(graphene.Mutation):
 
         return AddTeam(code)
 
+class RemoveTeam(graphene.Mutation):
+    code = graphene.Int()
+
+    class Arguments:
+        name        = graphene.String(required=True)
+
+    # TODO: VALIDATION CHECK!!
+    def mutate(self, info, name): #, accesscode=None):
+        try:
+            team = Team.objects.get(name=name)
+            team.delete()
+            code = 0
+        except:
+            code = 1
+
+        return RemoveTeam(code)
+
 class Graph(graphene.Mutation):
     timeline = graphene.String()
     message = graphene.String()
@@ -125,4 +143,5 @@ class Graph(graphene.Mutation):
 
 class Mutation(object):
     addteam = AddTeam.Field()
+    removeteam = RemoveTeam.Field()
     graph   = Graph.Field()

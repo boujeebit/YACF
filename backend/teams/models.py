@@ -18,11 +18,18 @@ class Team(models.Model):
     def _correct(self):
         return self.solved.all().count()
 
+    def _members(self):
+        # print(dir(User.objects.get(pk=2).profile))
+        return User.objects.all().count()
+        # return User.objects.filter(profile__name=self.name).count()
+
     name = models.CharField(max_length=150, unique=True)
     email = models.CharField(max_length=50)
     affiliation = models.CharField(max_length=50)
+    website = models.CharField(max_length=50)
 
     points = property(_points)
+    members = property(_members)
     hidden = models.BooleanField(default=False)
     correct_flags = property(_correct)
     wrong_flags = models.IntegerField(default=0)
