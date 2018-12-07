@@ -52,8 +52,10 @@ export default {
   },
   methods: {
       update() {
+            var re = new RegExp('\n', 'g');
+            var str = this.challenge.description.replace(re, '\\n');
             let that = this;
-            api(`mutation { updateChallenge(id:${this.challenge.id}, name:"${this.challenge.name}", description:"${this.challenge.description}", points:${this.challenge.points}, flag:"${this.challenge.flag}", show:false, category:"${this.challenge.category.name}"){ message} }`).then(data => {
+            api(`mutation { updateChallenge(id:${this.challenge.id}, name:"${this.challenge.name}", description:"${str}", points:${this.challenge.points}, flag:"${this.challenge.flag}", show:false, category:"${this.challenge.category.name}"){ message} }`).then(data => {
                 that.message = data.updateChallenge.message
             })
       }

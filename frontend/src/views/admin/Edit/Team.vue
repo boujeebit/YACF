@@ -1,8 +1,6 @@
 <template>
-    <div style="float: right;">
-        <!-- Modal Component -->
-        <button class="btn btn-sm btn-secondary" v-b-modal="openid">Edit</button>
-        <b-modal v-bind:id="openid" v-bind:title="team.name" ok-title='Update' ok-variant='success'>
+    <div style="padding:20px">
+        <div v-if="team">
             <label>Team Name</label>
             <input class="form-control" v-model="team.name">
             <label>Affiliation</label>
@@ -13,7 +11,12 @@
             <input class="form-control" v-model="team.website">
             <label>Access Code</label>
             <input class="form-control" v-model="team.accesscode">
-        </b-modal>
+            <p>{{message}}</p>
+            <button class="btn btn-secondary" @click="update()">Update Team</button>
+        </div>
+        <div v-else>
+            Redirect.. You cannot access this page directly
+        </div>
     </div>
 </template>
 
@@ -21,25 +24,19 @@
 import { api } from '@/utils/api.js'
 
 export default {
-  name: 'Challenges',
+  name: 'Team',
   props: ['team'],
   data () {
     return {
       message: ""
     }
   },
-  computed: {
-    openid() {
-      return "edit-"+this.team.id;
-    }
-  },
   methods: {
-      handleOk ( evt ) {
-        evt.preventDefault()
+      update() {
 
         let that = this;
-        api(`mutation{ submitflag(challenge:${this.chal.id}, flag:"${this.flag}"){ code } }`).then(data => {
-            
+        api(`mutation { updateteam(id:${this.team.id}, name:"${this.team.name}", affiliation:"${this.team.affiliation}", email:"${this.team.email}", website:"${this.team.website}", accesscode:"${this.team.accesscode}"){ message } }`).then(data => {
+            that.message = data.updateteam.message;
         })
       }
   }

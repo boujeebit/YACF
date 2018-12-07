@@ -11,7 +11,7 @@
                         <th>Description</th>
                         <th>Points</th>
                         <th>Flag (Hover to show)</th>
-                        <th>Edit/Remove (Not working)</th>
+                        <th style="text-align: right;">Options</th>
                     </tr>
                 </thead>
                 <tbody>

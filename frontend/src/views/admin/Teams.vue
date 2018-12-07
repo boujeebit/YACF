@@ -1,5 +1,5 @@
 <template>
-    <div style="margin: 15px;">
+    <div>
         <div v-if="loading">
             Yo, we loadin'. Hang tight
         </div>
@@ -13,7 +13,7 @@
                         <th>Admin Email</th>
                         <th>Number of Members (Not working)</th>
                         <th>Access Code (Hover)</th>
-                        <th style="text-align: right;">Edit (Not working)/Remove</th>
+                        <th style="text-align: right;">Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,7 +27,7 @@
                         <td>
                             <div>
                                 <RemoveTeam :team="team"/>
-                                <EditTeam :team="team"/>
+                                <router-link tag="button" class="btn btn-secondary btn-sm" style="float: right" :to="{ name: 'adminEditTeam', params: { team: team } }">Edit</router-link>
                             </div>
                         </td>
                     </tr>
@@ -47,7 +47,6 @@ import RemoveTeam from '@/components/admin/remove/team.vue'
 export default {
   name: 'AdminTeam',
   components: {
-    EditTeam,
     RemoveTeam
   },
   data () {

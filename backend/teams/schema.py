@@ -73,6 +73,36 @@ class AddTeam(graphene.Mutation):
 
         return AddTeam(code)
 
+class UpdateTeam(graphene.Mutation):
+    message = graphene.String()
+
+    class Arguments:
+        id          = graphene.Int(required=True)
+        name        = graphene.String(required=True)
+        affiliation = graphene.String(required=True)
+        email       = graphene.String(required=True)
+        website     = graphene.String(required=True)
+        accesscode  = graphene.String(required=True)
+        
+
+    # TODO: VALIDATION CHECK!!
+    # TODO: Make it so it is not need to submit every state to change the info
+    def mutate(self, info, id, name, affiliation, email, website, accesscode): #, accesscode=None):
+        try:
+            team = Team.objects.get(pk=id)
+            team.name = name
+            team.affiliation = affiliation
+            team.email = email
+            team.website = website
+            team.accesscode = accesscode
+            team.save()
+
+            message = "success"
+        except:
+            message = "failure"
+
+        return UpdateTeam(message)
+
 class RemoveTeam(graphene.Mutation):
     code = graphene.Int()
 
@@ -89,6 +119,7 @@ class RemoveTeam(graphene.Mutation):
             code = 1
 
         return RemoveTeam(code)
+
 
 class Graph(graphene.Mutation):
     timeline = graphene.String()
@@ -144,4 +175,5 @@ class Graph(graphene.Mutation):
 class Mutation(object):
     addteam = AddTeam.Field()
     removeteam = RemoveTeam.Field()
+    updateteam = UpdateTeam.Field()
     graph   = Graph.Field()
