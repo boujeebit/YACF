@@ -10,7 +10,7 @@
                     <th>Category</th>
                     <th>Description</th>
                     <th>Number of Challenges</th>
-                    <th style="text-align: right;">Options (Not working)</th>
+                    <th style="text-align: right;">Options</th>
                     </tr>
                 </thead>
                 <tbody>

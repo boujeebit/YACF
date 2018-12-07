@@ -11,7 +11,7 @@
           <b-nav-item @click="$router.push('/admin/categories');">Categories</b-nav-item>
           <b-nav-item @click="$router.push('/admin/challenges');">Challenges</b-nav-item>
           <b-nav-item @click="$router.push('/admin/teams');">Teams</b-nav-item>
-          <b-nav-item @click="$router.push('/admin/user');">Users</b-nav-item>
+          <b-nav-item @click="$router.push('/admin/users');">Users</b-nav-item>
         </b-navbar-nav>
 
       </b-collapse>
