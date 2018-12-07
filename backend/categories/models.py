@@ -1,5 +1,6 @@
 from django.db import models
 
+# TODO: On delete? What happens to the challenges?
 class Category(models.Model):
     name = models.CharField(max_length=25)
     description = models.CharField(max_length=1000)

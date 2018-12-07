@@ -4,13 +4,13 @@
             Yo, we loadin'. Hang tight
         </div>
         <div v-else>
-            <table id="admincategories" class="table table-hover">
+            <table id="admincategories" class="table">
                 <thead>
                     <tr>
                     <th>Category</th>
                     <th>Description</th>
                     <th>Number of Challenges</th>
-                    <th>Edit/Remove (Not working)</th>
+                    <th style="text-align: right;">Options (Not working)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,7 +18,12 @@
                         <td>{{category.name}}</td>
                         <td>{{category.description}}</td>
                         <td>Blah</td>
-                        <td>Edit | Remove</td>
+                        <td>
+                            <div>
+                                <RemoveCategory :category="category"/>
+                                <router-link tag="button" class="btn btn-secondary btn-sm" style="float: right" :to="{ name: 'adminEditCategory', params: { category: category } }">Edit</router-link>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -29,6 +34,7 @@
 
 <script>
 import { api } from '@/utils/api'
+import RemoveCategory from '@/components/admin/remove/category.vue'
 
 export default {
   name: 'AdminCategory',
@@ -38,8 +44,8 @@ export default {
         categories: []
     }
   },
-  methods: {
-      
+  components: {
+    RemoveCategory
   },
   beforeMount () {
     let that = this;

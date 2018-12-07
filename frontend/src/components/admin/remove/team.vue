@@ -15,7 +15,7 @@
 import { api } from '@/utils/api.js'
 
 export default {
-  name: 'Challenges',
+  name: 'Team',
   props: ['team'],
   data () {
     return {

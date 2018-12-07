@@ -3,6 +3,7 @@ from categories.models import Category
 
 
 class Challenge(models.Model):
+    # TODO: REMOVE delete on cascade! We may not want to delete all the challenges too
     category = models.ForeignKey(Category, default=None, null=True, on_delete=models.CASCADE, related_name='challenges')
 
     name = models.CharField(max_length=25)

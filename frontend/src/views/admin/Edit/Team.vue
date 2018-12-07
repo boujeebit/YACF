@@ -1,6 +1,7 @@
 <template>
     <div style="padding:20px">
         <div v-if="team">
+            <h3>Edit Team</h3>
             <label>Team Name</label>
             <input class="form-control" v-model="team.name">
             <label>Affiliation</label>

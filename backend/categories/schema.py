@@ -35,5 +35,43 @@ class AddCategory(graphene.Mutation):
 
         return AddCategory(message)
 
+class RemoveCategory(graphene.Mutation):
+    message = graphene.String()
+
+    class Arguments:
+        id = graphene.Int(required=True)
+
+    def mutate(self, info, id):
+        try:
+            category = Category.objects.get(pk=id)
+            category.delete()
+            message = "success"
+        except:
+            message = "failure"
+
+        return RemoveCategory(message)
+
+class UpdateCategory(graphene.Mutation):
+    message = graphene.String()
+
+    class Arguments:
+        id          = graphene.Int(required=True)
+        name        = graphene.String(required=True)
+        description = graphene.String(required=True)
+
+    def mutate(self, info, id, name, description):
+        try:
+            category = Category.objects.get(pk=id)
+            category.name = name
+            category.description = description
+            category.save()
+            message = "success"
+        except:
+            message = "failure"
+
+        return UpdateCategory(message)
+
 class Mutation(object):
     addcategory = AddCategory.Field()
+    removeCategory = RemoveCategory.Field()
+    updateCategory = UpdateCategory.Field()
