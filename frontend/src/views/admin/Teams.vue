@@ -41,7 +41,6 @@
 
 <script>
 import { api } from '@/utils/api'
-import EditTeam from '@/components/admin/edit/team.vue'
 import RemoveTeam from '@/components/admin/remove/team.vue'
 
 export default {

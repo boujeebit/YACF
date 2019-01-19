@@ -22,7 +22,15 @@ class Profile(DjangoObjectType):
         model = Profile
 
 class Query(object):
+    all_users = graphene.List(Me)
     me = graphene.Field(Me)
+
+    def resolve_all_users(self, info):
+        # TODO: Validate is superuser
+        user = info.context.user
+        validate_user_is_authenticated(user)
+
+        return User.objects.all()
 
     def resolve_me(self, info):
         user = info.context.user

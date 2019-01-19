@@ -16,7 +16,8 @@ import AdminCreate from './views/admin/Create.vue'
 import AdminCategory from './views/admin/Categories.vue'
 import AdminChallenge from './views/admin/Challenges.vue'
 import AdminTeams from './views/admin/Teams.vue'
-import AdminUser from './views/admin/User.vue'
+import AdminUser from './views/admin/Users.vue'
+import AdminEditUser from './views/admin/Edit/User.vue'
 import AdminEditChallenge from './views/admin/Edit/Challenge.vue'
 import AdminEditTeam from './views/admin/Edit/Team.vue'
 import adminEditCategory from './views/admin/Edit/Category.vue'
@@ -94,7 +95,8 @@ export default new Router({
         { path: '/admin/challenge/edit', name: 'adminEditChallenge', component: AdminEditChallenge, props: true },
         { path: '/admin/teams', component: AdminTeams },
         { path: '/admin/team/edit', name: 'adminEditTeam', component: AdminEditTeam, props: true },
-        { path: '/admin/users', component: AdminUser }
+        { path: '/admin/users', component: AdminUser },
+        { path: '/admin/user/edit', name: 'adminEditUser', component: AdminEditUser, props: true },
       ],
       beforeEnter: superusergraud
     },
