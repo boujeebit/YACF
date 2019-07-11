@@ -1,53 +1,91 @@
 <template>
-  <div class="text-center">
+  <div>
+    <div class="top-section logo">
+      <a href="#">
+        <img
+          class="navbar-brand-minimized"
+          src="https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwitpLDs36vjAhURWs0KHRDhCUAQjRx6BAgBEAU&url=https%3A%2F%2Fwww.kisspng.com%2Fpng-white-flag-wait-white-flag-82944%2F&psig=AOvVaw1lSmLL__LGGjmHHt_h_rO1&ust=1562896104731392"
+          width="250"
+          height="200"
+          alt="Total Recon"
+        />
+      </a>
+    </div>
 
-    <div class="form-signin">
-      <!-- <img class="mb-4" src="" alt="" width="125" height="125"> -->
-      <h1 class="h3 mb-3 font-weight-normal">YACF Login</h1>
-      <p>{{message}}</p>
-      <input class="form-control" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="username">
-      <input type="password" class="form-control" placeholder="Password"  v-model="password">
+    <div class="bottom-section text-center">
+      <div class="form-signin">
+        <!-- <img class="mb-4" src="" alt="" width="125" height="125"> -->
 
-      <button class="btn btn-lg btn-block btn-secondary" @click="login()">Sign in</button>
+        <p>{{message}}</p>
+        <input
+          class="form-control"
+          placeholder="Username"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          v-model="username"
+        />
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Password"
+          v-model="password"
+          v-on:keyup.enter="login()"
+        />
 
-      <p class="mt-5 mb-3 text-muted"><a @click="$router.push('/resigster/user');">Register Here</a></p>
-      <p class="text-muted">&copy; 2018</p>
+        <button class="btn btn-lg btn-block btn-secondary" @click="login()">Sign in</button>
+
+        <!-- <p class="mt-5 mb-3 text-muted">
+          <a @click="$router.push('/resigster/user');">Register Here</a>
+        </p>-->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { api } from '@/utils/api'
+import { api } from "@/utils/api";
 
 export default {
-  name: '',
-  data () {
+  name: "",
+  data() {
     return {
-        username: "",
-        password: "",
-        message : ""
-    }
+      username: "",
+      password: "",
+      message: ""
+    };
   },
   methods: {
     login() {
       let that = this;
-      api(`mutation { login(username:"${that.username}", password:"${that.password}") { id } }`).then(data => {
-        if (data.login){
-              that.$store.commit("user/SET_USER", data.login)
-              that.$router.push('/challenges')
-          } else {
-              that.message = "Login incorrect"
+      api(
+        `mutation { login(username:"${that.username}", password:"${that.password}") { id } }`
+      ).then(data => {
+        if (data.login) {
+          that.$store.commit("user/SET_USER", data.login);
+          that.$router.push("/challenges");
+        } else {
+          that.message = "Login incorrect";
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>
-html,
-.text-center {
-  height: 100%;
+.top-section {
+  height: 40vh;
+}
+.bottom-section {
+  height: 60vh;
+  background-color: #f5f5f5;
+}
+
+.logo a img {
+  display: block;
+  margin: auto;
 }
 
 .text-center {
@@ -60,16 +98,15 @@ html,
   align-items: center;
   -webkit-box-pack: center;
   justify-content: center;
-  padding-top: 40px;
+  padding-top: 10px;
   padding-bottom: 40px;
-  background-color: #f5f5f5;
 }
 
 .form-signin {
   width: 100%;
   max-width: 330px;
   padding: 15px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
 }
 .form-signin .checkbox {
   font-weight: 400;
@@ -98,6 +135,4 @@ input {
 button {
   margin-top: 5px;
 }
-
-
 </style>

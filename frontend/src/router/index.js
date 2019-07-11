@@ -1,20 +1,21 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import { graud, superusergraud } from "@/utils/guards";
+import { graud, superusergraud } from "@/router/guards";
 
 Vue.use(Router);
 
 export default new Router({
   mode: "history",
-  base: process.env.BASE_URL,
+  linkActiveClass: "open active",
+  scrollBehavior: () => ({ y: 0 }),
   routes: [
     {
       path: "/",
       component: () => import("@/containers/Default"),
       redirect: { name: "Home" },
       name: "Root",
-      // beforeEnter: graud,
+      beforeEnter: graud,
       children: [
         {
           path: "/_",
@@ -107,9 +108,27 @@ export default new Router({
             }
           ],
           beforeEnter: superusergraud
-        },
-        { path: "*", redirect: "/" }
+        }
       ]
+    },
+    {
+      path: "/login",
+      name: "Login",
+      component: () => import("@/views/Login")
+    },
+    {
+      path: "/register/user",
+      name: "RegisterUser",
+      component: () => import("@/views/Register/User")
+    },
+    {
+      path: "/register/team",
+      name: "RegisterTeam",
+      component: () => import("@/views/Register/Team")
+    },
+    {
+      path: "*",
+      component: () => import("@/views/errors/404")
     }
   ]
 });
