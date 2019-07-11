@@ -66,7 +66,7 @@ def makeUser(user_name, user_email, user_password, user_team, hidden):
     # user_team = Team(name=user_name, hidden=hidden)
     # user_team.save()
 
-    user = User(username=user_name, email=user_email)
+    user = User(username=user_name, email=user_email, first_name=user_name, last_name=user_name)
     user.set_password(user_password)
     user.save()
 

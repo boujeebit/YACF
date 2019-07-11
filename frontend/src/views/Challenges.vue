@@ -3,7 +3,7 @@
     <Challenges/>
   </div>-->
 
-  <div>
+  <div v-if="this.$store.getters['user/userteam']">
     <transition name="fade">
       <div v-if="this.$store.state.board">
         <div v-for="cat in this.$store.state.board" :key="cat.id">
@@ -36,6 +36,7 @@
       </main>
     </div>
   </div>
+  <div v-else>You are not apart of a team</div>
 </template>
 
 <script>
@@ -48,6 +49,7 @@ export default {
     Challenge
   },
   mounted() {
+    //TODO: Load this back into a component
     this.$store.dispatch("loadChallengeBoard");
   },
   methods: {

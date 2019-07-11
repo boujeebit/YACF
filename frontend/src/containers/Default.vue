@@ -35,8 +35,9 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-
-    <router-view />
+    <div style="padding: 15px;">
+      <router-view />
+    </div>
   </div>
 </template>
 

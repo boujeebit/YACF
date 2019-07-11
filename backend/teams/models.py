@@ -24,9 +24,9 @@ class Team(models.Model):
         # return User.objects.filter(profile__name=self.name).count()
 
     name = models.CharField(max_length=150, unique=True)
-    email = models.CharField(max_length=50)
-    affiliation = models.CharField(max_length=50)
-    website = models.CharField(max_length=50)
+    email = models.CharField(max_length=50, blank=True)
+    affiliation = models.CharField(max_length=50, blank=True)
+    website = models.CharField(max_length=50, blank=True)
 
     points = property(_points)
     members = property(_members)

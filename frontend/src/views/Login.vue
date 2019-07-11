@@ -1,20 +1,14 @@
 <template>
   <div>
     <div class="top-section logo">
-      <a href="#">
-        <img
-          class="navbar-brand-minimized"
-          src="https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwitpLDs36vjAhURWs0KHRDhCUAQjRx6BAgBEAU&url=https%3A%2F%2Fwww.kisspng.com%2Fpng-white-flag-wait-white-flag-82944%2F&psig=AOvVaw1lSmLL__LGGjmHHt_h_rO1&ust=1562896104731392"
-          width="250"
-          height="200"
-          alt="Total Recon"
-        />
-      </a>
+      <div class="frame">
+        <img src="/static/img/logo-y.png" width="450" height="250" alt="YACF" />
+      </div>
     </div>
 
     <div class="bottom-section text-center">
       <div class="form-signin">
-        <!-- <img class="mb-4" src="" alt="" width="125" height="125"> -->
+        <h3>Login to YACF</h3>
 
         <p>{{message}}</p>
         <input
@@ -77,15 +71,20 @@ export default {
 <style scoped>
 .top-section {
   height: 40vh;
+  border-bottom: 1px solid black;
+  background-color: #181b1f;
 }
 .bottom-section {
   height: 60vh;
-  background-color: #f5f5f5;
+  background-color: #1e2125;
 }
-
-.logo a img {
+.frame {
+  padding: 35px;
+}
+.logo img {
   display: block;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .text-center {
@@ -128,11 +127,32 @@ export default {
   margin-bottom: 10px;
 }
 
+h3 {
+  color: white;
+}
+p {
+  color: white;
+}
 input {
   margin-top: 5px;
+  background-color: #181b1f;
+  border-color: black;
+}
+
+input:focus {
+  margin-top: 5px;
+  background-color: #181b1f;
+  border-color: yellow;
+  outline: none;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 button {
   margin-top: 5px;
+  background-color: #181b1f;
+  border-color: yellow;
+  color: yellow;
 }
 </style>

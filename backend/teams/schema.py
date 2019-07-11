@@ -40,6 +40,7 @@ class Query(graphene.ObjectType):
         return Team.objects.all()
 
     def resolve_team(self, info, **kwargs):
+        return info.context.user.profile.team
         return Team.objects.get(name__iexact=kwargs.get('name'))
     
     def resolve_all_solves(self, info, **kwargs):

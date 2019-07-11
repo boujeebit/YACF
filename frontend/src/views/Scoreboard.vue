@@ -1,17 +1,18 @@
 <template>
-  <div style="padding: 15px;">
-    <Scoreboard/>
+  <div>
+    <Graph />
+    <TeamPlacement />
+    <Scoreboard />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import Scoreboard from '@/components/Scoreboard.vue'
-
 export default {
-  name: 'scoreboard',
+  name: "scoreboard",
   components: {
-    Scoreboard
+    Graph: () => import("@/components/scoreboard/Graph"),
+    TeamPlacement: () => import("@/components/scoreboard/TeamPlacement"),
+    Scoreboard: () => import("@/components/scoreboard/Scoreboard")
   }
-}
+};
 </script>
