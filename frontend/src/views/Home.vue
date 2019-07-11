@@ -5,22 +5,22 @@
 </template>
 
 <script>
-
-import { api } from '@/utils/api.js'
+import { api } from "@/utils/api.js";
 export default {
-  name: 'home',
-  data () {
+  name: "home",
+  data() {
     return {
       loading: true,
       content: ""
-    }
+    };
   },
-  beforeMount () {
+  beforeMount() {
     let that = this;
-    api('query{ welcomePage{ content } }').then(data => {
-      that.content = data.welcomePage.content;
+    api("query{ welcomePage{ content } }").then(data => {
+      // that.content = data.welcomePage.content;
+      that.content = "boom";
       that.loading = false;
-    })
+    });
   }
-}
+};
 </script>

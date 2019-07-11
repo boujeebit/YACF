@@ -1,105 +1,115 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from './views/Login.vue'
-import RegisterUser from './views/Register/User.vue'
-import RegisterTeam from './views/Register/Team.vue'
-import Profile from './views/Profile.vue'
-import Home from './views/Home.vue'
-import Challenges from './views/Challenges.vue'
-import Statistics from './views/Statistics.vue'
-import Scoreboard from './views/Scoreboard.vue'
-import Team from './views/Team.vue'
-import Admin from './views/Admin.vue'
-import MissionControl from './views/admin/Mission.vue'
-import AdminWelcome from './views/admin/Welcome.vue'
-import AdminCreate from './views/admin/Create.vue'
-import AdminCategory from './views/admin/Categories.vue'
-import AdminChallenge from './views/admin/Challenges.vue'
-import AdminTeams from './views/admin/Teams.vue'
-import AdminUser from './views/admin/Users.vue'
-import AdminEditUser from './views/admin/Edit/User.vue'
-import AdminEditChallenge from './views/admin/Edit/Challenge.vue'
-import AdminEditTeam from './views/admin/Edit/Team.vue'
-import adminEditCategory from './views/admin/Edit/Category.vue'
+import Vue from "vue";
+import Router from "vue-router";
 
-import { graud, superusergraud } from '@/utils/guards'
+import { graud, superusergraud } from "@/utils/guards";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/login',
-      name: 'Login',
-      component: Login
-    },
-    {
-      path: '/resigster/user',
-      name: 'resigster-user',
-      component: RegisterUser
-    },
-    {
-      path: '/resigster/team',
-      name: 'resigster-team',
-      component: RegisterTeam
-    },
-    {
-      path: '/profile',
-      name: 'Profile',
-      component: Profile,
-      beforeEnter: graud
-    },
-    {
-      path: '/',
-      name: 'Home',
-      component: Home,
-      beforeEnter: graud
-    },
-    {
-      path: '/challenges',
-      name: 'Challenges',
-      component: Challenges,
-      beforeEnter: graud
-    },
-    {
-      path: '/challenge/:category/:points',
-      name: 'Statistics',
-      component: Statistics,
-      beforeEnter: graud
-    },
-    {
-      path: '/scoreboard',
-      name: 'scoreboard',
-      component: Scoreboard,
-      beforeEnter: graud
-    },
-    {
-      path: '/team/:name',
-      name: 'team',
-      component: Team,
-      beforeEnter: graud
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: Admin,
+      path: "/",
+      component: () => import("@/containers/Default"),
+      redirect: { name: "Home" },
+      name: "Root",
+      // beforeEnter: graud,
       children: [
-        { path: '/admin/mission', component: MissionControl },
-        { path: '/admin/welcome', component: AdminWelcome },
-        { path: '/admin/create', component: AdminCreate },
-        { path: '/admin/categories', component: AdminCategory },
-        { path: '/admin/category/edit', name: 'adminEditCategory', component: adminEditCategory, props: true },
-        { path: '/admin/challenges', component: AdminChallenge },
-        { path: '/admin/challenge/edit', name: 'adminEditChallenge', component: AdminEditChallenge, props: true },
-        { path: '/admin/teams', component: AdminTeams },
-        { path: '/admin/team/edit', name: 'adminEditTeam', component: AdminEditTeam, props: true },
-        { path: '/admin/users', component: AdminUser },
-        { path: '/admin/user/edit', name: 'adminEditUser', component: AdminEditUser, props: true },
-      ],
-      beforeEnter: superusergraud
-    },
-    { path: '*', redirect: '/' }
+        {
+          path: "/_",
+          name: "Home",
+          component: () => import("@/views/Home")
+        },
+        {
+          path: "/challenges",
+          name: "Challenges",
+          component: () => import("@/views/Challenges")
+        },
+        {
+          path: "/challenge/:category/:points",
+          name: "Statistics",
+          component: () => import("@/views/Statistics")
+        },
+        {
+          path: "/scoreboard",
+          name: "Scoreboard",
+          component: () => import("@/views/Scoreboard")
+        },
+        {
+          path: "/team/:name",
+          name: "Team",
+          component: () => import("@/views/Team")
+        },
+        {
+          path: "/admin",
+          name: "Admin",
+          component: () => import("@/views/Admin"),
+          children: [
+            {
+              path: "/admin/mission",
+              name: "AdminMission",
+              component: () => import("@/views/admin/Mission")
+            },
+            {
+              path: "/admin/welcome",
+              name: "AdminWelcome",
+              component: () => import("@/views/admin/Welcome")
+            },
+            {
+              path: "/admin/create",
+              name: "AdminCreate",
+              component: () => import("@/views/admin/Create")
+            },
+            {
+              path: "/admin/categories",
+              name: "AdminCategories",
+              component: () => import("@/views/admin/Categories")
+            },
+            {
+              path: "/admin/category/edit",
+              name: "AdminCategoryEdit",
+              component: () => import("@/views/admin/Edit/Category"),
+              props: true
+            },
+            {
+              path: "/admin/challenges",
+              name: "AdminChallenges",
+              component: () => import("@/views/admin/Challenges")
+            },
+            {
+              path: "/admin/challenge/edit",
+              name: "AdminChallengeEdit",
+              component: () => import("@/views/admin/Edit/Challenge"),
+              props: true
+            },
+            {
+              path: "/admin/teams",
+              name: "AdminTeams",
+              component: () => import("@/views/admin/Teams")
+            },
+            {
+              path: "/admin/team/edit",
+              name: "AdminTeamEdit",
+              component: () => import("@/views/admin/Edit/Team"),
+              props: true
+            },
+            {
+              path: "/admin/users",
+              name: "AdminUsers",
+              component: () => import("@/views/admin/Users")
+            },
+            {
+              path: "/admin/user/edit",
+              name: "AdminUserEdit",
+              component: () => import("@/views/admin/Edit/User"),
+              props: true
+            }
+          ],
+          beforeEnter: superusergraud
+        },
+        { path: "*", redirect: "/" }
+      ]
+    }
   ]
-})
+});
