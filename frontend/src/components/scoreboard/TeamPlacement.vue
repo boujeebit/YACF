@@ -1,15 +1,16 @@
 <template>
-  <div>
+  <div style="padding-top:20px;">
     <h3>Your Ranks</h3>
     <hr />
     <table id="socreboard" class="table table-hover">
       <thead>
         <tr>
-          <th>ID (Needs Rank)</th>
+          <th>ID</th>
           <th>Team name</th>
           <th>Correct Flags</th>
           <th>Wrong Flags</th>
           <th>Score</th>
+          <th>Progress</th>
         </tr>
       </thead>
       <tbody>
@@ -19,6 +20,11 @@
           <td>{{team.correctFlags}}</td>
           <td>{{team.wrongFlags}}</td>
           <td>{{team.points}}</td>
+          <td>
+            <b-progress class="mt-2" :max="max" height="4px">
+              <b-progress-bar :value="team.points" variant="success"></b-progress-bar>
+            </b-progress>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -32,7 +38,8 @@ export default {
   name: "TeamPlacement",
   computed: {
     ...mapGetters({
-      team: "teams/GET_TEAM_RANK"
+      team: "teams/GET_TEAM_RANK",
+      max: "teams/GET_MAX_POINTS"
     })
   },
   beforeMount() {

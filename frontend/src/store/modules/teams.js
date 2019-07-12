@@ -7,7 +7,8 @@ import { api } from "@/utils/api";
 const state = {
   teams: [],
   team: [],
-  rank: []
+  rank: [],
+  max: 0
 };
 
 const getters = {
@@ -21,23 +22,28 @@ const getters = {
   },
   GET_TEAM_SOLVE: state => {
     return state.team.solved;
+  },
+  GET_MAX_POINTS: state => {
+    return state.max;
   }
 };
 
 const actions = {
   LoadTeamRank({ commit }) {
-    api("query{ team {id, name, points, correctFlags, wrongFlags} }").then(
-      data => {
-        commit("SET_TEAM_RANK", data.team);
-      }
-    );
+    api(
+      "query{ team {id, name, points, correctFlags, wrongFlags } totalPoints }"
+    ).then(data => {
+      commit("SET_TEAM_RANK", data.team);
+      commit("SET_MAX_POINTS", data.totalPoints);
+    });
   },
   loadTeams({ commit }) {
-    api("query{ allTeams {id, name, points, correctFlags, wrongFlags} }").then(
-      data => {
-        commit("SET_TEAMS", data.allTeams);
-      }
-    );
+    api(
+      "query{ allTeams {id, name, points, correctFlags, wrongFlags} totalPoints }"
+    ).then(data => {
+      commit("SET_TEAMS", data.allTeams);
+      commit("SET_MAX_POINTS", data.totalPoints);
+    });
   },
   loadStats({ commit }, payload) {
     api(
@@ -57,6 +63,9 @@ const mutations = {
   },
   SET_TEAM_RANK(state, team) {
     state.rank = team;
+  },
+  SET_MAX_POINTS(state, points) {
+    state.max = points;
   }
 };
 

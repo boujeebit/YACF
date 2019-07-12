@@ -1,9 +1,13 @@
 <template>
-  <div>
-    <Graph />
-    <TeamPlacement />
-    <Scoreboard />
-  </div>
+  <transition name="fade">
+    <div style="padding:15px;">
+      <Graph />
+      <div v-if="!this.$store.getters['user/isAdmin']">
+        <TeamPlacement />
+      </div>
+      <Scoreboard />
+    </div>
+  </transition>
 </template>
 
 <script>

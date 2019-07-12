@@ -21,8 +21,15 @@ const getters = {
   displayname: state => {
     return state.user.firstName + " " + state.user.lastName;
   },
+  initials: state => {
+    return state.user.firstName.charAt(0) + state.user.lastName.charAt(0);
+  },
   userteam: state => {
-    return state.user.profile.team ? state.user.profile.team.name : null;
+    if (state.user.profile) {
+      return state.user.profile.team ? state.user.profile.team.name : null;
+    } else {
+      return null;
+    }
   }
 };
 

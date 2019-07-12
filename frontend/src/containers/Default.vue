@@ -15,15 +15,6 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right>
-            <!-- Using button-content slot -->
-            <template slot="button-content">
-              <em>{{this.$store.getters['user/displayname']}}</em>
-            </template>
-            <b-dropdown-item @click="$router.push(`/profile`);">Profile</b-dropdown-item>
-            <b-dropdown-item @click="logout">Signout</b-dropdown-item>
-          </b-nav-item-dropdown>
-
           <b-nav-item
             v-if="this.$store.getters['user/isAdmin']"
             @click="$router.push({ name: 'AdminMission'});"
@@ -32,12 +23,18 @@
             v-else
             @click="$router.push(`/team/${$store.getters['user/userteam']}`);"
           >{{this.$store.getters['user/userteam']}}</b-nav-item>
+
+          <b-nav-item-dropdown right>
+            <template slot="button-content">
+              <span>{{$store.getters['user/initials']}}</span>
+            </template>
+            <b-dropdown-item @click="$router.push(`/profile`);">Profile</b-dropdown-item>
+            <b-dropdown-item @click="logout">Signout</b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <div style="padding: 15px;">
-      <router-view />
-    </div>
+    <router-view />
   </div>
 </template>
 

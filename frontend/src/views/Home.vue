@@ -1,7 +1,5 @@
 <template>
-  <div style="padding: 15px;">
-    <span v-html="content"></span>
-  </div>
+  <span v-html="content"></span>
 </template>
 
 <script>

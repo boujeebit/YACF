@@ -3,9 +3,15 @@
     <Challenges/>
   </div>-->
 
-  <div v-if="this.$store.getters['user/userteam']">
+  <div v-if="this.$store.getters['user/userteam'] || this.$store.getters['user/isAdmin']">
     <transition name="fade">
       <div v-if="this.$store.state.board">
+        <b-alert
+          v-if="this.$store.getters['user/isAdmin']"
+          style="text-align: center;"
+          show
+        >You are an Admin. The challenge board will have limit functionality.</b-alert>
+
         <div v-for="cat in this.$store.state.board" :key="cat.id">
           <h3 style="text-align: center; margin-top: 15px;">{{cat.name}}</h3>
           <hr />
