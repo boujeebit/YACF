@@ -22,7 +22,11 @@ const getters = {
     return state.user.firstName + " " + state.user.lastName;
   },
   initials: state => {
-    return state.user.firstName.charAt(0) + state.user.lastName.charAt(0);
+    if (state.user.firstName && state.user.lastName) {
+      return state.user.firstName.charAt(0) + state.user.lastName.charAt(0);
+    } else {
+      return null;
+    }
   },
   userteam: state => {
     if (state.user.profile) {

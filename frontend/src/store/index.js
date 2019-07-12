@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import user from "./modules/user";
 import teams from "./modules/teams";
 import challenge from "./modules/challenge";
+import theme from "./modules/theme";
 
 import { WebSocketBridge } from "django-channels";
 
@@ -38,7 +39,8 @@ export default new Vuex.Store({
   modules: {
     user,
     teams,
-    challenge
+    challenge,
+    theme
   },
   state: {
     board: "",

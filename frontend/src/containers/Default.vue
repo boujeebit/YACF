@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="md" type="dark" variant="dark">
+    <b-navbar toggleable="md" type="dark" :style="{backgroundColor: theme.primary}">
       <b-navbar-toggle target="main_nav_collapse"></b-navbar-toggle>
 
       <b-navbar-brand
@@ -34,15 +34,25 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <router-view />
+    <div :style="{backgroundColor: theme.secondary}">
+      {{theme}}
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "DefaultContainer",
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters({
+      theme: "theme/GET_THEME"
+    })
   },
   methods: {
     logout() {

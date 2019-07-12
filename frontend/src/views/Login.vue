@@ -1,12 +1,15 @@
 <template>
   <div>
-    <div class="top-section logo">
+    <div class="top-section logo" :style="{backgroundColor: $store.state.theme.primary}">
       <div class="frame">
         <img src="/static/img/logo-y.png" width="450" height="250" alt="YACF" />
       </div>
     </div>
 
-    <div class="bottom-section text-center">
+    <div
+      class="bottom-section text-center"
+      :style="{backgroundColor: $store.state.theme.secondary}"
+    >
       <div class="form-signin">
         <h3>Login to YACF</h3>
 

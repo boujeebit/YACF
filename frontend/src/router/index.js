@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import { graud, superusergraud } from "@/router/guards";
+import { base, graud, superusergraud } from "@/router/guards";
 
 Vue.use(Router);
 
@@ -114,20 +114,24 @@ export default new Router({
     {
       path: "/login",
       name: "Login",
+      beforeEnter: base,
       component: () => import("@/views/Login")
     },
     {
       path: "/register/user",
       name: "RegisterUser",
+      beforeEnter: base,
       component: () => import("@/views/Register/User")
     },
     {
       path: "/register/team",
       name: "RegisterTeam",
+      beforeEnter: base,
       component: () => import("@/views/Register/Team")
     },
     {
       path: "*",
+      beforeEnter: base,
       component: () => import("@/views/errors/404")
     }
   ]

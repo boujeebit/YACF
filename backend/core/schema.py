@@ -5,8 +5,10 @@ import categories.schema
 import challenges.schema
 import teams.schema
 import index.schema
+import server.schema
 
-class Query(uauth.schema.Query, categories.schema.Query, challenges.schema.Query, teams.schema.Query, index.schema.Query, graphene.ObjectType):
+class Query(uauth.schema.Query, categories.schema.Query, challenges.schema.Query, teams.schema.Query, index.schema.Query,
+server.schema.Query, graphene.ObjectType):
     pass
 
 class Mutation(uauth.schema.Mutation, categories.schema.Mutation, challenges.schema.Mutation, teams.schema.Mutation, index.schema.Mutation, graphene.ObjectType):
