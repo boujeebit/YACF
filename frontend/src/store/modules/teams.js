@@ -47,9 +47,9 @@ const actions = {
   },
   loadStats({ commit }, payload) {
     api(
-      `query{ team(name:"${payload}"){ id, name, points, solved{ id, timestamp, challenge { id, name, points, category{ name } } } } }`
+      `query{ teamName(name:"${payload}"){ id, name, points, players { user { username } }, solved{ id, timestamp, challenge { id, name, points, category{ name } } } } }`
     ).then(data => {
-      commit("SET_TEAM", data.team);
+      commit("SET_TEAM", data.teamName);
     });
   }
 };

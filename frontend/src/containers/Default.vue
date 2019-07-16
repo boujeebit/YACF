@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="md" type="dark" :style="{backgroundColor: theme.primary}">
+    <b-navbar toggleable="md" type="dark" variant="dark">
       <b-navbar-toggle target="main_nav_collapse"></b-navbar-toggle>
 
       <b-navbar-brand
@@ -34,10 +34,7 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <div :style="{backgroundColor: theme.secondary}">
-      {{theme}}
-      <router-view />
-    </div>
+    <router-view />
   </div>
 </template>
 

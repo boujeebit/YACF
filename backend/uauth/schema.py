@@ -16,6 +16,7 @@ def validate_user_is_authenticated(user):
 class Me(DjangoObjectType):
     class Meta:
         model = User
+        exclude_fields = ('password')
 
 class Profile(DjangoObjectType):
     class Meta:

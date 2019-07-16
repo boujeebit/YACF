@@ -2,7 +2,11 @@
   <div>
     <div class="top-section logo" :style="{backgroundColor: $store.state.theme.primary}">
       <div class="frame">
-        <img src="/static/img/logo-y.png" width="450" height="250" alt="YACF" />
+        <img
+          src="https://raw.githubusercontent.com/yacf/docs/master/_assets/images/logo-p.png"
+          width="450"
+          alt="YACF"
+        />
       </div>
     </div>
 
@@ -145,7 +149,7 @@ input {
 input:focus {
   margin-top: 5px;
   background-color: #181b1f;
-  border-color: yellow;
+  border-color: purple;
   outline: none;
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
@@ -155,7 +159,7 @@ input:focus {
 button {
   margin-top: 5px;
   background-color: #181b1f;
-  border-color: yellow;
-  color: yellow;
+  border-color: purple;
+  color: purple;
 }
 </style>

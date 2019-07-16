@@ -30,7 +30,8 @@ class Query(graphene.ObjectType):
     all_teams = graphene.List(TeamType)
     all_solves = graphene.List(SolvedChallengeType)
 
-    team = graphene.Field(TeamType, name=graphene.String())
+    team_name = graphene.Field(TeamType, name=graphene.String())
+    team = graphene.Field(TeamType)
 
     team_sovle = graphene.List(SolvedChallengeType)
 
@@ -39,9 +40,11 @@ class Query(graphene.ObjectType):
     def resolve_all_teams(self, info, **kwargs):
         return Team.objects.all()
 
+    def resolve_team_name(self, info, **kwargs):
+        return Team.objects.get(name__iexact=kwargs.get('name'))
+
     def resolve_team(self, info, **kwargs):
         return info.context.user.profile.team
-        return Team.objects.get(name__iexact=kwargs.get('name'))
     
     def resolve_all_solves(self, info, **kwargs):
         return SolvedChallenge.objects.all()
@@ -122,6 +125,39 @@ class RemoveTeam(graphene.Mutation):
         return RemoveTeam(code)
 
 
+#TODO: Move to queries
+class TeamGraph(graphene.Mutation):
+    timeline = graphene.String()
+    message = graphene.String() 
+
+    class Arguments:
+        name = graphene.String(required=True)
+
+    def mutate(self, info, name):
+        team = Team.objects.get(name__iexact=name)
+        # print(team)
+        # print(team.solved.all().order_by('timestamp'))
+
+
+        graph = [{'label': team.name, 'data': [], 'backgroundColor': '#FFD700', 'borderColor': '#FFD700', 'fill': 'false'}]
+
+        for solve in team.solved.all().order_by('timestamp'):
+            if graph[0]['data']:
+                graph[0]['data'].append(graph[0]['data'][-1]+solve.challenge.points)
+            else:
+                graph[0]['data'].append(solve.challenge.points)
+
+        timeline = []
+        for solve in team.solved.all().order_by('timestamp'):
+            timeline.append(solve.timestamp.strftime("%I:%M:%S"))
+
+        # print(graph, timeline)
+
+        return TeamGraph(json.dumps(timeline), json.dumps(graph))
+
+
+
+
 class Graph(graphene.Mutation):
     timeline = graphene.String()
     message = graphene.String()
@@ -177,4 +213,5 @@ class Mutation(object):
     addteam = AddTeam.Field()
     removeteam = RemoveTeam.Field()
     updateteam = UpdateTeam.Field()
+    teamgraph = TeamGraph.Field()
     graph   = Graph.Field()

@@ -3,12 +3,12 @@ import store from "@/store/index";
 
 export function base(to, from, next) {
   // Get Server settings
-  store.dispatch("theme/GET_THEME");
+  // store.dispatch("theme/GET_THEME");
   next();
 }
 
 export function graud(to, from, next) {
-  store.dispatch("theme/GET_THEME");
+  // store.dispatch("theme/GET_THEME");
   api(
     "query{ me { id, isSuperuser, username, firstName, lastName, profile{ team { name } } } }"
   ).then(data => {
