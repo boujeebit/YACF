@@ -29,10 +29,14 @@ class Welcome(graphene.Mutation):
 
     def mutate(self, info, content):
         welcome = WelcomePage.objects.all().first()
-        welcome.content = content
-        welcome.save()
+        if welcome:
+            welcome.content = content
+            welcome.save()
+        else:
+            welcome = WelcomePage(content=content)
+            welcome.save()
 
-        return Welcome("Added")
+        return Welcome(status="Added")
 
 class Mutation(object):
     welcome = Welcome.Field()

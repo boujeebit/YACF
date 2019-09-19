@@ -58,11 +58,6 @@ export default new Router({
               component: () => import("@/views/admin/Welcome")
             },
             {
-              path: "/admin/create",
-              name: "AdminCreate",
-              component: () => import("@/views/admin/Create")
-            },
-            {
               path: "/admin/categories",
               name: "AdminCategories",
               component: () => import("@/views/admin/Categories")

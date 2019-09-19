@@ -1,13 +1,21 @@
 [data-letters]:before {
-    content:attr(data-letters);
-    display:inline-block;
-    font-size: .9em;
-    width:2em;
-    height:2em;
-    line-height:2em;
-    text-align:center;
-    border-radius:50%;
-    background:#ff474d;
-    vertical-align:middle;
-    color:white;
-}  
+  content: attr(data-letters);
+  display: inline-block;
+  font-size: 0.9em;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+  border-radius: 50%;
+  background: #ff474d;
+  vertical-align: middle;
+  color: white;
+}
+
+.offset {
+  margin: 15px;
+}
+
+.newOpt {
+  margin: 15px 0 15px 0;
+}

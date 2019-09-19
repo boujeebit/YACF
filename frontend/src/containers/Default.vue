@@ -3,26 +3,17 @@
     <b-navbar toggleable="md" type="dark" variant="dark">
       <b-navbar-toggle target="main_nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand
-        @click="$router.push({ name: 'Home'});"
-        style="cursor: pointer;"
-      >YACF {{this.$store.getters['user/brand']}}</b-navbar-brand>
+      <b-navbar-brand @click="$router.push({ name: 'Home'});" style="cursor: pointer;">YACF {{this.$store.getters['user/brand']}}</b-navbar-brand>
 
       <b-collapse is-nav id="main_nav_collapse">
         <b-navbar-nav>
-          <b-nav-item @click="$router.push({ name: 'Challenges'});">Challenges</b-nav-item>
           <b-nav-item @click="$router.push({ name: 'Scoreboard'});">Scoreboard</b-nav-item>
+          <b-nav-item @click="$router.push({ name: 'Challenges'});">Challenges</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item
-            v-if="this.$store.getters['user/isAdmin']"
-            @click="$router.push({ name: 'AdminMission'});"
-          >Admin Dashboard</b-nav-item>
-          <b-nav-item
-            v-else
-            @click="$router.push(`/team/${$store.getters['user/userteam']}`);"
-          >{{this.$store.getters['user/userteam']}}</b-nav-item>
+          <b-nav-item v-if="this.$store.getters['user/isAdmin']" @click="$router.push({ name: 'AdminMission'});">Admin Dashboard</b-nav-item>
+          <b-nav-item v-else @click="$router.push(`/team/${$store.getters['user/userteam']}`);">{{this.$store.getters['user/userteam']}}</b-nav-item>
 
           <b-nav-item-dropdown right>
             <template slot="button-content">

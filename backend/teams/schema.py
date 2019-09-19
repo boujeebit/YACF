@@ -64,10 +64,10 @@ class AddTeam(graphene.Mutation):
         name        = graphene.String(required=True)
         email       = graphene.String(required=True)
         affiliation = graphene.String(required=True)
-        # accesscode  = graphene.String(required=False)
+        accesscode  = graphene.String(required=False)
 
     # TODO: VALIDATION CHECK!!
-    def mutate(self, info, name, email, affiliation): #, accesscode=None):
+    def mutate(self, info, name, email, affiliation, accesscode=None):
         try:
             newTeam = Team(name=name, email=email, affiliation=affiliation, accesscode=''.join(random.choices(string.ascii_uppercase + string.digits, k=10)))
             newTeam.save()
@@ -75,7 +75,7 @@ class AddTeam(graphene.Mutation):
         except:
             code = 1
 
-        return AddTeam(code)
+        return AddTeam(code=code)
 
 class UpdateTeam(graphene.Mutation):
     message = graphene.String()

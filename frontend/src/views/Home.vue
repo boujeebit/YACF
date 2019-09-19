@@ -15,8 +15,7 @@ export default {
   beforeMount() {
     let that = this;
     api("query{ welcomePage{ content } }").then(data => {
-      // that.content = data.welcomePage.content;
-      that.content = "boom";
+      that.content = atob(data.welcomePage.content);
       that.loading = false;
     });
   }
