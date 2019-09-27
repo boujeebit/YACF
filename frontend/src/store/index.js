@@ -44,6 +44,7 @@ export default new Vuex.Store({
   },
   state: {
     board: "",
+    challenges: [],
     solves: "",
     // solved: "",
 
@@ -64,11 +65,16 @@ export default new Vuex.Store({
   },
   actions: {
     loadChallengeBoard({ commit }) {
-      api(
-        "query{ allCategories {id, challenges{ id, name, points }, name, description}, teamSovle{ challenge{ id } } }"
-      ).then(data => {
+      api("query{ allCategories {id, challenges{ id, name, points }, name, description}, teamSovle{ challenge{ id } } }").then(data => {
         commit("SET_BOARD", data.allCategories);
         commit("SET_SOLVES", data.teamSovle);
+      });
+    },
+
+    loadNewChallengeBoard({ commit }) {
+      api("query{ challenges {id, name points category {name} } }").then(data => {
+        commit("SET_NEW_BOARD", data.challenges);
+        // commit("SET_SOLVES", data.teamSovle);
       });
     },
 
@@ -80,10 +86,15 @@ export default new Vuex.Store({
     SET_BOARD(state, board) {
       state.board = board;
     },
+    SET_NEW_BOARD(state, challenges) {
+      state.challenges = challenges;
+    },
     SET_SOLVES(state, solves) {
       var ids = [];
-      for (var i = 0; i < solves.length; i++) {
-        ids.push(solves[i].challenge.id);
+      if (solves) {
+        solves.forEach(function(solve) {
+          ids.push(solve.challenge.id);
+        });
       }
       state.solves = ids;
     },

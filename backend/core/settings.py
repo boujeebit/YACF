@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_filters',
     'server',
     'index',
+    'pages',
     'uauth',
     'teams',
     'categories',

@@ -1,51 +1,54 @@
 <template>
-  <!-- <div style="padding: 15px;">
-    <Challenges/>
-  </div>-->
+  <div>
+    <b-alert v-if="this.$store.getters['user/isAdmin']" style="text-align: center;" show>You are an Admin. The challenge board will have limit functionality.</b-alert>
 
-  <div v-if="this.$store.getters['user/userteam'] || this.$store.getters['user/isAdmin']">
-    <transition name="fade">
-      <div v-if="this.$store.state.board">
-        <b-alert
-          v-if="this.$store.getters['user/isAdmin']"
-          style="text-align: center;"
-          show
-        >You are an Admin. The challenge board will have limit functionality.</b-alert>
+    <div class="container">
+      <div v-if="this.$store.getters['user/userteam'] || this.$store.getters['user/isAdmin']">
+        <transition name="fade">
+          <div v-if="this.$store.state.board">
+            <b-input-group style="padding: 15px">
+              <template v-slot:prepend>
+                <b-input-group-text style="border-radius: 3px 0 0 3px;">Category</b-input-group-text>
+              </template>
 
-        <div v-for="cat in this.$store.state.board" :key="cat.id">
-          <h3 style="text-align: center; margin-top: 15px;">{{cat.name}}</h3>
-          <hr />
-          <div class="flex-container">
-            <div v-for="chal in cat.challenges" :key="chal.id">
-              <div
-                class="flex-container-div"
-                v-b-modal="chal.id"
-                style="cursor: pointer;"
-                v-bind:style="[isSoved(chal.id) ? {'backgroundColor': '#448aff', 'color': 'white'} : {}]"
-              >
-                <h3>{{chal.name}}</h3>
-                <p>{{chal.points}}</p>
-                <!-- <p v-if="isSoved(chal.id)">Solved</p> -->
+              <b-form-select v-model="selected" :options="options"></b-form-select>
+
+              <template v-slot:append>
+                <b-dropdown text="Filter" variant="secondary" style="border-radius: 0 3px 3px 0;">
+                  <b-dropdown-item>Hide Solved</b-dropdown-item>
+                </b-dropdown>
+              </template>
+            </b-input-group>
+
+            <div class="flex-container">
+              <div v-for="challenge in challenges" :key="challenge.id">
+                <div class="flex-container-div" v-b-modal="challenge.id" style="cursor: pointer;" v-bind:style="[isSoved(challenge.id) ? {'backgroundColor': '#448aff', 'color': 'white'} : {}]">
+                  <h5>{{challenge.category.name}}</h5>
+                  <p>{{challenge.name}}</p>
+                  <p>{{challenge.points}}</p>
+                </div>
+                <Challenge :chal="challenge" :enter="isSoved(challenge.id) ? true : false"></Challenge>
               </div>
-              <Challenge :chal="chal" :enter="isSoved(chal.id) ? true : false"></Challenge>
             </div>
           </div>
+        </transition>
+        <div v-if="!this.$store.state.board">
+          <main>
+            <div class="la-ball-clip-rotate-multiple la-dark la-3x">
+              <div></div>
+              <div></div>
+            </div>
+          </main>
         </div>
       </div>
-    </transition>
-    <div v-if="!this.$store.state.board">
-      <main>
-        <div class="la-ball-clip-rotate-multiple la-dark la-3x">
-          <div></div>
-          <div></div>
-        </div>
-      </main>
+      <div v-else>You are not apart of a team</div>
     </div>
   </div>
-  <div v-else>You are not apart of a team</div>
 </template>
 
 <script>
+import { api } from "@/utils/api";
+
 // import Challenges from "@/components/Challenges.vue";
 import Challenge from "@/components/Challenge.vue";
 
@@ -54,9 +57,37 @@ export default {
   components: {
     Challenge
   },
+  data() {
+    return {
+      options: [{ value: null, text: "All Categories" }],
+      selected: null
+    };
+  },
+  computed: {
+    challenges() {
+      if (this.selected !== null) {
+        let self = this;
+        return this.$store.state.challenges.filter(function(challenge) {
+          return challenge.category.name == self.selected;
+        });
+      } else {
+        return this.$store.state.challenges;
+      }
+    }
+  },
   mounted() {
     //TODO: Load this back into a component
     this.$store.dispatch("loadChallengeBoard");
+    this.$store.dispatch("loadNewChallengeBoard");
+
+    let self = this;
+    api(
+      "query { allCategories{ id, name, description, challenges { id } } }"
+    ).then(data => {
+      data.allCategories.forEach(function(element) {
+        self.options.push({ value: element.name, text: element.name });
+      });
+    });
   },
   methods: {
     isSoved(id) {
@@ -77,17 +108,17 @@ export default {
 .flex-container {
   display: flex;
   flex-wrap: wrap;
-  background-color: white;
   margin-bottom: 20px;
   justify-content: center;
 }
 
 .flex-container-div {
-  background-color: #f5f5f5;
+  background-color: #fefefe;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
   border-radius: 2px;
-  width: 300px;
+  width: 200px;
+  height: 150px;
   margin: 10px;
   text-align: center;
   padding: 15px 0 15px 0;

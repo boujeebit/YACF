@@ -61,9 +61,9 @@ export default {
   beforeMount() {
     let that = this;
     api(
-      "query { allChallenges{ id, name, description, points, flag, category { id, name } } }"
+      "query { challenges{ id, name, description, points, category { id, name } } }"
     ).then(data => {
-      that.challenges = data.allChallenges;
+      that.challenges = data.challenges;
       that.loading = false;
     });
   }

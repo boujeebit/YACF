@@ -2,44 +2,24 @@
   <div>
     <div class="top-section logo" :style="{backgroundColor: $store.state.theme.primary}">
       <div class="frame">
-        <img
-          src="https://raw.githubusercontent.com/yacf/docs/master/_assets/images/logo-p.png"
-          width="450"
-          alt="YACF"
-        />
+        <img src="http://nullify.uno/img/main_logo.png" width="650" alt="YACF" />
       </div>
     </div>
 
-    <div
-      class="bottom-section text-center"
-      :style="{backgroundColor: $store.state.theme.secondary}"
-    >
+    <div class="bottom-section text-center" :style="{backgroundColor: $store.state.theme.secondary}">
       <div class="form-signin">
-        <h3>Login to YACF</h3>
+        <h3>CTF Login</h3>
 
         <p>{{message}}</p>
-        <input
-          class="form-control"
-          placeholder="Username"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-          v-model="username"
-        />
-        <input
-          type="password"
-          class="form-control"
-          placeholder="Password"
-          v-model="password"
-          v-on:keyup.enter="login()"
-        />
+        <input class="form-control" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" v-model="username" />
+        <input type="password" class="form-control" placeholder="Password" v-model="password" v-on:keyup.enter="login()" />
 
         <button class="btn btn-lg btn-block btn-secondary" @click="login()">Sign in</button>
 
-        <!-- <p class="mt-5 mb-3 text-muted">
-          <a @click="$router.push('/resigster/user');">Register Here</a>
-        </p>-->
+        <p class="mt-5 mb-3 text-muted">
+          <!-- <a @click="$router.push({name: "RegisterUser"});">Register Here</a> -->
+          <router-link :to="{name: 'RegisterUser'}">Register Here</router-link>
+        </p>
       </div>
     </div>
   </div>
@@ -65,7 +45,7 @@ export default {
       ).then(data => {
         if (data.login) {
           that.$store.commit("user/SET_USER", data.login);
-          that.$router.push("/challenges");
+          that.$router.push({ name: "Home" });
         } else {
           that.message = "Login incorrect";
         }
@@ -146,7 +126,7 @@ input {
   border-color: black;
 }
 
-input:focus {
+/* input:focus {
   margin-top: 5px;
   background-color: #181b1f;
   border-color: purple;
@@ -161,5 +141,5 @@ button {
   background-color: #181b1f;
   border-color: purple;
   color: purple;
-}
+} */
 </style>

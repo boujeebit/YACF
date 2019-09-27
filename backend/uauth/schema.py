@@ -30,8 +30,10 @@ class Query(object):
         # TODO: Validate is superuser
         user = info.context.user
         validate_user_is_authenticated(user)
-
-        return User.objects.all()
+        if user.is_superuser:
+            return User.objects.all()
+        else:
+            raise Exception("Insignificant privileges")
 
     def resolve_me(self, info):
         user = info.context.user
@@ -66,7 +68,9 @@ class AddUser(graphene.Mutation):
             # Invaild access code
             code = 1
 
-        return AddUser(code)
+        login(info.context, newUser)
+
+        return AddUser(code=code)
 
 class LogIn(graphene.Mutation):
     id = graphene.Int()

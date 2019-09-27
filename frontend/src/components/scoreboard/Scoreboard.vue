@@ -1,7 +1,7 @@
 <template>
   <div style="padding-top:20px;">
     <h3>Teams</h3>
-    <table id="socreboard" class="table table-hover">
+    <table id="socreboard" class="table table-hover table-sm">
       <thead>
         <tr>
           <th>Rank</th>
@@ -13,12 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(team, index) in teams"
-          :key="team.id"
-          style="cursor: pointer;"
-          @click="$router.push(`/team/${team.name}`);"
-        >
+        <tr v-for="(team, index) in teams" :key="team.id" style="cursor: pointer;" @click="$router.push(`/team/${team.name}`);">
           <td>{{index+1}}</td>
           <td>{{team.name}}</td>
           <td>{{team.correctFlags}}</td>

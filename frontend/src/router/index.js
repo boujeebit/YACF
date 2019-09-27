@@ -38,6 +38,11 @@ export default new Router({
           component: () => import("@/views/Scoreboard")
         },
         {
+          path: "/page/:url",
+          name: "Page",
+          component: () => import("@/views/Page")
+        },
+        {
           path: "/team/:name",
           name: "Team",
           component: () => import("@/views/Team")
@@ -56,6 +61,11 @@ export default new Router({
               path: "/admin/welcome",
               name: "AdminWelcome",
               component: () => import("@/views/admin/Welcome")
+            },
+            {
+              path: "/admin/pages",
+              name: "AdminPages",
+              component: () => import("@/views/admin/Pages")
             },
             {
               path: "/admin/categories",
@@ -100,6 +110,16 @@ export default new Router({
               name: "AdminUserEdit",
               component: () => import("@/views/admin/Edit/User"),
               props: true
+            },
+            {
+              path: "/admin/settings",
+              name: "AdminSettings",
+              component: () => import("@/views/admin/Settings")
+            },
+            {
+              path: "/admin/scripter",
+              name: "AdminScripter",
+              component: () => import("@/views/admin/Scripter")
             }
           ],
           beforeEnter: superusergraud
