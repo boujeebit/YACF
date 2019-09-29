@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from uauth.models import Profile
 from teams.models import Team
 from categories.models import Category
-from challenges.models import Challenge
+from challenges.models import Challenge, Flag
 from uauth.validators import validate_username, validate_password, validate_email
 
 from random import randint
@@ -91,8 +91,10 @@ def makeChallenges():
         cat = Category.objects.get(name=category)
         for challenge_points in ctf_challenge_points:
             chal_str = "%s %s" % (category, str(challenge_points))
-            chal = Challenge(category=cat, name=chal_str, description="{0} challenge".format(chal_str), points=challenge_points, flag=hashlib.md5(chal_str.encode('utf-8')).hexdigest(), show=True)
+            chal = Challenge(category=cat, name=chal_str, description="{0} challenge".format(chal_str), points=challenge_points, show=True)
             chal.save()
+            flag = Flag(value=hashlib.md5('flag'.encode('utf-8')).hexdigest(), challenge=chal)
+            flag.save()
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='YACF database reset script')

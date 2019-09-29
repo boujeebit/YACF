@@ -1,6 +1,7 @@
 import channels.layers
 from asgiref.sync import async_to_sync
 
+import hashlib
 import graphene
 from graphene_django import DjangoObjectType
 # from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
@@ -8,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 from categories.models import Category
-from challenges.models import Challenge
+from challenges.models import Challenge, Flag
 from teams.models import SolvedChallenge
 from uauth.models import Profile
 
@@ -16,6 +17,10 @@ class ChallengeType(DjangoObjectType):
     class Meta:
         model = Challenge
         exclude_fields = ('flag')
+
+class FlagType(DjangoObjectType):
+    class Meta:
+        model = Flag
 
 class Query(graphene.ObjectType):
     challenges = graphene.List(ChallengeType)
@@ -61,14 +66,19 @@ class AddChallenge(graphene.Mutation):
             if category:
                 try:
                     category = Category.objects.get(name=category)
-                    newChallenge = Challenge(name=name, description=description, points=points, flag=flag, show=show, category=category)
+                    newChallenge = Challenge(name=name, description=description, points=points, show=show, category=category)
                     newChallenge.save()
+                    flag = Flag(value=hashlib.md5(flag.encode('utf-8')).hexdigest(), challenge=newChallenge)
+                    flag.save()
                 except:
                     # Category not found
                     message = "failure"
             else:
-                newChallenge = Challenge(name=name, description=description, points=points, flag=flag, show=show)
+                newChallenge = Challenge(name=name, description=description, points=points, show=show)
                 newChallenge.save()
+                flag = Flag(value=flag, challenge=newChallenge)
+                flag.save()
+
             message = "success"
         except:
             message = "failure"
@@ -143,7 +153,7 @@ class SubmitFlag(graphene.Mutation):
         print("Team:", team.name)
         try:
             get_challenge = Challenge.objects.get(pk=challenge)
-            if get_challenge.flag == flag:
+            if get_challenge.flag.value == hashlib.md5(flag.encode('utf-8')).hexdigest():
                 if team:
                     solve = SolvedChallenge(team=team, user=info.context.user, challenge=get_challenge)
                     solve.save()                  
