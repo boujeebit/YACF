@@ -49,12 +49,15 @@ def resetDjangoDB():
 #     admin.save()
 
 def makeAdminUser():
-    admin = User.objects.create_superuser("admin", "email@email.com", "password1")
+    admin = User.objects.create_superuser("admin", "email@email.com", "password1", first_name="Admin", last_name="Admin")
     admin.save()
+    profile = Profile(user=admin, verified=True)
+    profile.save()
 
 def makeTeam(team_name, hidden, accesscode):
     user_team = Team(name=team_name, hidden=hidden, accesscode=accesscode)
     user_team.save()
+    return user_team
 
 def makeUser(user_name, user_email, user_password, user_team, hidden):
     # Validate admin user command line arguments

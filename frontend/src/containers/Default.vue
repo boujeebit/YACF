@@ -71,8 +71,10 @@ export default {
 </script>
 
 <style>
+body {
+  background-color: #f3f3f3;
+}
 #app {
-  height: 100vh;
   background-color: #f3f3f3;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

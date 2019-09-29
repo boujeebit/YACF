@@ -112,6 +112,16 @@ export default new Router({
               props: true
             },
             {
+              path: "/admin/solves",
+              name: "AdminSolves",
+              component: () => import("@/views/admin/Solves")
+            },
+            {
+              path: "/admin/surveys",
+              name: "AdminSurveys",
+              component: () => import("@/views/admin/Surveys")
+            },
+            {
               path: "/admin/settings",
               name: "AdminSettings",
               component: () => import("@/views/admin/Settings")

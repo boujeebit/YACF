@@ -21,7 +21,7 @@
               <td>{{user.firstName}}</td>
               <td>{{user.lastName}}</td>
               <td>{{user.email}}</td>
-              <td v-if="user.profile">{{user.profile.team.name}}</td>
+              <td v-if="user.profile.team">{{user.profile.team.name}}</td>
               <td v-else>
                 <b-badge variant="warning">No Team</b-badge>
               </td>
