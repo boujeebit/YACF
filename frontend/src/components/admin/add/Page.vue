@@ -7,8 +7,6 @@
     <input class="form-control" v-model="url" />
     <label>Page Content:</label>
     <MonacoEditor height="500" theme="vs" language="html" v-model="content" :options="options"></MonacoEditor>
-
-    <input class="form-control" />
     <p>{{message}}</p>
     <button class="btn btn-secondary" @click="addPage()">Add Page</button>
   </div>

@@ -3,13 +3,7 @@
     <div v-if="loading">Yo, we loadin'. Hang tight</div>
     <div v-else>
       <div class="newOpt">
-        <button class="btn btn-secondary" @click="showNew = !showNew">New Page</button>
-      </div>
-      <div v-if="showNew">
-        <b-card header="New Page" header-tag="header">
-          <AddPage />
-        </b-card>
-        <hr />
+        <button class="btn btn-secondary" @click="$router.push({ name: 'AdminCreatePages'});">New Page</button>
       </div>
       <b-card header="Pages" header-tag="header">
         <table id="adminpages" class="table">
@@ -50,7 +44,6 @@ export default {
   data() {
     return {
       loading: true,
-      showNew: false,
       pages: []
     };
   },

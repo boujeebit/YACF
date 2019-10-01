@@ -10,7 +10,7 @@
 import AddPage from "@/components/admin/add/Page.vue";
 
 export default {
-  name: "AdminNewPage",
+  name: "AdminCreatePage",
   components: { AddPage },
   data() {
     return {};
