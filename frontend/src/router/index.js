@@ -68,6 +68,11 @@ export default new Router({
               component: () => import("@/views/admin/Pages")
             },
             {
+              path: "/admin/pages/new",
+              name: "AdminNewPages",
+              component: () => import("@/views/admin/New/Page")
+            },
+            {
               path: "/admin/categories",
               name: "AdminCategories",
               component: () => import("@/views/admin/Categories")

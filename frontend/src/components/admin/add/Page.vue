@@ -6,7 +6,9 @@
     <label>Page URL:</label>
     <input class="form-control" v-model="url" />
     <label>Page Content:</label>
-    <input class="form-control" v-model="content" />
+    <MonacoEditor height="500" theme="vs" language="html" v-model="content" :options="options"></MonacoEditor>
+
+    <input class="form-control" />
     <p>{{message}}</p>
     <button class="btn btn-secondary" @click="addPage()">Add Page</button>
   </div>
@@ -14,15 +16,20 @@
 
 <script>
 import { api } from "@/utils/api";
+import MonacoEditor from "monaco-editor-vue";
 
 export default {
   name: "AddPage",
+  components: { MonacoEditor },
   data() {
     return {
       name: "",
       url: "",
       content: "",
-      message: ""
+      message: "",
+      options: {
+        //Monaco Editor Options
+      }
     };
   },
   methods: {

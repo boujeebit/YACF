@@ -18,7 +18,6 @@
               <th>Challenge</th>
               <th>Description</th>
               <th>Points</th>
-              <th>Flag (Hover to show)</th>
               <th style="text-align: right;">Options</th>
             </tr>
           </thead>
@@ -27,7 +26,6 @@
               <td>{{challenge.name}}</td>
               <td>{{challenge.description}}</td>
               <td>{{challenge.points}}</td>
-              <td class="secret">{{challenge.flag}}</td>
               <td>
                 <div>
                   <RemoveChallenge :challenge="challenge" />

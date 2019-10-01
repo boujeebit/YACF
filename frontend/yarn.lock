@@ -5140,6 +5140,19 @@ moment@^2.10.2, moment@^2.11.1:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
+monaco-editor-vue@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/monaco-editor-vue/-/monaco-editor-vue-1.0.9.tgz#e5c07065cef5af19b84ac409fbee690ef50879fa"
+  integrity sha512-E4hBPedloFN1ccE25LC+qL6d7uu8diQV1g/eEomBYUx4r+uGV8oawlkBjnR6wR1Bx529S5iuiXzlLKjx4MKPyQ==
+  dependencies:
+    monaco-editor "^0.17.1"
+    vue "^2.5.17"
+
+monaco-editor@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.17.1.tgz#8fbe96ca54bfa75262706e044f8f780e904aa45c"
+  integrity sha512-JAc0mtW7NeO+0SwPRcdkfDbWLgkqL9WfP1NbpP9wNASsW6oWqgZqNIWt4teymGjZIXTElx3dnQmUYHmVrJ7HxA==
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
