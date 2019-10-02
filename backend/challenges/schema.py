@@ -4,9 +4,7 @@ from asgiref.sync import async_to_sync
 import hashlib
 import graphene
 from graphene_django import DjangoObjectType
-# from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from uauth.validators import validate_user_is_authenticated, validate_user_is_admin
 
 from categories.models import Category
 from challenges.models import Challenge, Flag
@@ -31,18 +29,21 @@ class Query(graphene.ObjectType):
     total_points = graphene.Int()
 
     def resolve_challenges(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
         return Challenge.objects.all().order_by('points')
 
     def resolve_challenge(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
         return Challenge.objects.get(pk=kwargs.get('id'))
 
     def resolve_statistic(self, info, **kwargs):
-        get_category = Category.objects.get( name__iexact=kwargs.get('category'))
+        validate_user_is_authenticated(info.context.user)
+        get_category = Category.objects.get( name__iexact=kwargs.get('category') )
         return Challenge.objects.filter(category=get_category, points=kwargs.get('points')).first()
 
     def resolve_total_points(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
         return sum([challenge.points for challenge in Challenge.objects.all()])
-
 
 
 # ------------------- MUTATIONS -------------------
@@ -60,7 +61,9 @@ class AddChallenge(graphene.Mutation):
         category    = graphene.String(required=False)
 
     #TODO: Need to check and ensure no challenge is made with the same points as another challenge. If not, frontend stats break
+    #TODO: Just fix the frontend :) ^^
     def mutate(self, info, name, description, points=0, flag="", show=False, category=None):
+        validate_user_is_admin(info.context.user)
 
         try:
             if category:
@@ -92,6 +95,8 @@ class RemoveChallenge(graphene.Mutation):
         id = graphene.Int(required=True)
 
     def mutate(self, info, id):
+        validate_user_is_admin(info.context.user)
+
         try:
             challenge = Challenge.objects.get(pk=id)
             challenge.delete()
@@ -116,6 +121,7 @@ class UpdateChallenge(graphene.Mutation):
 
     #TODO: Need to check and ensure no challenge is made with the same points as another challenge. If not, frontend stats break
     def mutate(self, info, id, name, description, points=0, flag="", show=False, category=None):
+        validate_user_is_admin(info.context.user)
 
         try:
             category = Category.objects.get(name=category)
@@ -141,12 +147,14 @@ class SubmitFlag(graphene.Mutation):
     code = graphene.Int()
 
     class Arguments:
-        #DOC: Challenge will equeal the PK of the challenge a.k.a id
+        #DOC: Challenge will equal the PK of the challenge a.k.a id
         challenge   = graphene.Int(required=True)
         flag        = graphene.String(required=True)
 
 
     def mutate(self, info, challenge, flag):
+        validate_user_is_authenticated(info.context.user)
+
         print("User:", info.context.user)
         # print("Team:", info.context.user.profile.verified)
         team = Profile.objects.get(user=info.context.user).team

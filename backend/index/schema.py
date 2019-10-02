@@ -1,9 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-# from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-
+from uauth.validators import validate_user_is_authenticated, validate_user_is_admin
 import json
 
 from index.models import WelcomePage
@@ -16,8 +13,8 @@ class Query(graphene.ObjectType):
     welcomePage = graphene.Field(WelcomePageType)
 
     def resolve_welcomePage(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
         return WelcomePage.objects.all().first()
-
 
 # ------------------- MUTATIONS -------------------
 
@@ -28,6 +25,7 @@ class Welcome(graphene.Mutation):
         content = graphene.String(required=True)
 
     def mutate(self, info, content):
+        validate_user_is_admin(info.context.user)
         welcome = WelcomePage.objects.all().first()
         if welcome:
             welcome.content = content

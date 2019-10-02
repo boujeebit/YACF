@@ -2,6 +2,8 @@
 
 Yet Another CTF Framework!
 
+YACF is still under development and should not be use in production yet. Good things to come!
+
 # Deployment
 
 Currently, the only supported method of deploying YACF is through Docker. Docker Compose is recommended to streamline the process.

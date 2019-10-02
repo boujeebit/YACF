@@ -1,12 +1,11 @@
 import graphene
 from graphene_django import DjangoObjectType
-# from gqlauth.validators import authenticate, validate_username, validate_password, validate_user_is_authenticated
+from uauth.validators import validate_user_is_authenticated, validate_user_is_admin
 from django.contrib.auth import authenticate, login, logout
 # from uauth.validators import authenticate
 from django.contrib.auth.models import User
 from uauth.models import Profile
-# Needed because Profile is rewritten by DjangoObjectType, need to fix this.
-from uauth.models import Profile as uauthProfile
+
 from teams.models import Team
 
 def validate_user_is_authenticated(user):
@@ -18,27 +17,16 @@ class Me(DjangoObjectType):
         model = User
         exclude_fields = ('password')
 
-class Profile(DjangoObjectType):
-    class Meta:
-        model = Profile
-
 class Query(object):
     all_users = graphene.List(Me)
     me = graphene.Field(Me)
 
     def resolve_all_users(self, info):
-        # TODO: Validate is superuser
-        user = info.context.user
-        validate_user_is_authenticated(user)
-        if user.is_superuser:
-            return User.objects.all()
-        else:
-            raise Exception("Insignificant privileges")
+        validate_user_is_admin(info.context.user)
+        return User.objects.all()
 
     def resolve_me(self, info):
-        user = info.context.user
-        validate_user_is_authenticated(user)
-
+        validate_user_is_authenticated(info.context.user)
         return user
 
 # ------------------- MUTATIONS -------------------
@@ -58,10 +46,11 @@ class AddUser(graphene.Mutation):
     # TODO: VALIDATION CHECK!!
     # TODO: TRY CATCH
     def mutate(self, info, username, email, password, firstname, lastname, accesscode):
+        validate_user_is_admin(info.context.user)
         team = Team.objects.filter(accesscode=accesscode).first()
         if team:
             newUser = User.objects.create_user(username=username, first_name=firstname, last_name=lastname, email=email, password=password)
-            newProfile = uauthProfile(user=newUser, verified=False, team=team, hidden=False)
+            newProfile = Profile(user=newUser, verified=False, team=team, hidden=False)
             newProfile.save()
             code = 0
         else:

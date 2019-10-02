@@ -3,7 +3,6 @@ from django.conf import settings
 import re
 from uauth.models import User
 
-
 def validate_username(value):
     if not re.match(r"^[a-zA-Z0-9_\s]{1,150}$", value):
         raise Exception("Username invalid")

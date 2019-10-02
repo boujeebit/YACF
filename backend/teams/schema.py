@@ -3,16 +3,12 @@ from asgiref.sync import async_to_sync
 
 import graphene
 from graphene_django import DjangoObjectType
-# from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from uauth.validators import validate_user_is_authenticated, validate_user_is_admin
 from uauth.models import Profile
 
-import string, random
+import string, random, json
 
-import json
-
-from .models import Team, SolvedChallenge
+from teams.models import Team, SolvedChallenge
 
 class TeamType(DjangoObjectType):
     points = graphene.Int()
@@ -35,27 +31,29 @@ class Query(graphene.ObjectType):
 
     team_sovle = graphene.List(SolvedChallengeType)
 
-    # graph = graphene.List(TeamType)
-
     def resolve_all_teams(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
         return Team.objects.all()
 
     def resolve_team_name(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
         return Team.objects.get(name__iexact=kwargs.get('name'))
 
     def resolve_team(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
         return info.context.user.profile.team
     
     def resolve_all_solves(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
         return SolvedChallenge.objects.all()
 
     def resolve_team_sovle(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
         profile = Profile.objects.get(user=info.context.user)
         return SolvedChallenge.objects.filter(team=profile.team)
 
 
 # ------------------- MUTATIONS -------------------
-
 
 class AddTeam(graphene.Mutation):
     code = graphene.Int()
@@ -68,6 +66,7 @@ class AddTeam(graphene.Mutation):
 
     # TODO: VALIDATION CHECK!!
     def mutate(self, info, name, email, affiliation, accesscode=None):
+        validate_user_is_admin(info.context.user)
         try:
             newTeam = Team(name=name, email=email, affiliation=affiliation, accesscode=''.join(random.choices(string.ascii_uppercase + string.digits, k=10)))
             newTeam.save()
@@ -92,6 +91,7 @@ class UpdateTeam(graphene.Mutation):
     # TODO: VALIDATION CHECK!!
     # TODO: Make it so it is not need to submit every state to change the info
     def mutate(self, info, id, name, affiliation, email, website, accesscode): #, accesscode=None):
+        validate_user_is_admin(info.context.user)
         try:
             team = Team.objects.get(pk=id)
             team.name = name
@@ -115,6 +115,7 @@ class RemoveTeam(graphene.Mutation):
 
     # TODO: VALIDATION CHECK!!
     def mutate(self, info, name): #, accesscode=None):
+        validate_user_is_admin(info.context.user)
         try:
             team = Team.objects.get(name=name)
             team.delete()
@@ -134,10 +135,11 @@ class TeamGraph(graphene.Mutation):
         name = graphene.String(required=True)
 
     def mutate(self, info, name):
+        validate_user_is_authenticated(info.context.user)
+
         team = Team.objects.get(name__iexact=name)
         # print(team)
         # print(team.solved.all().order_by('timestamp'))
-
 
         graph = [{'label': team.name, 'data': [], 'backgroundColor': '#FFD700', 'borderColor': '#FFD700', 'fill': 'false'}]
 
@@ -155,9 +157,6 @@ class TeamGraph(graphene.Mutation):
 
         return TeamGraph(json.dumps(timeline), json.dumps(graph))
 
-
-
-
 class Graph(graphene.Mutation):
     timeline = graphene.String()
     message = graphene.String()
@@ -166,6 +165,7 @@ class Graph(graphene.Mutation):
         number = graphene.Int(required=False)
 
     def mutate(self, info, number=10):
+        validate_user_is_authenticated(info.context.user)
 
         # Sort to get the top 5 by point value
         teams = sorted(list(Team.objects.all()), key=lambda x: x.points, reverse=True)[:5]

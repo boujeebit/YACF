@@ -1,7 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-# from gqlauth.validators import validate_username, validate_password, validate_user_is_authenticated
-from django.contrib.auth import authenticate, login, logout
+from uauth.validators import validate_user_is_authenticated, validate_user_is_admin
 
 from server.models import Theme
 
@@ -13,4 +12,5 @@ class Query(graphene.ObjectType):
     theme = graphene.Field(ThemeType)
     
     def resolve_theme(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
         return Theme.objects.first()
