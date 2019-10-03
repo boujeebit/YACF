@@ -73,9 +73,9 @@ export default {
   beforeMount() {
     let that = this;
     api(
-      "query { allTeams{ id, name, affiliation, website, email, points, members, wrongFlags, correctFlags, accesscode } }"
+      "query { teams{ id, name, affiliation, website, email, points, members, wrongFlags, correctFlags, accesscode } }"
     ).then(data => {
-      that.teams = data.allTeams;
+      that.teams = data.teams;
       that.loading = false;
     });
   }

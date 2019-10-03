@@ -23,15 +23,15 @@ class SolvedChallengeType(DjangoObjectType):
         model = SolvedChallenge
 
 class Query(graphene.ObjectType):
-    all_teams = graphene.List(TeamType)
-    all_solves = graphene.List(SolvedChallengeType)
+    teams = graphene.List(TeamType)
+    solves = graphene.List(SolvedChallengeType)
 
     team_name = graphene.Field(TeamType, name=graphene.String())
     team = graphene.Field(TeamType)
 
     team_sovle = graphene.List(SolvedChallengeType)
 
-    def resolve_all_teams(self, info, **kwargs):
+    def resolve_teams(self, info, **kwargs):
         validate_user_is_authenticated(info.context.user)
         return Team.objects.all()
 
@@ -43,7 +43,7 @@ class Query(graphene.ObjectType):
         validate_user_is_authenticated(info.context.user)
         return info.context.user.profile.team
     
-    def resolve_all_solves(self, info, **kwargs):
+    def resolve_solves(self, info, **kwargs):
         validate_user_is_authenticated(info.context.user)
         return SolvedChallenge.objects.all()
 

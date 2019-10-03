@@ -82,9 +82,9 @@ export default {
 
     let self = this;
     api(
-      "query { allCategories{ id, name, description, challenges { id } } }"
+      "query { categories{ id, name, description, challenges { id } } }"
     ).then(data => {
-      data.allCategories.forEach(function(element) {
+      data.categories.forEach(function(element) {
         self.options.push({ value: element.name, text: element.name });
       });
     });

@@ -65,8 +65,8 @@ export default new Vuex.Store({
   },
   actions: {
     loadChallengeBoard({ commit }) {
-      api("query{ allCategories {id, challenges{ id, name, points }, name, description}, teamSovle{ challenge{ id } } }").then(data => {
-        commit("SET_BOARD", data.allCategories);
+      api("query{ categories {id, challenges{ id, name, points }, name, description}, teamSovle{ challenge{ id } } }").then(data => {
+        commit("SET_BOARD", data.categories);
         commit("SET_SOLVES", data.teamSovle);
       });
     },

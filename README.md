@@ -58,3 +58,4 @@ cp -r dist/* ../backend/static/
 
 - [backend] Stop teams from submitting the same flag twice
 - [backend] Check event end time before submitting flag.
+- [backend] Hide team access code

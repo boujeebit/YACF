@@ -26,9 +26,9 @@ export default {
     addCategory() {
       let that = this;
       api(
-        `mutation{ addcategory(name:"${this.name}",description:"${this.description}") { message } }`
+        `mutation{ addcategory(name:"${this.name}",description:"${this.description}") { code } }`
       ).then(data => {
-        data.addcategory.message
+        data.addcategory.code === 0
           ? (that.message = "Category added successfully")
           : (that.message = "Failed to add category");
       });

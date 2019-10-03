@@ -2,35 +2,34 @@ import graphene
 from graphene_django import DjangoObjectType
 from uauth.validators import validate_user_is_authenticated, validate_user_is_admin
 from django.contrib.auth import authenticate, login, logout
-# from uauth.validators import authenticate
 from django.contrib.auth.models import User
+
 from uauth.models import Profile
-
 from teams.models import Team
-
-def validate_user_is_authenticated(user):
-    if user.is_anonymous:
-        raise Exception('Not authenticated')
 
 class Me(DjangoObjectType):
     class Meta:
         model = User
         exclude_fields = ('password')
 
-class Query(object):
-    all_users = graphene.List(Me)
-    me = graphene.Field(Me)
+class ProfileType(DjangoObjectType):
+    class Meta:
+        model = Profile
 
-    def resolve_all_users(self, info):
+class Query(object):
+    users = graphene.List(Me)
+    me = graphene.Field(Me)
+    profile = graphene.Field(ProfileType)
+
+    def resolve_users(self, info):
         validate_user_is_admin(info.context.user)
         return User.objects.all()
 
     def resolve_me(self, info):
         validate_user_is_authenticated(info.context.user)
-        return user
+        return info.context.user
 
 # ------------------- MUTATIONS -------------------
-
 
 class AddUser(graphene.Mutation):
     code = graphene.Int()
@@ -70,10 +69,6 @@ class LogIn(graphene.Mutation):
         password = graphene.String(required=True)
 
     def mutate(self, info, username, password):
-        # Validate username and password
-        #validate_username(username)
-        #validate_password(password)
-
         user = authenticate(username=username, password=password)
 
         if not user:

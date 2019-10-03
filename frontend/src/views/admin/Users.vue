@@ -56,9 +56,9 @@ export default {
   beforeMount() {
     let self = this;
     api(
-      "query { allUsers{ id username firstName lastName email isSuperuser profile { team { name } } } }"
+      "query { users{ id username firstName lastName email isSuperuser profile { team { name } } } }"
     ).then(data => {
-      self.users = data.allUsers;
+      self.users = data.users;
       self.loading = false;
     });
   },

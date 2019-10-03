@@ -70,7 +70,7 @@ export default new Router({
             {
               path: "/admin/pages/create",
               name: "AdminCreatePages",
-              component: () => import("@/views/admin/New/Page")
+              component: () => import("@/views/admin/Create/Page")
             },
             {
               path: "/admin/categories",

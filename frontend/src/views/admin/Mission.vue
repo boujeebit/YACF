@@ -49,14 +49,14 @@ export default {
     api("query { challenges{ id } }").then(data => {
       self.challenges = data.challenges.length;
     });
-    api("query { allTeams{ id } }").then(data => {
-      self.teams = data.allTeams.length;
+    api("query { teams{ id } }").then(data => {
+      self.teams = data.teams.length;
     });
-    api("query { allUsers{ id } }").then(data => {
-      self.users = data.allUsers.length;
+    api("query { users{ id } }").then(data => {
+      self.users = data.users.length;
     });
-    api("query { allSolves{ id } }").then(data => {
-      self.solves = data.allSolves.length;
+    api("query { solves{ id } }").then(data => {
+      self.solves = data.solves.length;
     });
   },
   methods: {}

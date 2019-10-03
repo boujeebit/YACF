@@ -11,16 +11,16 @@ class CategoryType(DjangoObjectType):
         model = Category
 
 class Query(graphene.ObjectType):
-    all_categories = graphene.List(CategoryType)
+    categories = graphene.List(CategoryType)
 
-    def resolve_all_categories(self, info, **kwargs):
+    def resolve_categories(self, info, **kwargs):
         validate_user_is_authenticated(info.context.user)
         return Category.objects.all()
 
 # ------------------- MUTATIONS -------------------
 
 class AddCategory(graphene.Mutation):
-    message = graphene.String()
+    code = graphene.Int()
 
     class Arguments:
         name        = graphene.String(required=True)
@@ -29,13 +29,11 @@ class AddCategory(graphene.Mutation):
     def mutate(self, info, name, description):
         validate_user_is_admin(info.context.user)
         try:
-            newCategory = Category(name=name, description=description)
-            newCategory.save()
-            message = "success"
+            Category(name=name, description=description).save()
         except:
-            message = "failure"
+            raise Exception('Failed to add category')
 
-        return AddCategory(message)
+        return AddCategory(code=0)
 
 class RemoveCategory(graphene.Mutation):
     message = graphene.String()

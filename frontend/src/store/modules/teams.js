@@ -30,25 +30,19 @@ const getters = {
 
 const actions = {
   LoadTeamRank({ commit }) {
-    api(
-      "query{ team {id, name, points, correctFlags, wrongFlags } totalPoints }"
-    ).then(data => {
+    api("query{ team {id, name, points, correctFlags, wrongFlags } totalPoints }").then(data => {
       commit("SET_TEAM_RANK", data.team);
       commit("SET_MAX_POINTS", data.totalPoints);
     });
   },
   loadTeams({ commit }) {
-    api(
-      "query{ allTeams {id, name, points, correctFlags, wrongFlags} totalPoints }"
-    ).then(data => {
-      commit("SET_TEAMS", data.allTeams);
+    api("query{ teams {id, name, points, correctFlags, wrongFlags} totalPoints }").then(data => {
+      commit("SET_TEAMS", data.teams);
       commit("SET_MAX_POINTS", data.totalPoints);
     });
   },
   loadStats({ commit }, payload) {
-    api(
-      `query{ teamName(name:"${payload}"){ id, name, points, players { user { username } }, solved{ id, timestamp, challenge { id, name, points, category{ name } } } } }`
-    ).then(data => {
+    api(`query{ teamName(name:"${payload}"){ id, name, points, players { user { username } }, solved{ id, timestamp, challenge { id, name, points, category{ name } } } } }`).then(data => {
       commit("SET_TEAM", data.teamName);
     });
   }
