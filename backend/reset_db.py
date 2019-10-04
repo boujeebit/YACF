@@ -10,7 +10,7 @@ from datetime import timedelta
 from core.settings import DATABASES
 from django.contrib.auth.models import User
 from uauth.models import Profile
-from teams.models import Team
+from teams.models import Team, AccessCode
 from categories.models import Category
 from challenges.models import Challenge, Flag
 from uauth.validators import validate_username, validate_password, validate_email
@@ -31,23 +31,6 @@ def resetDjangoDB():
     os.system('python3 manage.py makemigrations')
     os.system('python3 manage.py migrate')   
 
-    
-# def makeAdminUser(admin_name, admin_email, admin_password, hidden):
-#     # Validate admin user command line arguments
-#     validate_username(admin_name)
-#     validate_email(admin_email)
-#     # validate_password(admin_password)
-
-#     # Create team for admin user
-
-#     # admin_team = Team(name=admin_name, hidden=hidden)
-#     # admin_team.save()
-
-#     # Create admin user assign admin team
-#     admin = User.objects.create_superuser(admin_name, admin_email, admin_password)
-#     # admin.team = admin_team
-#     admin.save()
-
 def makeAdminUser():
     admin = User.objects.create_superuser("admin", "email@email.com", "password1", first_name="Admin", last_name="Admin")
     admin.save()
@@ -55,9 +38,11 @@ def makeAdminUser():
     profile.save()
 
 def makeTeam(team_name, hidden, accesscode):
-    user_team = Team(name=team_name, hidden=hidden, accesscode=accesscode)
-    user_team.save()
-    return user_team
+    team = Team(name=team_name, hidden=hidden)
+    team.save()
+    AccessCode(team=team, value=accesscode).save()
+
+    return team
 
 def makeUser(user_name, user_email, user_password, user_team, hidden):
     # Validate admin user command line arguments
@@ -91,7 +76,7 @@ def makeChallenges():
         cat = Category.objects.get(name=category)
         for challenge_points in ctf_challenge_points:
             chal_str = "%s %s" % (category, str(challenge_points))
-            chal = Challenge(category=cat, name=chal_str, description="{0} challenge".format(chal_str), points=challenge_points, show=True)
+            chal = Challenge(category=cat, name=chal_str, description="{0} challenge".format(chal_str), points=challenge_points, hidden=True)
             chal.save()
             flag = Flag(value=hashlib.md5('flag'.encode('utf-8')).hexdigest(), challenge=chal)
             flag.save()

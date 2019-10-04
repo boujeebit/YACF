@@ -4,7 +4,7 @@ from asgiref.sync import async_to_sync
 import hashlib
 import graphene
 from graphene_django import DjangoObjectType
-from uauth.validators import validate_user_is_authenticated, validate_user_is_admin
+from uauth.validators import validate_user_is_authenticated, validate_user_is_admin, validate_user_is_staff
 
 from categories.models import Category
 from challenges.models import Challenge, Flag
@@ -22,19 +22,22 @@ class FlagType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     challenges = graphene.List(ChallengeType)
-
     challenge = graphene.Field(ChallengeType, id=graphene.Int())
-    statistic = graphene.Field(ChallengeType, category=graphene.String(), points=graphene.Int())
 
+    statistic = graphene.Field(ChallengeType, category=graphene.String(), points=graphene.Int())
     total_points = graphene.Int()
 
     def resolve_challenges(self, info, **kwargs):
         validate_user_is_authenticated(info.context.user)
-        return Challenge.objects.all().order_by('points')
+        if validate_user_is_staff(info.context.user):
+            return Challenge.objects.all().order_by('points')
+        else:
+            return Challenge.objects.filter(category__hidden=False, hidden=False).order_by('points')
 
     def resolve_challenge(self, info, **kwargs):
         validate_user_is_authenticated(info.context.user)
         return Challenge.objects.get(pk=kwargs.get('id'))
+
 
     def resolve_statistic(self, info, **kwargs):
         validate_user_is_authenticated(info.context.user)

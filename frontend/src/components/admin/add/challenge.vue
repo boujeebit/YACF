@@ -37,8 +37,8 @@ export default {
   },
   beforeMount() {
     let that = this;
-    api("query { allCategories{ name } }").then(data => {
-      that.categories = data.allCategories;
+    api("query { categories{ name } }").then(data => {
+      that.categories = data.categories;
     });
   },
   methods: {

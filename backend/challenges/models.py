@@ -9,7 +9,7 @@ class Challenge(models.Model):
     description = models.CharField(max_length=1000)
 
     points = models.IntegerField(default=0)
-    show = models.BooleanField(default=False)
+    hidden = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

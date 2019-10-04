@@ -19,9 +19,9 @@ class Team(models.Model):
         return self.solved.all().count()
 
     def _members(self):
-        # print(dir(User.objects.get(pk=2).profile))
-        return User.objects.all().count()
-        # return User.objects.filter(profile__name=self.name).count()
+        #TODO: Look into why this cannot be imported above
+        from uauth.models import Profile
+        return Profile.objects.filter(team=self).count()
 
     name = models.CharField(max_length=150, unique=True)
     email = models.CharField(max_length=50, blank=True)
@@ -36,11 +36,15 @@ class Team(models.Model):
     
     created = models.DateTimeField(auto_now_add=True)
 
-    accesscode = models.CharField(max_length=150)
-
     def __str__(self):
         return self.name
 
+class AccessCode(models.Model):
+    team = models.OneToOneField(Team, on_delete=models.CASCADE, related_name='accesscode')
+    value = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.team.name
 
 class SolvedChallenge(models.Model):
     """

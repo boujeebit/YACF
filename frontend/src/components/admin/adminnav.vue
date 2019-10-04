@@ -13,7 +13,7 @@
         <b-nav-item @click="$router.push('/admin/solves');">Solves</b-nav-item>
         <b-nav-item @click="$router.push('/admin/surveys');">Surveys</b-nav-item>
         <b-nav-item @click="$router.push('/admin/settings');">Settings</b-nav-item>
-        <b-nav-item @click="$router.push('/admin/scripter');">Scripter</b-nav-item>
+        <!-- <b-nav-item @click="$router.push('/admin/scripter');">Scripter</b-nav-item> -->
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

@@ -2,7 +2,7 @@
   <div>
     <div class="top-section logo" :style="{backgroundColor: $store.state.theme.primary}">
       <div class="frame">
-        <img src="http://nullify.uno/img/main_logo.png" width="650" alt="YACF" />
+        <img src="https://github.com/yacf/docs/blob/master/_assets/images/logo-p.png?raw=true" alt="YACF" />
       </div>
     </div>
 

@@ -3,7 +3,7 @@ from asgiref.sync import async_to_sync
 
 import graphene
 from graphene_django import DjangoObjectType
-from uauth.validators import validate_user_is_authenticated, validate_user_is_admin
+from uauth.validators import validate_user_is_authenticated, validate_user_is_admin, validate_user_is_staff
 from uauth.models import Profile
 
 import string, random, json
@@ -17,6 +17,12 @@ class TeamType(DjangoObjectType):
 
     class Meta:
         model = Team
+
+    def resolve_email(self, info):
+        if validate_user_is_staff(info.context.user):
+            return self.email
+        else:
+            raise Exception('Not authorized to view email information for teams')
 
 class SolvedChallengeType(DjangoObjectType):
     class Meta:

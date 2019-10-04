@@ -19,8 +19,7 @@
               <th>Affiliation</th>
               <th>Website</th>
               <th>Admin Email</th>
-              <th>Number of Members (Not working)</th>
-              <th>Access Code (Hover)</th>
+              <th>Number of Members</th>
               <th style="text-align: right;">Options</th>
             </tr>
           </thead>
@@ -31,7 +30,6 @@
               <td>{{team.website}}</td>
               <td>{{team.email}}</td>
               <td>{{team.members}}</td>
-              <td class="secret">{{team.accesscode}}</td>
               <td>
                 <div>
                   <RemoveTeam :team="team" />
@@ -73,7 +71,7 @@ export default {
   beforeMount() {
     let that = this;
     api(
-      "query { teams{ id, name, affiliation, website, email, points, members, wrongFlags, correctFlags, accesscode } }"
+      "query { teams{ id, name, affiliation, website, email, points, members, wrongFlags, correctFlags } }"
     ).then(data => {
       that.teams = data.teams;
       that.loading = false;

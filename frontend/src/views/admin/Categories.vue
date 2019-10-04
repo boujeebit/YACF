@@ -62,9 +62,9 @@ export default {
   beforeMount() {
     let that = this;
     api(
-      "query { allCategories{ id, name, description, challenges { id } } }"
+      "query { categories{ id, name, description, challenges { id } } }"
     ).then(data => {
-      that.categories = data.allCategories;
+      that.categories = data.categories;
       that.loading = false;
     });
   }

@@ -1,6 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-from uauth.validators import validate_user_is_authenticated, validate_user_is_admin
+from uauth.validators import validate_user_is_authenticated, validate_user_is_admin, validate_user_is_staff
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
@@ -15,7 +15,10 @@ class Query(graphene.ObjectType):
 
     def resolve_categories(self, info, **kwargs):
         validate_user_is_authenticated(info.context.user)
-        return Category.objects.all()
+        if validate_user_is_staff(info.context.user):
+            return Category.objects.all()
+        else:
+            return Category.objects.filter(hidden=False)
 
 # ------------------- MUTATIONS -------------------
 

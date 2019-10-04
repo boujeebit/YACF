@@ -9,12 +9,18 @@ def validate_username(value):
 
 def validate_user_is_authenticated(user):
     if user.is_anonymous:
-        raise Exception('Not authenticated')
+        raise Exception('Not authorized to see superuser information.')
 
 def validate_user_is_admin(user):
     validate_user_is_authenticated(user)
     if not user.is_superuser:
         raise Exception('Administrator permission required')
+
+def validate_user_is_staff(user):
+    if user.is_superuser or user.is_staff:
+        return True
+    else:
+        return False
 
 def validate_username_unique(value):
     if User.objects.filter(username__iexact=value).exists():
