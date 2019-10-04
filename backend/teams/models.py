@@ -17,6 +17,9 @@ class Team(models.Model):
     
     def _correct(self):
         return self.solved.all().count()
+    
+    def _failures(self):
+        return self.failure.all().count()
 
     def _members(self):
         #TODO: Look into why this cannot be imported above
@@ -32,7 +35,7 @@ class Team(models.Model):
     members = property(_members)
     hidden = models.BooleanField(default=False)
     correct_flags = property(_correct)
-    wrong_flags = models.IntegerField(default=0)
+    wrong_flags = property(_failures)
     
     created = models.DateTimeField(auto_now_add=True)
 

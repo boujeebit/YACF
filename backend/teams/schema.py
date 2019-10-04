@@ -14,6 +14,7 @@ class TeamType(DjangoObjectType):
     points = graphene.Int()
     members = graphene.Int()
     correct_flags = graphene.Int()
+    wrong_flags = graphene.Int()
 
     class Meta:
         model = Team
