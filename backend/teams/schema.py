@@ -8,7 +8,7 @@ from uauth.models import Profile
 
 import string, random, json
 
-from teams.models import Team, SolvedChallenge
+from teams.models import Team, SolvedChallenge, Failure
 
 class TeamType(DjangoObjectType):
     points = graphene.Int()
@@ -28,9 +28,14 @@ class SolvedChallengeType(DjangoObjectType):
     class Meta:
         model = SolvedChallenge
 
+class FailureType(DjangoObjectType):
+    class Meta:
+        model = Failure
+
 class Query(graphene.ObjectType):
     teams = graphene.List(TeamType)
     solves = graphene.List(SolvedChallengeType)
+    failures = graphene.List(FailureType)
 
     team_name = graphene.Field(TeamType, name=graphene.String())
     team = graphene.Field(TeamType)
@@ -51,7 +56,11 @@ class Query(graphene.ObjectType):
     
     def resolve_solves(self, info, **kwargs):
         validate_user_is_authenticated(info.context.user)
-        return SolvedChallenge.objects.all()
+        return SolvedChallenge.objects.all().order_by('-timestamp')
+    
+    def resolve_failures(self, info, **kwargs):
+        validate_user_is_authenticated(info.context.user)
+        return Failure.objects.all().order_by('-timestamp')
 
     def resolve_team_sovle(self, info, **kwargs):
         validate_user_is_authenticated(info.context.user)

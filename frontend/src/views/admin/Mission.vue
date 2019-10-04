@@ -11,7 +11,7 @@
         <h1>{{challenges}}</h1>
       </b-card>
       <b-card title="Solves">
-        <h1>{{solves}}</h1>
+        <h1>{{solves.length}}</h1>
       </b-card>
     </b-card-group>
 
@@ -21,8 +21,12 @@
     </b-card>
     <hr />
     <b-card-group deck>
-      <b-card header="Submissions"></b-card>
-      <b-card header="Fails"></b-card>
+      <b-card header="Solves">
+        <b-alert variant="success" v-for="solve in solves" :key="solve.id" show>({{solve.id}}) {{solve.team.name}} - {{solve.challenge.name}} - {{solve.timestamp}}</b-alert>
+      </b-card>
+      <b-card header="Failures">
+        <b-alert variant="danger" v-for="failure in failures" :key="failure.id" show>({{failure.id}}) {{failure.team.name}} - {{failure.challenge.name}} - {{failure.timestamp}}</b-alert>
+      </b-card>
     </b-card-group>
   </div>
 </template>
@@ -41,7 +45,8 @@ export default {
       challenges: 0,
       teams: 0,
       users: 0,
-      solves: 0
+      solves: 0,
+      failures: []
     };
   },
   created() {
@@ -55,8 +60,15 @@ export default {
     api("query { users{ id } }").then(data => {
       self.users = data.users.length;
     });
-    api("query { solves{ id } }").then(data => {
-      self.solves = data.solves.length;
+    api(
+      "query { solves { id team { name } challenge { name } timestamp } }"
+    ).then(data => {
+      self.solves = data.solves;
+    });
+    api(
+      "query { failures { id team { name } challenge { name } timestamp } }"
+    ).then(data => {
+      self.failures = data.failures;
     });
   },
   methods: {}

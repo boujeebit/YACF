@@ -46,12 +46,31 @@ class AccessCode(models.Model):
     def __str__(self):
         return self.team.name
 
+'''
+TODO: Rename to solves
+'''
 class SolvedChallenge(models.Model):
     """
-    Team solved challenge model
+    Team correct submission challenge model
     """
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='solved')
 
     user = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, default=None, null=True, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+'''
+TODO: Consider logging the incorrect submission
+'''
+class Failure(models.Model):
+    """
+    Team incorrect submission challenge model
+    """
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='failure')
+
+    user = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE)
+    challenge = models.ForeignKey(Challenge, default=None, null=True, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "%s - %s" % (self.team.name, self.challenge.name)

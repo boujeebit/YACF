@@ -8,7 +8,7 @@ from uauth.validators import validate_user_is_authenticated, validate_user_is_ad
 
 from categories.models import Category
 from challenges.models import Challenge, Flag, Hint
-from teams.models import SolvedChallenge
+from teams.models import SolvedChallenge, Failure
 from uauth.models import Profile
 
 class ChallengeType(DjangoObjectType):
@@ -183,6 +183,9 @@ class SubmitFlag(graphene.Mutation):
                     solve.save()                  
                 code = 1
             else:
+                if team:
+                    fail = Failure(team=team, user=info.context.user, challenge=get_challenge)
+                    fail.save()
                 code = 0
         except:
             code = 9
