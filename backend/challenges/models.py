@@ -24,4 +24,11 @@ class Flag(models.Model):
     def __str__(self):
         return self.challenge.name
 
-#hint model
+class Hint(models.Model):
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, related_name='hint')
+
+    content = models.CharField(max_length=1000)
+    hidden = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.challenge.name

@@ -7,7 +7,7 @@ from graphene_django import DjangoObjectType
 from uauth.validators import validate_user_is_authenticated, validate_user_is_admin, validate_user_is_staff
 
 from categories.models import Category
-from challenges.models import Challenge, Flag
+from challenges.models import Challenge, Flag, Hint
 from teams.models import SolvedChallenge
 from uauth.models import Profile
 
@@ -19,6 +19,19 @@ class ChallengeType(DjangoObjectType):
 class FlagType(DjangoObjectType):
     class Meta:
         model = Flag
+
+class HintType(DjangoObjectType):
+    class Meta:
+        model = Hint
+
+    '''
+    TODO: Need a catch all for non staff, show nothing
+    '''
+    def resolve_content(self, info):
+        if not self.hidden:
+            return self.content
+        else:
+            return ''
 
 class Query(graphene.ObjectType):
     challenges = graphene.List(ChallengeType)
