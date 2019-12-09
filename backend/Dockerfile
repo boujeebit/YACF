@@ -22,14 +22,14 @@ RUN apt-get update     && \
 
 RUN apt-get clean
 
-COPY backend/requirements.txt /tmp/requirements.txt
+COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 
-COPY backend/ /var/www/backend/
+COPY ./ /var/www/backend/
 
 RUN chmod 664 /var/www/backend/db.sqlite3
 RUN chown -R www-data:www-data /var/www/
 
-COPY scripts/apache/development.conf /etc/apache2/sites-available/000-default.conf
+COPY ../scripts/apache/development.conf /etc/apache2/sites-available/000-default.conf
 
 CMD apachectl -D FOREGROUND
