@@ -10,8 +10,7 @@ services:
   
   yacf:
     restart: always
-    build: .
-    dockerfile: backend/Dockerfile
+    build: backend
     hostname: yacf.0x.codes
     ports:
       - "80:80"
